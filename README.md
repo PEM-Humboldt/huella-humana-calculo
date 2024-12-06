@@ -17,28 +17,25 @@ En la última sección de los códigos las tablas se organizan para su exportaci
 
 ## Organizar directorio de trabajo
 
-Las entradas de ejemplo de este ejercicio están almacenadas en
-[aquí](xxx).
-Una vez descargadas y descomprimida, reemplaze la carpeta “Originales” en el directorio Datos del proyecto.
+Los datos para correr los códigos están almacenados
+[aquí](https://drive.google.com/file/d/1YQjFb3u8uJ7UmWHlNncM_UXtJ_gJcOmz/view?usp=drive_link)
+Una vez descargada y descomprimida la carpeta, reemplaze la carpeta “Datos” en el directorio Datos del proyecto.
 El directorio del proyecto está organizado de esta manera que facilita la ejecución del
 código:
 
-    Códigos
-    │- Huella_nucleos_base 
-    │- Huella_nucleos_c_u
-    │- Huella_todos_nucleos
-    │- Integridad_nucleos_base
-    │- Integridad_núcleos_c_u
-    │- Integridad_todos_nucleos
-    │- alluvium_GUIDOS
+    Codigos
+    │-  00_InsumosGenerales.R
+    │-  01_Insumosxhuella.R
+    │-  02_HuellaHumana_Diaz.R
+    │-  03_HuellaHumana_adaptada.R
+    │-  04_Comparar entre versiones.R
     │    
     └-Datos
     │ │
-    │ └- Originales: replaze aquí los datos que bajo
-    │ │   │
-    │ │   
-    │ └- Intermedios
-    │     │     
+    │ └- replaze aquí los datos que  descargué [aquí](https://drive.google.com/file/d/1YQjFb3u8uJ7UmWHlNncM_UXtJ_gJcOmz/view?usp=drive_link)
+    │ 
+    |
+    └- Res_Intermedios
     |
     └- Resultados
 
