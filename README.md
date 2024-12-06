@@ -1,18 +1,20 @@
-Proyecto Amazonas FPLV
+Cálculo Huella espacial humana
 ================
-En esta sección se guardan los códigos relacionados con el proyecto fondo para vida, que incluyen: 
+En esta sección se guardan los códigos relacionados con  la construcción de la huelala espacial humana: 
 
-1. análisis multitemporal de huella humana (1970, 1990, 2000, 2015, 2018, 2019) : Huella_nucleos_base, Huella_nucleos_c_u, Huella_todos_nucleos
-2. análisis de la integridad de bosque año 2019: Integridad_nucleos_base, Integridad_núcleos_c_u, Integridad_todos_nucleos
-3. Gráficas tipo alluvium (Sanki), para mostrar las dinámicas de trasformación del paisaje a través del tiempo: alluvium_GUIDOS
-  
-En los temas 1 y 2 se calculan estadísticas zonales (promedio, mediana, desviación estándar) de los valores de huella y estadisticos zonales para obtener la frecuencias de categorias de intensidad de  IHEH e integridad de bosque. 
-
-Los resultados se guardan en dos data frames:
-Stat_values: Contiene estadísticas zonales (promedio, mediana, desviación estándar) para cada entidad de análisis y año .
-Stat_reclass: Contiene la frecuencia y porcentaje de categorías de reclasificación para cada análisis y año.
-
-En la última sección de los códigos las tablas se organizan para su exportación en formatos .csv y html para tener tablas interactivas que faciliten la exploración. Seguidamente se preparan y exportan gráficas de los datos que muestren la evolución de la IHEH a través de los años y el estado de la integridad para permita comparar  entre unidades de análisis.
+1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
+Además se preparan:
+ - Capas constantes con los parametros generales como: Ecosistemas potenciales y Tiempo de Intervención.
+ - Tabla de consulta para la definición de las clases de biomasa y uso de tierra
+2. 01_Insumosxhuella.R:Se preparan los insumos necesarios para correr el IHEH :
+ - Población: Descarga (URl en código),  corte a zona de estudio , reproyección, cálculo de densidad. No es necesario correlo si se va a usar la poblacióin del IHEH anterior (la población se calcula cada 5 años). 
+ - Vias: 2018: IGAc de Julian y descarga 2019 de osm por que tiene fecha enero 2019 #####
+ - Vias: 2022: IGAc (https://www.colombiaenmapas.gov.co/?e=-82.43784778320864,-0.17644239911865092,-71.23179309571162,9.90326984502256,4686&b=igac&u=0&t=23&servicio=205) y descarga 2023 de osm por que tiene fecha enero 2023, Para el cálculo de años posteriores seguir esquema del 2022
+3. 02_HuellaHumana_Diaz.R:En este código calcula la huella 2018 replicando los pasos de los modelos de ArcMap de Julian Díaz. Por motivos computacionales fue necesario hacer hacer algunas modificaciones.
+4. 03_HuellaHumana_adaptada.R:En este código calcula la huella con el método de ecosistemas. Esta incluye los siguiientes cambios.
+  - Variables continuas como continuas
+  - Remoción de variables no escenciales para el cálculo.
+5. 04_Comparar entre versiones: Código incompleto para comparar entre versiones
 
 
 ## Organizar directorio de trabajo
@@ -32,7 +34,7 @@ código:
     │    
     └-Datos
     │ │
-    │ └- replaze aquí los datos que  descargué [aquí](https://drive.google.com/file/d/1YQjFb3u8uJ7UmWHlNncM_UXtJ_gJcOmz/view?usp=drive_link)
+    │ └- replaze aquí los datos que  descargué 
     │ 
     |
     └- Res_Intermedios
