@@ -9,8 +9,8 @@ Además se preparan:
 2. 01_Insumosxhuella.R:Se preparan los insumos necesarios para correr el IHEH y se almacenan en la carpeta de resultados intermedios, Res_Intermedios
 3. 02_HuellaHumana_Diaz.R:En este código calcula la huella 2018 replicando los pasos de los modelos de ArcMap de Julian Díaz. Por motivos computacionales fue necesario hacer hacer algunas modificaciones.
 4. 03_HuellaHumana_adaptada.R:En este código calcula la huella con el método de ecosistemas. Esta incluye los siguiientes cambios.
-  - Variables continuas como continuas
-  - Remoción de variables no escenciales para el cálculo.
+    - Variables continuas como continuas
+    - Remoción de variables no escenciales para el cálculo.
 5. 04_Comparar entre versiones: Código incompleto para comparar entre versiones
 
 
