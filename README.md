@@ -4,8 +4,8 @@ En esta sección se guardan los códigos relacionados con  la construcción de l
 
 1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
 Además se preparan:
-   - Capas constantes con los parametros generales como: Ecosistemas potenciales y Tiempo de Intervención.
-   - Tabla de consulta para la definición de las clases de biomasa y uso de tierra
+        - Capas constantes con los parametros generales como: Ecosistemas potenciales y Tiempo de Intervención.
+        - Tabla de consulta para la definición de las clases de biomasa y uso de tierra
 2. 01_Insumosxhuella.R:Se preparan los insumos necesarios para correr el IHEH y se almacenan en la carpeta de resultados intermedios, Res_Intermedios
 3. 02_HuellaHumana_Diaz.R:En este código calcula la huella 2018 replicando los pasos de los modelos de ArcMap de Julian Díaz. Por motivos computacionales fue necesario hacer hacer algunas modificaciones.
 4. 03_HuellaHumana_adaptada.R:En este código calcula la huella con el método de ecosistemas. Esta incluye los siguiientes cambios.
