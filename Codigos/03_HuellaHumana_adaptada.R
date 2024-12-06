@@ -2,7 +2,7 @@
 #
 # Autor(es): Alejandra Narváez Vallejo
 #
-# Descripción: Esté código calcula la huella con el método de ecosistemas. Esta incluye klos siguiientes cambios.
+# Descripción: En este código calcula la huella con el método de ecosistemas. Esta incluye los siguiientes cambios.
 ## - Variables continuas como continuas
 ##    - Distancia a vias según Venter et al 2016. Falta revisar función ??????????????????   
 ##    - Población según Venter et al 2016
@@ -15,7 +15,7 @@
 ## - Indice de fragmentación se calculó filtando el raster con un filtro  circular de 1000 metros de diametro y usando al función suma. Esta parte está identica a la versión Diáz de la Huella, pero diferente al modelo construido en ArcMap. 
 
 
-# Por hacer o  corregir: 
+# Por hacer o corregir: 
 
 ## - Ver como paralelizar LU.
 # falta el de TI 2022 genérico

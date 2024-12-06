@@ -3,7 +3,7 @@
 #
 # Autor(es): Alejandra Narváez Vallejo
 #
-# Descripción: Esté código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
+# Descripción: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
 # Además se preparan:
 ## - Capas constantes con los parametros generales como: Ecosistemas potenciales y Tiempo de Intervención.
 ## - Tabla de consulta para la definición de las clases de biomasa y uso de tierra

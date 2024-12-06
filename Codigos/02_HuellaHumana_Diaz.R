@@ -3,7 +3,7 @@
 #
 # Autor(es): Alejandra Narváez Vallejo
 #
-# Descripción: Esté código calcula la huella 2022 replicando los pasos de los modelos de ArcMap de Julian días. 
+# Descripción: En este código calcula la huella 2018 replicando los pasos de los modelos de ArcMap de Julian Díaz. 
 # Por motivos computacionales fue necesario hacer hacer las siguientes modificaciones:
 ## - Indice de fragmentación se calculó filtando el raster con un filtro  circular de 1000 metros de diametro y usando al función suma.
 

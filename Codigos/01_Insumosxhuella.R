@@ -2,7 +2,7 @@
 #
 # Autor(es): Alejandra Narváez Vallejo
 #
-# Descripción: Esté código se preparan los insumos necesarios para correr el IHEH
+# Descripción: En este código se preparan los insumos necesarios para correr el IHEH
 # Estos son :
 ## - Población: Descarga (URl en código),  corte a zona de estudio , reproyección, cálculo de densidad. No es necesario correlo si se va a usar la poblacióin del IHEH anterior (la población se calcula cada 5 años). 
 ## - Vias: 2018: IGAc de Julian y descarga 2019 de osm por que tiene fecha enero 2019 #####
