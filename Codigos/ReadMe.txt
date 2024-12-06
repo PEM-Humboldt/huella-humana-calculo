@@ -1,0 +1,2 @@
+Insumosxhuella: aquí se preparan los datos necesarios para cada huella
+InsumosGenerales: aquí se alistan los insumos necesarios para las huellas en general. Sólo se correra en caso que cambein propiedades generales: resolución, proyección, actualización de la capa de ecosistemas potenciales.
