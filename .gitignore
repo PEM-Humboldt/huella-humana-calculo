@@ -51,8 +51,9 @@ rsconnect/
 
 # Ignorar todo el contenido dentro de 'Originales' y 'Intermedios'
 
-**/Datos/Originales/*
-**/Datos/Intermedios/*
+**/Datos/*
+**/Res_Intermedios/*
+**/Resultados/*
 
 # No ignorar los archivos .gitkeep dentro de 'Originales' y 'Intermedios'
 !**/.gitkeep
