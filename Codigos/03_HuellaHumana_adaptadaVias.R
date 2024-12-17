@@ -4,7 +4,7 @@
 #
 # Descripción: En este código calcula la huella con el método de ecosistemas. Esta incluye los siguiientes cambios.
 ## - Variables continuas como continuas
-##    - Distancia a vias según Venter et al 2016. Falta revisar función ??????????????????   
+##    - Distancia a vias según Venter et al 2016. Falta revisar función ??????????????????  con más categorías incluidas   
 ##    - Población según Venter et al 2016
 ##    - Densidad de áreas naturales, presion humana disminuye exponencialmente con los mayores valores del índice
 ## - Variables no tomadas en cuanta en el cálculo
@@ -19,6 +19,8 @@
 
 ## - Ver como paralelizar LU.
 # falta el de TI 2022 genérico
+# pesos en la vias de ciudades
+
 
 
 
@@ -51,7 +53,8 @@ dir_Resultados <- file.path("Resultados")
 
 ## Año #### 
 # Escriba el año de interes
-Año <- 2018
+Año <- 2022
+
 # Escriba el año de los datos de población
 Año_pop <- 2020
 
@@ -78,7 +81,13 @@ Ti_0 <- file.path(dir_Intermedios, "TiempoInt_2018_100.tif") %>%
 
 # vector
 
-vias <- file.path(dir_Intermedios, "osm_IGAc_2018.shp") %>%
+vias8 <- file.path(dir_Intermedios, paste0 ("osm_IGAc8_",Año,".shp")) %>%
+  st_read()
+vias5 <- file.path(dir_Intermedios, paste0 ("osm_IGAc5_",Año,".shp")) %>%
+  st_read()
+vias4 <- file.path(dir_Intermedios, paste0 ("osm_IGAc4_",Año,".shp")) %>%
+  st_read()
+vias2 <- file.path(dir_Intermedios, paste0 ("osm_IGAc2_",Año,".shp")) %>%
   st_read()
 
 
@@ -183,7 +192,7 @@ plot(TNT)
 # Ti_he <-10 * (1 - exp(-k * (Ti_0 - x0))) # esta curva se estabiliza llegando a 300
 # 
 # Ti_he [Ti_he > 10] <- 10
-  
+
 
 ## GTF_lu ####
 #**********************************************************
@@ -219,27 +228,54 @@ Pd_he [Pd_he > 10] <- 10
 plot(Pd_he)
 
 
- ## vias- dr_he  ####
+## vias- dr_he  ####
 #**********************************************************
 
-vias <-  st_transform(vias, crs(r_base))
+vias_groups <- lapply (list(vias2,vias4,vias5,vias8),
+                       function (x){
+                         p <- st_transform(x, crs(r_base))%>%
+                         rasterize(r_base)%>%
+                         terra::distance()})
 
-r_vias <- rasterize(vias, r_base)
-
-vias_d <- terra::distance( r_vias)
+names(vias_groups) <- c("v2","v4","v5","v8")
 
 #2.426123*exp(-1*(seq(.5,15,0.1)-1)) parecido a el de un artículo
 
-dr_he <- 4 * exp(-0.319 * (vias_d/1000  - 0.5))
+clsDisVias <- function(x, max=4){
+  max * exp(-0.319 * (x/1000  - 0.5))
+}
+
+# función para las cat de vias 4 ,5 y 8
+Vias_4R <- lapply(vias_groups[2:4],clsDisVias) 
+#names(Vias_4R) <- c("v4","v5","v8")
+
+# aplicar valor de influencia directa
+
+Vias_4R$v4 [Vias_4R$v4 > 4] <- 4
+Vias_4R$v5 [Vias_4R$v5 > 4] <- 5
+Vias_4R$v8 [Vias_4R$v8 > 4] <- 8
+
+# función para las cat de vias 2
+
+Vias_2R <- lapply(vias_groups[1],clsDisVias,max=2) 
+
+# aplicar valor de influencia directa
+Vias_2R$v2 [Vias_2R$v2 > 2] <- 2
+
+
+# aplicar el máximo de todas las capas
+dr_he <- app(c(Vias_2R$v2,Vias_4R$v4,Vias_4R$v5,Vias_4R$v8), max)
+
+plot(Vias_4R$v8)
+plot(Vias_4R$v5)
+plot(Vias_4R$v4)
+plot(Vias_2R$v2)
+plot(dr_he)
 
 
 dr_he
-
-dr_he [dr_he > 4] <- 8
-
 hist(dr_he)
 plot(dr_he)
-
 
 
 ## if_he  ####

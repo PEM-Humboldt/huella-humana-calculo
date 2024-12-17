@@ -22,6 +22,7 @@
 
 library (sf) 
 library(terra)
+library(dplyr)
 
 #**********************************************************
 # Definir directorio(s) de trabajo -----------------------
@@ -30,7 +31,6 @@ library(terra)
 setwd(file.path(this.path::this.path(),"..",".."))
 
 dir_datos<- file.path("Datos")
-dir_raster<- file.path("Datos", "raster")
 dir_Intermedios<- file.path ("Res_Intermedios")
 dir_Resultados<- file.path ("Resultados")
 
