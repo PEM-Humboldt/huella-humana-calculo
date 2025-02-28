@@ -14,6 +14,27 @@ Además se preparan:
 5. 04_Comparar entre versiones: Código incompleto para comparar entre versiones
 
 
+## versiones de los paquetes usados
+
+En el momento de la elaboración de los códigos las version de R y de los paquetes necesarios para los códigos fue. 
+
+R version 4.4.1 (2024-06-14 ucrt)
+- dplyr_1.1.4  
+- terra_1.7-83 
+- sf_1.0-19
+- raster_3.6-30   
+- sp_2.1-4        
+- lubridate_1.9.3 
+- forcats_1.0.0   
+- stringr_1.5.1   
+- purrr_1.0.2
+- readr_2.1.5     
+- tidyr_1.3.1     
+- tibble_3.2.1    
+- ggplot2_3.5.1   
+- tidyverse_2.0.0
+
+
 ## Organizar directorio de trabajo
 
 Los datos para correr los códigos están almacenados
