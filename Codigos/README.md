@@ -11,6 +11,11 @@ Además se preparan:
 4. 03_HuellaHumana_adaptada.R:En este código calcula la huella con el método de ecosistemas. Esta incluye los siguiientes cambios.
     - Variables continuas como continuas
     - Remoción de variables no escenciales para el cálculo.
+5. 03_HuellaHumana_adaptadaVias: En este código calcula la huella con el método de ecosistemas. Esta incluye los siguiientes cambios.
+    - Variables continuas como continuas
+    - Remoción de variables no escenciales para el cálculo.
+    - Diferenciación de vías. Por completar explicación
+      
 5. 04_Comparar entre versiones: Código incompleto para comparar entre versiones
 
 
