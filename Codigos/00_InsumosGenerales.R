@@ -6,11 +6,12 @@
 # Descripción: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
 # Además se preparan:
 ## - Capas constantes con los parametros generales como: Ecosistemas potenciales y Tiempo de Intervención.
-## - Tabla de consulta para la definición de las clases de biomasa y uso de tierra
+## - Tabla de consulta para la definición de clases de biomasa y uso del suelo, y valores del IHEH1.
+#Esta tabla contiene la clasificación combinada de biomasa y uso del suelo, junto con los valores correspondientes del índice IHEH1, calculado como la suma de las huellas por biomasa y por uso del suelo. La tabla servirá como una tabla de consulta ("lookup table") en el cálculo posterior del índice de huella ecológica humana. En ese proceso, se compararán los valores observados de biomasa y uso del suelo del año analizado con esta tabla para asignar automáticamente el valor de IHEH1 correspondiente, a partir de la tabla generada aquí bajo el nombre "combinaciones".
 
 # Por hacer o  corregir: 
 
-## - Es posible que vias cambie la forma en que los datos del IGAC den el tipo de revisar. Tener en cuenta y cambiar cuando sea necesario.
+## - Es posible que vias cambien la forma en que los datos del IGAC den el tipo de revisar. Tener en cuenta y cambiar cuando sea necesario.
 
 
 #**********************************************************
@@ -26,33 +27,42 @@ library(dplyr)
 #**********************************************************
 # Definir directorio(s) de trabajo -----------------------
 #**********************************************************
+# Se define el directorio de trabajo relativo a la ubicación del script
+setwd(file.path(this.path::this.path(), "..", ".."))
 
-setwd(file.path(this.path::this.path(),"..",".."))
-
-dir_datos<- file.path("Datos")
-dir_Intermedios<- file.path ("Res_Intermedios")
-dir_Resultados<- file.path ("Resultados")
+# Directorios para datos, resultados intermedios y finales
+dir_datos <- file.path("Datos")
+dir_Intermedios <- file.path("Res_Intermedios")
+dir_Resultados <- file.path("Resultados")
 
 #**********************************************************
-# Cargar los datos necesarios ----------------------------
+# Cargar los datos necesarios -----------------------------
 #**********************************************************
 
-# Capas Raster
-r_base<-rast(file.path(dir_datos,"r_base.tif" )) 
+# Raster base para análisis
+r_base <- rast(file.path(dir_datos, "r_base.tif"))
 
-# texto
-
+# Tablas con leyendas y ecosistemas potenciales
 Ecos_Pot <- read.csv2(file.path(dir_datos, "Ecos_Pot.csv"))
 Leyenda_LU <- read.csv2(file.path(dir_datos, "Leyenda_LU.txt"))
 
+# Funciones
 
+# Función para verificar si el CRS coincide
+crs_igual <- function(r, crs_ref) {
+  tryCatch({
+    crs(r) == crs_ref
+  }, error = function(e) FALSE)
+}
 
 #**********************************************************
 # Parametros globales ----------------------------
 #**********************************************************
  
-resolucion <-  100
-scoord <- crs(r_base) # cambiar cuando se defina la proyección
+resolucion <-  100   # Resolución objetivo para el análisis
+scoord <- crs(r_base) # Sistema de coordenadas del raster base. Cambiar cuando se defina la proyección
+
+coincidencia_crs <- crs_igual(r_base, scoord)
 
 
 #**********************************************************
@@ -61,71 +71,92 @@ scoord <- crs(r_base) # cambiar cuando se defina la proyección
 
 ##  raster base --------------------------------------------------
 
-r_base<- project(r_base, scoord, res=resolucion, method= "near")
+# Definir rutas de los archivos
+archivo_r_base <- file.path(dir_datos, "r_base.tif")
+archivo_r_base10 <- file.path(dir_datos, "r_base10.tif")
 
-# creación de r_base10 metros
-r_base10 <- disagg(r_base, fact=10) # para guardar en el final
 
-writeRaster(r_base, file.path(dir_datos, "r_base.tif"),  datatype= "INT1U", overwrite=TRUE)
-writeRaster(r_base10, file.path(dir_datos, "r_base10.tif"), datatype= "INT1U", overwrite=TRUE)
-
+# Condición para crear o no los archivos
+if (!file.exists(archivo_r_base) || 
+    !file.exists(archivo_r_base10) || 
+    !coincidencia_crs) {
+  
+  # Crear r_base proyectado
+  r_base <- project(r_base, scoord, res = resolucion, method = "near")
+  
+  # Crear r_base10
+  r_base10 <- disagg(r_base, fact = 10)
+  
+  # Guardar los archivos
+  writeRaster(r_base, archivo_r_base, datatype = "INT1U", overwrite = TRUE)
+  writeRaster(r_base10, archivo_r_base10, datatype = "INT1U", overwrite = TRUE)
+  
+} else {
+  # Leer desde disco
+  r_base <- rast(archivo_r_base)
+  r_base10 <- rast(archivo_r_base10)
+}
 
 ##  Ecositemas potenciales  --------------------------------------------------
-## Preparar raster #####
-## cargar el raster de la gdb ##
-# Especificar la ruta a la base de datos geográfica (GDB)
-gdb_path <- file.path(dir_datos,"EcosistemasPotencialesDeColombia.gdb")
+# Definir rutas de los archivos de salida
+archivo_eco_100 <- file.path(dir_datos, "Eco_100Rc1.tif")
 
-# Leer una capa raster específica de la GDB
-# Reemplaza 'nombre_de_la_capa_raster' con el nombre de la capa raster que deseas leer
-raster_layer <- rast(gdb_path, "EcosistemasPotencialesDeColombia")
-unique(raster_layer)
-
-# ajustar resoluión y proyección
-#Eco_100<-project(raster_layer, r_base, method= "near") # no es el mejor método porque elige el que está más cercano al centro 
-plot(raster_layer)
-Eco_100 <- raster_layer%>%
-  project(r_base10, method="near")%>%
-  aggregate(fact=10, fun="modal")
-
-
-# Mostrar información del raster leído
-plot(Eco_100)
-
-# Cargar leyenda Eco_pot y definir las categorias de raster   (Opcional) ####### cuidado aca???????????????
-
-ley_pot<-Ecos_Pot%>%
-  dplyr::select(ECOSPOTENC, COD)%>%
-  unique
-
-levels(Eco_100)<- ley_pot
-
-writeRaster(Eco_100, file.path(dir_datos, "Eco_100Rc1.tif"),  datatype= "INT1U" )
+# Procesar ecosistemas potenciales solo si no existe el archivo
+if (!file.exists(archivo_eco_100)|| 
+    !coincidencia_crs) {
+  
+  # Leer el raster de ecosistemas potenciales desde la GDB
+  gdb_path <- file.path(dir_datos, "EcosistemasPotencialesDeColombia.gdb")
+  raster_layer <- rast(gdb_path, "EcosistemasPotencialesDeColombia")
+  
+  # Ajustar resolución y proyectar al sistema del raster base
+  Eco_100 <- raster_layer %>%
+    project(r_base10, method = "near") %>%
+    aggregate(fact = 10, fun = "modal")
+  
+  # Asignar niveles a la capa según la leyenda (Opcional)
+  ley_pot <- Ecos_Pot %>%
+    dplyr::select(ECOSPOTENC, COD) %>%
+    unique()
+  levels(Eco_100) <- ley_pot
+  
+  # Guardar raster de ecosistemas potenciales reescalado
+  writeRaster(Eco_100, archivo_eco_100, datatype = "INT1U", overwrite = TRUE)
+  
+} else {
+  # Si ya existe, solo cargarlo
+  Eco_100 <- rast(archivo_eco_100)
+}
 
 ##  Tiempo de intervención --------------------------------------------------
+# Definir rutas de los archivos de salida
 
-# Resolución de tiempo de intervención a 100 ####
+archivo_tiempo_int <- file.path(dir_Intermedios, "TiempoInt_2018_100.tif")
 
-TI <- rast(file.path(dir_datos,"TiempoInt_20181.tif" )) 
-TI
-TI<- resample(TI,r_base, method="near")
-plot(TI)
+# Procesar tiempo de intervención solo si no existe el archivo
+if (!file.exists(archivo_tiempo_int)|| 
+    !coincidencia_crs) {
+  
+  # Cargar raster de tiempo de intervención, ajustar a resolución y guardar
+  TI <- rast(file.path(dir_datos, "TiempoInt_20181.tif"))
+  TI <- resample(TI, r_base, method = "near")
+  writeRaster(TI, archivo_tiempo_int, datatype = "INT2U", overwrite = TRUE)
+  
+} else {
+  # Si ya existe, solo cargarlo
+  TI <- rast(archivo_tiempo_int)
+}
 
-click(TI)
 
-writeRaster(TI, file.path(dir_Intermedios, "TiempoInt_2018_100.tif"),  datatype= "INT2U", overwrite=T)
+#**********************************************************
+# Preparar tabla de consulta 
+#**********************************************************
 
-#  Tabla de consulta ----------------------------------------------------------
 
-Ecos_Pot <- read.csv2(file.path(dir_datos, "Ecos_Pot.csv"))
-Leyenda_LU <- read.csv2(file.path(dir_datos, "Leyenda_LU.txt"))
+# Tablas de atributos y leyendas
+Ecos_Pot1 <- Ecos_Pot[, c("ECOSPOTENC", "COD", "LLAVE", "FISIO")] %>% unique()
 
-# preparar tablas
-
-Ecos_Pot1 <- Ecos_Pot[,c("ECOSPOTENC", "COD", "LLAVE", "FISIO")]
-Ecos_Pot1<- unique(Ecos_Pot1)
-
-# objectos importantes para definir los grupos de las categorias de cobertura de tierra y biomasa
+# Clasificación de categorías de vegetación (fisionomías).importantes para definir los grupos de las categorias de cobertura de tierra y biomasa
 
 Arbustales <- c(
   'Arbustales  abiertos y suculentas' ,
@@ -181,26 +212,35 @@ bi1 <- c (
   'Sabanas herbÃ¡ceas y arbustales del Pedobiomas del Zonobioma de los Bosques HÃºmedos Tropicales'
 )
 
-# crear combinaciones y unir con las tablas
+
+## Crear combinaciones únicas #####
+#--------------------------------------------------
+
+# Combinación de clases de uso de suelo, ecosistema y transformación (0 = natural, 1 = transformado)
 combinaciones <- expand.grid(Leyenda_LU$Id, Ecos_Pot1$ECOSPOTENC, 0:1)
 colnames(combinaciones) <- c("LegendN", "CODN", "TNT")
-combinaciones
 
-combinaciones$LegendN[combinaciones$LegendN==0] <- 51 # reclasificar para no tener el valor de 0 en dos columnas diferentes que al hacer la suma de las columnas confundiria los valores únicos
+# Reemplazar valores problemáticos
+combinaciones$LegendN[combinaciones$LegendN == 0] <- 51  #reclasificar para no tener el valor de 0 en dos columnas diferentes que al hacer la suma de las columnas confundiria los valores únicos
+
 
 # Obtener codigos únicos para las combinaciones
 # 1. multiplicar las columnas por 10 y 1000 para tener los codigos en difrentes posiciones y así con una sumatoria de las columnas lograr obtener una "IDC" de valores únicos por combinación.
-# 2. Unir con las tablas de atributos de cobertura de tierra y Ecosisitemas potenc iales 
+# 2. Unir con las tablas de atributos de cobertura de tierra y Ecosisitemas potenciales 
 
-combinaciones <- combinaciones%>%
-  mutate(LegendN10 =LegendN*10,
-         CODN1000= CODN*1000,
-         IDC= LegendN10+CODN1000+TNT)%>%
-  left_join(Leyenda_LU[2:3],by=join_by(LegendN==Id))%>% # el valor 51 queda como "NA" en Legend por que no tiene código , aunque este en realidad correponde a "No Observado"
-  left_join(Ecos_Pot1,by=join_by(CODN==ECOSPOTENC))
+combinaciones <- combinaciones %>%
+  mutate(
+    LegendN10 = LegendN * 10,
+    CODN1000 = CODN * 1000,
+    IDC = LegendN10 + CODN1000 + TNT
+  ) %>%
+  left_join(Leyenda_LU[2:3], by = join_by(LegendN == Id)) %>%
+  left_join(Ecos_Pot1, by = join_by(CODN == ECOSPOTENC))
 
 
-head(combinaciones)
+## Clasificación: Grado de transformación ####
+#--------------------------------------------------
+
 combinaciones <- combinaciones %>% # se deben colocar las condiciones por bloques porque si encuetra la condicion por un lado ya no reescribe los resultados
   mutate(
     Grado_tran = case_when(
@@ -237,8 +277,8 @@ combinaciones <- combinaciones %>% # se deben colocar las condiciones por bloque
 
 
 
-## Lu_he ####
-#**********************************************************
+## Asignar huella del uso de la tierra (HUELLA_LU) ####
+#--------------------------------------------------
 
 # asignación de pesos LU Simplificado
 
@@ -291,9 +331,9 @@ combinaciones <- combinaciones %>%
     )
   ) 
 
-## Bi_he ####
 #**********************************************************
-
+# Asignar huella biomasa (BI_HE) --------------------
+#**********************************************************
 # arreglar para asegurar que todos los cambios se efectuen
 
 combinaciones <- combinaciones %>%
@@ -354,17 +394,30 @@ combinaciones <- combinaciones %>%
     )
   )
 
-# organizar para IDC en ña primera columna
-
-combinaciones <- combinaciones[c(6, 1:5,7:13)]
 
 
-# primera suma basada en la tabla de atributos
+## Calcular Índice preliminar de Huella Ecológica Humana (Bi_he + Huella_Lu) ####
+#--------------------------------------------------
+
+# Reordenar columnas para claridad
+combinaciones <- combinaciones[c(6, 1:5, 7:13)]
+
+# Sumar huellas y eliminar combinaciones sin datos válidos
 combinaciones <- combinaciones %>%
-  mutate(IHEH1 = Bi_he + Huella_Lu)%>% 
-  drop_na(IHEH1) # quitar todas las filas con NA en IHEH1
+  mutate(IHEH1 = Bi_he + Huella_Lu) %>%
+  drop_na(IHEH1)
 
-write.csv2(combinaciones, file.path(dir_datos,"combinaciones.csv"))
+
+archivo_combinaciones <- file.path(dir_datos, "combinaciones.csv")
+
+if (!file.exists(archivo_combinaciones)) {
+  write.csv2(combinaciones, archivo_combinaciones, row.names = FALSE)
+} else {
+  message("El archivo 'combinaciones.csv' ya existe. No se sobrescribió.")
+}
+
+
+
 
 
 
