@@ -43,7 +43,7 @@ dir_Resultados<- file.path ("Resultados")
 #osm<-st_read(file.path(dir_datos,"vias", "colombia-190101-free.shp","gis_osm_roads_free_1.shp"))#2018
 osm0<-st_read(file.path(dir_datos,"vias", "colombia-230101-free.shp","gis_osm_roads_free_1.shp"))#2022
 #vias_IGAC <- st_read(file.path(dir_datos,"vias","ViasJulian2018","vias.shp"))# 2018
-vias_IGAC <- st_read(file.path(dir_datos,"vias","IGAC_viasD2024","Vias_IGAC.shp"))# 2022
+vias_IGAC0 <- st_read(file.path(dir_datos,"vias","IGAC_viasD2024","Vias_IGAC.shp"))# 2022
 
 # Capas Raster
 r_base<-rast(file.path(dir_datos,"r_base.tif" )) 
@@ -56,9 +56,13 @@ r_base<-rast(file.path(dir_datos,"r_base.tif" ))
 Año <- 2022 # definir el año que se quiere calcular
 año_pop <- 2020 # escribir el año de los datos de población a usar- 
 
-# clases de OSM 
+# clases de OSM Que se tendrán en cuenta para los cálculos de Huella humana.
+
+# Opción 1- Clasificación usada por Julián Díaz
 osm_class <- c( "trunk",  "tertiary", "secondary", "primary_link", "secondary_link", "primary",   "trunk_link",  "tertiary_link")
-# opción 2 - 8/4
+
+# Opción 2. Clasificación de opción continua y diferencial para tipos de vías
+# Opción 2 - 8/4
 osm_class8 <- c( "trunk",  "tertiary", "secondary", "primary_link", "secondary_link", "primary",   "trunk_link",  "tertiary_link", "living_street", "residential")
 
 # opción 2 - 5/4
@@ -77,28 +81,33 @@ osm_class2 <- c("path")
 
 ##  Vías Principales ----------------------------------------------
 
-# elegir los atributos necesarios
-osm <- osm0 [osm0$fclass %in% osm_class, ] %>%
-  st_geometry()
+# Filtrar las geometrías de OSM seleccionando solo aquellas con clases relevantes
+osm <- osm0[osm0$fclass %in% osm_class, ] %>%
+  st_geometry()  # Extraer solo la geometría
 
+# Crear un objeto sf con un ID genérico para la capa OSM
 osm <- st_sf(data.frame(ID = 1, geom = osm))
 
+# Filtrar y extraer geometría de las vías del IGAC según el año
 if (Año <= 2018) {
-  vias_IGAC <- vias_IGAC [vias_IGAC$GP_RTP %in% c(1:3), ] %>%
+  # Para años hasta 2018, usar el atributo GP_RTP para filtrar las vías principales (categorías 1 a 3)
+  vias_IGAC <- vias_IGAC0[vias_IGAC0$GP_RTP %in% c(1:3), ] %>%
     st_geometry()
-  
 } else {
-  vias_IGAC <- vias_IGAC [vias_IGAC$TIPO_VIA %in% c(1:4), ] %>%
+  # Para años posteriores, usar el atributo TIPO_VIA para seleccionar vías relevantes (categorías 1 a 4)
+  vias_IGAC <- vias_IGAC0[vias_IGAC0$TIPO_VIA %in% c(1:4), ] %>%
     st_geometry()
 }
 
+# Crear un objeto sf con un ID genérico para las vías del IGAC
 vias_IGAC <- st_sf(data.frame(ID = 1, geom = vias_IGAC))
 
-# ajustar resolución y unir capas,
-
+# Reproyectar las vías del IGAC al mismo sistema de coordenadas que las geometrías OSM
 vias_IGAC_p <- st_transform(vias_IGAC, crs = st_crs(osm))
 
+# Unir las capas OSM y vías del IGAC en un solo objeto espacial
 osm_igac <- rbind(osm, vias_IGAC_p)
+
 
 # revisar estructura de la capa
 str(osm_igac)
@@ -110,57 +119,49 @@ st_write(osm_igac, file.path(dir_Intermedios, paste0("osm_IGAc_", Año, ".shp"))
 
 ##  Vías 2.Método ----------------------------------------------
 
-# elegir los atributos necesarios
+# Asignar un valor de "peso" a cada clase (fclass) de OSM según su categoría de importancia
+osm0 <- osm0 %>%
+  mutate(peso = case_when(
+    fclass %in% osm_class8 ~ 8,  # Vías principales
+    fclass %in% osm_class5 ~ 5,  # Vías pequeñas
+    fclass %in% osm_class4 ~ 4,  # Caminos rurales o terciarios
+    fclass %in% osm_class2 ~ 2   # Caminos menores u otros
+  ))
 
+# Crear tabla auxiliar con combinaciones únicas de clases (fclass) y sus pesos asignados
+# Esto es útil como control de calidad o para futuras referencias
 h <- unique(st_drop_geometry(osm0[c("fclass", "peso")]))
 
-osm0 <- osm0 %>%
-  mutate(peso=case_when(fclass %in% osm_class8 ~8,
-                               fclass %in% osm_class5 ~5,
-                               fclass %in% osm_class4 ~4,
-                               fclass %in% osm_class2 ~2) )
+# Separar las geometrías del OSM por grupo de peso para calcular distancias de forma separada
+osm_groups <- split(osm0, osm0$peso)
 
+# Convertir cada grupo en un objeto 'sf' sólo con geometría, y agregar un ID genérico
+osm_groups <- lapply(osm_groups, st_geometry)
+osm_groups <- lapply(osm_groups, function(x) { st_sf(data.frame(ID = 1, geom = x)) })
 
-## organizar en geometrias separadas para hacer los calculos de distancias por separado
+# Asignar pesos a las vías del IGAC según su tipo de vía (TIPO_VIA)
+vias_IGAC2 <- vias_IGAC0 %>%
+  mutate(peso = case_when(
+    TIPO_VIA %in% c(1:4) ~ 8,  # Vías principales
+    TIPO_VIA %in% c(5:7) ~ 5,  # Vías secundarias
+    TIPO_VIA %in% 8 ~ 2        # Caminos o vías terciarias
+  ))
 
-osm_groups <- split(osm0,osm0$peso)
+# Reproyectar las vías del IGAC al sistema de coordenadas de OSM para que coincidan espacialmente
+vias_IGAC_p2 <- st_transform(vias_IGAC2, crs = st_crs(osm0))
 
-osm_groups <- lapply(osm_groups,st_geometry)
-osm_groups <- lapply(osm_groups,function(x){st_sf(data.frame(ID = 1, geom = x))})
+# Separar las geometrías del IGAC por grupo de peso
+IGAC_groups <- split(vias_IGAC_p2, vias_IGAC_p2$peso)
 
-## Definir las categorias del IGAc
+# Convertir cada grupo en objeto 'sf' solo con geometría, agregando un ID genérico
+IGAC_groups <- lapply(IGAC_groups, st_geometry)
+IGAC_groups <- lapply(IGAC_groups, function(x) { st_sf(data.frame(ID = 1, geom = x)) })
 
-
-
-vias_IGAC <- vias_IGAC %>%
-  mutate(peso=case_when(TIPO_VIA %in% c(1:4) ~ 8,
-                        TIPO_VIA %in% c(5:7) ~ 5,
-                        TIPO_VIA %in% 8 ~2) )
-
-
-## organizar en geometrias separadas para hacer los calculos de distancias por separado
-### primero ajustar la proyección al osm
-
-vias_IGAC_p <- st_transform(vias_IGAC, crs = st_crs(osm0))
-
-### dividir en grupos por peso
-
-IGAC_groups <- split(vias_IGAC_p,vias_IGAC_p$peso)
-
-IGAC_groups <- lapply(IGAC_groups,st_geometry)
-IGAC_groups <- lapply(IGAC_groups,function(x){st_sf(data.frame(ID = 1, geom = x))})
-
-  
-
-
-# Unir las capas del IGA8# Unir las capas del IGAC y OSM
-
-## primero los de peso 8
-
+# Unir las capas OSM e IGAC por cada categoría de peso, para posterior análisis (por ejemplo, cálculo de distancias)
 osm_igac8 <- rbind(IGAC_groups$`8`, osm_groups$`8`)
 osm_igac5 <- rbind(IGAC_groups$`5`, osm_groups$`5`)
 osm_igac2 <- rbind(IGAC_groups$`2`, osm_groups$`2`)
-osm_igac4 <- rbind(IGAC_groups$`4`, osm_groups$`4`)
+osm_igac4 <- rbind(IGAC_groups$`4`, osm_groups$`4`)  # En este caso solo OSM tiene categoría 4
 
 
 # revisar estructura de la capa
@@ -184,7 +185,7 @@ url5 <- "https://jeodpp.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_POP_GLOBE_R20
 url6 <- "https://jeodpp.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_POP_GLOBE_R2023A/GHS_POP_E2020_GLOBE_R2023A_54009_100/V1-0/tiles/GHS_POP_E2020_GLOBE_R2023A_54009_100_V1_0_R9_C12.zip"
 url1 <- "https://jeodpp.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_POP_GLOBE_R2023A/GHS_POP_E2020_GLOBE_R2023A_54009_100/V1-0/tiles/GHS_POP_E2020_GLOBE_R2023A_54009_100_V1_0_R10_C12.zip"
 
-
+# URLs en una lista
 URLMos <- list(url1, url2, url3, url4, url5, url6)
 
 # Definir el nombre del archivo descargado
