@@ -3,10 +3,12 @@
 # Autor(es): Alejandra Narváez Vallejo
 #
 # Descripción: En este código calcula la huella con el método de ecosistemas. Esta incluye los siguiientes cambios.
-## - Variables continuas como continuas
+## - Variables continuas como no continuas
 ##    - Distancia a vias según Venter et al 2016. Falta revisar función ??????????????????  con más categorías incluidas   
 ##    - Población según Venter et al 2016
 ##    - Densidad de áreas naturales, presion humana disminuye exponencialmente con los mayores valores del índice
+##    - uso de la tierra
+
 ## - Variables no tomadas en cuanta en el cálculo
 ##    - Distancia a asentamientos
 ##    - Biomasa
@@ -58,28 +60,21 @@ Año <- 2022
 # Escriba el año de los datos de población
 Año_pop <- 2020
 
+# Raster base de referencia
+r_base <- rast(file.path(dir_datos, "r_base.tif"))          # Resolución 100 m
+r_base10 <- rast(file.path(dir_datos, "r_base10.tif"))      # Resolución 10 m
 
-r_base<-rast(file.path(dir_datos,"r_base.tif" )) 
+# Uso del suelo (LU)
+LU0 <- rast(file.path(dir_datos, "Mapbiomas", paste0("colombia_coverage_", Año, ".tif")))
 
-r_base10 <- rast(file.path(dir_datos, "r_base10.tif"))
+# Población
+Pop0 <- file.path(dir_Intermedios, paste0("pop_km2_", Año_pop, ".tif")) %>% rast()
 
-LU0 <- rast(file.path(dir_datos,
-                      "Mapbiomas",
-                      paste0("colombia_coverage_", Año,".tif")))
-
-
-Pop0 <- file.path(dir_Intermedios, paste0("pop_km2_",Año_pop,".tif")) %>%
-  rast()
-
-
-EcoPotif1 <- file.path(dir_datos, "Eco_100Rc1.tif") %>%
-  rast()
-
-Ti_0 <- file.path(dir_Intermedios, "TiempoInt_2018_100.tif") %>%
-  rast()
+# Ecosistemas potenciales
+EcoPotif1 <- file.path(dir_datos, "Eco_100Rc1.tif") %>% rast()
 
 
-# vector
+# Vectores de infraestructura vial
 
 vias8 <- file.path(dir_Intermedios, paste0 ("osm_IGAc8_",Año,".shp")) %>%
   st_read()
@@ -91,7 +86,7 @@ vias2 <- file.path(dir_Intermedios, paste0 ("osm_IGAc2_",Año,".shp")) %>%
   st_read()
 
 
-# texto
+# Tablas de leyenda y combinaciones
 
 #Ecos_Pot <- read.csv2(file.path(dir_datos, "Ecos_Pot.csv"))
 Leyenda_LU <- read.csv2(file.path(dir_datos, "Leyenda_LU.txt"))
@@ -170,12 +165,15 @@ if (file.exists(raster_paths)) {
 ## TNT  ####
 #**********************************************************
 
-m <- rbind(cbind(Leyenda_LU[Leyenda_LU$Leyenda %in% transformado, "Id"], 1), 
-           cbind(Leyenda_LU[Leyenda_LU$Leyenda %in% Ntransformado, "Id"], 0), 
-           cbind(27, NA)) # significa No observado, por esto van a haber huecos en el producto
+# Crear una matriz de reclasificación para áreas transformadas y no transformadas.
+# 1: Transformado, 0: No transformado, NA: No observado (valor 27)
+m <- rbind(
+  cbind(Leyenda_LU[Leyenda_LU$Leyenda %in% transformado, "Id"], 1), 
+  cbind(Leyenda_LU[Leyenda_LU$Leyenda %in% Ntransformado, "Id"], 0), 
+  cbind(27, NA)# significa No observado, por esto van a haber huecos en el producto
+)
 
-
-
+# Reclasificar el raster de uso del suelo a transformado / no transformado
 TNT <- classify(LU, m)
 names(TNT) <- "TNT"
 plot(TNT)
@@ -197,21 +195,18 @@ plot(TNT)
 ## GTF_lu ####
 #**********************************************************
 
-
 names(combinaciones)
-
-# crear raster de combinaciones y vincularle la tabla
-GTF <- TNT+ EcoPotif1*1000+ LU*10
+# Crear raster combinando TNT, ecosistemas potenciales y uso del suelo
+GTF <- TNT + EcoPotif1 * 1000 + LU * 10
+# Asociar la tabla de combinaciones como niveles del raster
 levels(GTF) <- as.data.frame(combinaciones)
 
 
-# REclasificar con base en la columna Lu para obtener el raster LU
-# rc matrix basado en categorias de raster y valores de IHEH que estan en la columna 14
-m <- cbind(combinaciones[, 1], combinaciones[, 12]) 
+# Reclasificar para obtener Lu_he (columna 12 de la tabla de combinaciones)
+m <- cbind(combinaciones[, 1], combinaciones[, 12])
+Lu_he <- classify(GTF, m, other = NA) * 2
 head(m)
 gc()
-Lu_he <- classify(GTF, m, other = NA)*2
-
 plot(Lu_he)
 
 
@@ -219,11 +214,8 @@ plot(Lu_he)
 #**********************************************************
 
 plot(Pop0)
-
-Pd_he <- 3.333*log10 (Pop0+1)
-Pd_he
-
-Pd_he [Pd_he > 10] <- 10
+Pd_he <- 3.333 * log10(Pop0 + 1)  # Log-transformación
+Pd_he[Pd_he > 10] <- 10           # Limitar a máximo 10
 
 plot(Pd_he)
 
@@ -231,89 +223,89 @@ plot(Pd_he)
 ## vias- dr_he  ####
 #**********************************************************
 
-vias_groups <- lapply (list(vias2,vias4,vias5,vias8),
-                       function (x){
-                         p <- st_transform(x, crs(r_base))%>%
-                         rasterize(r_base)%>%
-                         terra::distance()})
+# Crear una lista con las capas de vías transformadas a la misma proyección de r_base, 
+# luego rasterizar cada una sobre la cuadrícula base y calcular la distancia euclidiana desde cada celda
+vias_groups <- lapply(list(vias2, vias4, vias5, vias8), function(x) {
+  p <- st_transform(x, crs(r_base)) %>%
+    rasterize(r_base) %>%
+    terra::distance()
+})
 
-names(vias_groups) <- c("v2","v4","v5","v8")
+# Asignar nombres representativos a cada categoría de vía
+names(vias_groups) <- c("v2", "v4", "v5", "v8")
 
-#2.426123*exp(-1*(seq(.5,15,0.1)-1)) parecido a el de un artículo
+# Curva de decaimiento basada en función exponencial ajustada desde literatura
+# 2.426123*exp(-1*(seq(.5,15,0.1)-1)) parecido a el de un artículo
 
-clsDisVias <- function(x, max=4){
-  max * exp(-0.319 * (x/1000  - 0.5))
+# Definir función de clasificación basada en distancia a vías
+# 'max' define el valor máximo de influencia directa
+clsDisVias <- function(x, max = 4) {
+  max * exp(-0.319 * (x / 1000 - 0.5))
 }
 
-# función para las cat de vias 4 ,5 y 8
-Vias_4R <- lapply(vias_groups[2:4],clsDisVias) 
-#names(Vias_4R) <- c("v4","v5","v8")
+# Aplicar la función de clasificación a las vías de categorías 4, 5 y 8 (mayor impacto)
+Vias_4R <- lapply(vias_groups[2:4], clsDisVias)
 
-# aplicar valor de influencia directa
+# Asignar valores máximos de influencia directa según el tipo de vía
+Vias_4R$v4[Vias_4R$v4 > 4] <- 4  # Vías principales
+Vias_4R$v5[Vias_4R$v5 > 4] <- 5  # Vías secundarias
+Vias_4R$v8[Vias_4R$v8 > 4] <- 8  # Autopistas o vías de mayor impacto
 
-Vias_4R$v4 [Vias_4R$v4 > 4] <- 4
-Vias_4R$v5 [Vias_4R$v5 > 4] <- 5
-Vias_4R$v8 [Vias_4R$v8 > 4] <- 8
+# Aplicar la función de clasificación a la vía de categoría 2 (menor impacto)
+Vias_2R <- lapply(vias_groups[1], clsDisVias, max = 2)
 
-# función para las cat de vias 2
+# Asignar el valor máximo de influencia directa para la vía de categoría 2
+Vias_2R$v2[Vias_2R$v2 > 2] <- 2
 
-Vias_2R <- lapply(vias_groups[1],clsDisVias,max=2) 
+# Combinar todas las capas y calcular el valor máximo por celda entre las capas de influencia
+dr_he <- app(c(Vias_2R$v2, Vias_4R$v4, Vias_4R$v5, Vias_4R$v8), max)
 
-# aplicar valor de influencia directa
-Vias_2R$v2 [Vias_2R$v2 > 2] <- 2
+# Visualización de las capas intermedias y resultado final
+plot(Vias_4R$v8, main = "Influencia vías categoría 8")
+plot(Vias_4R$v5, main = "Influencia vías categoría 5")
+plot(Vias_4R$v4, main = "Influencia vías categoría 4")
+plot(Vias_2R$v2, main = "Influencia vías categoría 2")
+plot(dr_he, main = "Capa combinada de influencia vial (dr_he)")
+hist(dr_he, main = "Histograma de influencia vial (dr_he)")
 
-
-# aplicar el máximo de todas las capas
-dr_he <- app(c(Vias_2R$v2,Vias_4R$v4,Vias_4R$v5,Vias_4R$v8), max)
-
-plot(Vias_4R$v8)
-plot(Vias_4R$v5)
-plot(Vias_4R$v4)
-plot(Vias_2R$v2)
-plot(dr_he)
-
-
-dr_he
-hist(dr_he)
-plot(dr_he)
+dr_he  # Resultado final
 
 
 ## if_he  ####
 #**********************************************************
 
-# Crear una vecindad de 1 km
-vecindad <- focalMat(TNT, type = "circle", d = 1000)
-vecindad
+vecindad <- focalMat(TNT, type = "circle", d = 1000)  # Ventana de 1 km
+r_reclass <- classify(TNT, cbind(0:1, 1:0))            # Invertir 0 y 1
 
-# Reclasificar los valores: 1 -> 0 y 0 -> 1
-r_reclass <- classify(TNT, cbind(0:1, 1:0))
+# Sumar área transformada en vecindad
 
 densidad_0 <- focal(r_reclass,
                     w = vecindad,
                     fun = sum,
                     na.rm = TRUE) * 100
 
+if_he <- 10 * exp(-0.05 * densidad_0)
+
 densidad_0
 
 plot(densidad_0)
 
-if_he <- 10* exp(-0.05 * densidad_0)
-
 plot(if_he)
+
 
 # Cálculo de Huella ####
 #**********************************************************
-
 IHEH <- Lu_he + Pd_he + if_he + dr_he
-plot(IHEH)
-
-IHEH1002 <- 100 / 48 * IHEH
+IHEH1002 <- 100 / 38 * IHEH  # Normalización a escala 0-100
 
 plot(IHEH1002)
 
+# Guardar resultado
 writeRaster(
   IHEH1002,
-  paste0(dir_Resultados, "/IHEHc_", Año, ".tif"))
+  paste0(dir_Resultados, "/IHEHc2_", Año, ".tif"), 
+  overwrite=TRUE)
+
 
 
 
@@ -326,16 +318,7 @@ plot(IHEH1002, breaks = c(0, 15, 40, 60, 100),col=c("blue","yellow","red","red" 
 plot(Pd_he)
 plot(if_he)
 plot(dr_he)
-activeCat(GTF) <- 9 #lu
-plot(GTF)
-activeCat(GTF) <- 11 #lu
+plot(Lu_he)
 plot(GTF)
 
-
-# crear el rasters de Lu para la comparación de métodos de ser necesario
-
-m <- cbind(combinaciones[, 1], tablaK0[, 10])
-Lu <- classify(GTF, m, other = NA)
-Lu
-plot(Lu)
 
