@@ -70,8 +70,6 @@ Pop0 <- file.path(dir_Intermedios, paste0("pop_km2_", Año_pop, ".tif")) %>% ras
 # Ecosistemas potenciales
 EcoPotif1 <- file.path(dir_datos, "Eco_100Rc1.tif") %>% rast()
 
-# Tiempo de intervención (capa base)
-Ti_0 <- file.path(dir_Intermedios, "TiempoInt_2018_100.tif") %>% rast()
 
 # Vectores de infraestructura vial
 vias <- file.path(dir_Intermedios, "osm_IGAc_2018.shp") %>% st_read()
