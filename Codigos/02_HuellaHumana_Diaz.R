@@ -5,7 +5,7 @@
 #
 # Descripción: En este código calcula la huella 2018 replicando los pasos de los modelos de ArcMap de Julian Díaz. 
 # Por motivos computacionales fue necesario hacer hacer las siguientes modificaciones:
-## - Indice de fragmentación se calculó filtando el raster con un filtro  circular de 1000 metros de diametro y usando al función suma.
+## - Indice de fragmentación se calculó filtrando el raster con un filtro  circular de 1000 metros de diametro y usando la función suma.
 
 
 # Por hacer o  corregir: 
@@ -48,7 +48,7 @@ r_base<-rast(file.path(dir_datos,"r_base.tif" ))
 r_base10 <- rast(file.path(dir_datos, "r_base10.tif"))
   
 LU0 <- rast(file.path(dir_datos,
-                 "Mapbiomas_2018",
+                 "Mapbiomas",
                  "colombia_coverage_2018.tif"))
   
 
@@ -127,8 +127,8 @@ Ntransformado <- c(
 #**********************************************************
 
 ### ajustar resolución
-# reptoyectar con r_base 10 m
-# con filtro de mayoría obtener 100m
+# reproyectar con r_base 10 m
+# y con filtro de mayoría obtener 100m
 
 
 raster_paths <- paste0(dir_Intermedios, "/LU_", Año,".tif")
@@ -149,18 +149,22 @@ if (file.exists(raster_paths)) {
 
 ## TNT  ####
 #**********************************************************
+# Crear una matriz de reclasificación para áreas transformadas y no transformadas.
+# 1: Transformado, 0: No transformado, NA: No observado (valor 27)
+m <- rbind(
+  cbind(Leyenda_LU[Leyenda_LU$Leyenda %in% transformado, "Id"], 1), 
+  cbind(Leyenda_LU[Leyenda_LU$Leyenda %in% Ntransformado, "Id"], 0), 
+  cbind(27, NA)# significa No observado, por esto van a haber huecos en el producto
+)
 
-m <- rbind(cbind(Leyenda_LU[Leyenda_LU$Leyenda %in% transformado, "Id"], 1), 
-           cbind(Leyenda_LU[Leyenda_LU$Leyenda %in% Ntransformado, "Id"], 0), 
-           cbind(27, NA)) # significa No observado, por esto van a haber huecos en el producto
-           
-
-
+# Reclasificar el raster de uso del suelo a transformado / no transformado
 TNT <- classify(LU, m)
 names(TNT) <- "TNT"
 plot(TNT)
 
-writeRaster(TNT,paste0(dir_Intermedios, "/TNT_", Año,".tif"))
+# Guardar el resultado
+writeRaster(TNT, paste0(dir_Intermedios, "/TNT_", Año, ".tif"))
+
 
 
 ## Ti_he  ####
@@ -168,19 +172,20 @@ writeRaster(TNT,paste0(dir_Intermedios, "/TNT_", Año,".tif"))
 
 Ti_0
 
+# Definir matriz para clasificar el tiempo de intervención en categorías
 ma <- matrix(
-  c(0, 1, 0,
-    1, 15, 1,
-    15, 50, 2,
+  c(0, 1, 0,     # Sin intervención
+    1, 15, 1,    # Intervención reciente
+    15, 50, 2,   # ...
     50, 150, 3,
     150, 300, 4,
     300, 600, 5),
   ncol = 3,
   byrow = TRUE
 )
-ma
 
-Ti_he <- classify(Ti_0, ma, include.lowest = T) # por defecto cerrado a la derecha igual que arc map
+# Clasificar el raster de tiempo de intervención
+Ti_he <- classify(Ti_0, ma, include.lowest = TRUE) # por defecto cerrado a la derecha igual que arc map
 plot(Ti_0)
 plot(Ti_he)
 hist(Ti_0)
@@ -190,11 +195,10 @@ unique(Ti_0)
 #**********************************************************
 
 names(combinaciones)
-
-# crear raster de combinaciones y vincularle la tabla
-GTF <- TNT+ EcoPotif1*1000+ LU*10
+# Crear raster combinando TNT, ecosistemas potenciales y uso del suelo
+GTF <- TNT + EcoPotif1 * 1000 + LU * 10
+# Asociar la tabla de combinaciones como niveles del raster
 levels(GTF) <- as.data.frame(combinaciones)
-
 
 
 ## lu+bi=IHEH 1 ####
@@ -202,10 +206,14 @@ levels(GTF) <- as.data.frame(combinaciones)
 
 # crear el raster de suma preliminar
 
-m <- cbind(combinaciones[, 1], combinaciones[, 14]) # rc matrix basado en categorias de raster y valores de IHEH que estan en la columna 14
+
+# Reclasificar GTF con base en la columna 14 (valor IHEH1=Bi+Lu) de la tabla de combinaciones
+m <- cbind(combinaciones[, 1], combinaciones[, 14])
+IHEH1 <- classify(GTF, m, other = NA)
+
 head(m)
 gc()
-IHEH1 <- classify(GTF, m, other = NA)
+
 
 plot(IHEH1)
 
@@ -213,22 +221,19 @@ plot(IHEH1)
 ## Pop Pd_he  ####
 #**********************************************************
 
-plot(Pop0)
-
+# Clasificación del raster poblacional en categorías
 m <- matrix(
-  c( 0, 0, 0,
+  c(0, 0, 0,
     0, 200, 1,
     200, 700, 2,
     700, 1500, 3,
     1500, 3500, 4,
-    3500, 700000, 5
-  ),
+    3500, 700000, 5),
   ncol = 3,
   byrow = TRUE
 )
-m
 
-Pd_he <- classify(Pop0, m, include.lowest = F, right = T)
+Pd_he <- classify(Pop0, m, include.lowest = FALSE, right = TRUE)
 
 plot(Pd_he)
 
@@ -236,61 +241,60 @@ plot(Pd_he)
 ## vias- dr_he  ####
 #**********************************************************
 
-vias <-  st_transform(vias, crs(r_base))
+# Proyectar las vías al CRS del raster base
+vias <- st_transform(vias, crs(r_base))
 
-#plot(vias)
-
+# Rasterizar las vías
 r_vias <- rasterize(vias, r_base)
 
-vias_d <- terra::distance( r_vias)
+# Calcular distancia a las vías
+vias_d <- terra::distance(r_vias)
 
-
-
+# Reclasificar distancias a categorías
 mv <- matrix(
-  c(
-    0, 1500, 5,
+  c(0, 1500, 5,
     1500, 3000, 4,
     3000, 5000, 3,
     5000, 8000, 2,
-    8000, 20000,  1,
-    20000, 3897000, 0
-  ),
+    8000, 20000, 1,
+    20000, 3897000, 0),
   ncol = 3,
   byrow = TRUE
 )
-mv
 
 dr_he <- classify(vias_d, mv, include.lowest = TRUE, right = TRUE)
+
+vias <-  st_transform(vias, crs(r_base))
+
+#plot(vias)
 plot(dr_he)
 
 
 ## Asentamientos ds_he  ####
 #**********************************************************
 
+# Crear raster binario de asentamientos
 Asentamientos <- classify(LU, cbind(24, 1), others = NA)
+
 
 plot(LU)
 plot(Asentamientos, col = "red", add = TRUE)
 
-Asentamientos_d <- distance(
-  classify(LU, cbind(24, 1), others = NA)# asentamientos
-  )
-  
+# Calcular distancia a asentamientos
+Asentamientos_d <- distance(Asentamientos)
 
+# Reclasificar en categorías
 ma <- matrix(
-    c(
-      0, 3000, 5,
-      3000, 6000, 4,
-      6000, 10000, 3,
-      10000, 15000, 2,
-      15000, 25000, 1,
-      25000, 5000400, 0
-    ),
-    ncol = 3,
-    byrow = TRUE
-  )
+  c(0, 3000, 5,
+    3000, 6000, 4,
+    6000, 10000, 3,
+    10000, 15000, 2,
+    15000, 25000, 1,
+    25000, 5000400, 0),
+  ncol = 3,
+  byrow = TRUE
+)
 
-  
 ds_he <- classify(Asentamientos_d,
                   ma,
                   include.lowest = TRUE,
@@ -306,9 +310,11 @@ plot(Asentamientos, add = TRUE, col = "red")
 vecindad <- focalMat(TNT, type = "circle", d = 1000)
 vecindad
 
-# Reclasificar los valores: 1 -> 0 y 0 -> 1
+
+# Invertir valores de TNT (1->0, 0->1)
 r_reclass <- classify(TNT, cbind(0:1, 1:0))
 
+# Calcular densidad de áreas no transformadas
 
 densidad_0 <- focal(r_reclass,
                     w = vecindad,
@@ -317,8 +323,7 @@ densidad_0 <- focal(r_reclass,
 
 densidad_0
 
-plot(densidad_0)
-
+# Reclasificar en categorías de fragmentación
 mk <- matrix(
   c(0, 10, 5,
     10, 30, 4, 
@@ -330,21 +335,20 @@ mk <- matrix(
   byrow = TRUE
 )
 
-mk
-
-
-
 if_he <- classify(densidad_0, mk, right = TRUE, include.lowest = TRUE)
+
 plot(if_he)
 
 # Calculo de Huella ####
 #**********************************************************
 
+# Calcular IHEH sumando los factores
 IHEH <- IHEH1 + Ti_he + Pd_he + if_he + ds_he + dr_he
-plot(IHEH)
 
+# Escalar el resultado a 0–100
 IHEH100 <- 100 / 35 * IHEH
 
+# Guardar raster final
 
 writeRaster(IHEH100,
             paste0(dir_Resultados, "/IHEH_", Año, ".tif"),
@@ -369,11 +373,9 @@ activeCat(GTF) <- 11 #lu
 plot(GTF)
 
   
-# crear el raster de suma preliminar
-
+# Reclasificar GTF según tablaK0 para obtener LU y Bioma por separado
 m <- cbind(tablaK0[, 1], tablaK0[, 10])
 Lu <- classify(GTF, m, other = NA)
-Lu
 plot(Lu)
 
 m <- cbind(tablaK0[, 1], tablaK0[, 11])
@@ -381,4 +383,3 @@ bi <- classify(GTF, m, other = NA)
 plot(bi)
 
 plot(IHEH1)
-

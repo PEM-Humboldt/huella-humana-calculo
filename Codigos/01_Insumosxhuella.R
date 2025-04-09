@@ -228,7 +228,7 @@ pop00c<- crop(pop00, ext_projected)
 
 pop00cp<- project(pop00c, r_base, method= "bilinear")
 
-## calculo a km2 ####
+## cálculo a km2 ####
 
 pop_km2<-pop00cp*100
 
