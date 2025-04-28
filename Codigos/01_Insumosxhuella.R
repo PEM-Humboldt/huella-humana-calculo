@@ -40,9 +40,10 @@ dir_Resultados<- file.path ("Resultados")
 
 # Capas Vector
 
-#osm<-st_read(file.path(dir_datos,"vias", "colombia-190101-free.shp","gis_osm_roads_free_1.shp"))#2018
+#osm0<-st_read(file.path(dir_datos,"vias", "colombia-190101-free.shp","gis_osm_roads_free_1.shp"))#2018
 osm0<-st_read(file.path(dir_datos,"vias", "colombia-230101-free.shp","gis_osm_roads_free_1.shp"))#2022
-#vias_IGAC <- st_read(file.path(dir_datos,"vias","ViasJulian2018","vias.shp"))# 2018
+
+#vias_IGAC0 <- st_read(file.path(dir_datos,"vias","ViasJulian2018","vias.shp"))# 2018
 vias_IGAC0 <- st_read(file.path(dir_datos,"vias","IGAC_viasD2024","Vias_IGAC.shp"))# 2022
 
 # Capas Raster
@@ -53,7 +54,7 @@ r_base<-rast(file.path(dir_datos,"r_base.tif" ))
 # Parametros globales ----------------------------
 #**********************************************************
  
-Año <- 2022 # definir el año que se quiere calcular
+Año <- 2018 # definir el año que se quiere calcular
 año_pop <- 2020 # escribir el año de los datos de población a usar- 
 
 # clases de OSM Que se tendrán en cuenta para los cálculos de Huella humana.
@@ -139,13 +140,30 @@ osm_groups <- split(osm0, osm0$peso)
 osm_groups <- lapply(osm_groups, st_geometry)
 osm_groups <- lapply(osm_groups, function(x) { st_sf(data.frame(ID = 1, geom = x)) })
 
-# Asignar pesos a las vías del IGAC según su tipo de vía (TIPO_VIA)
-vias_IGAC2 <- vias_IGAC0 %>%
-  mutate(peso = case_when(
-    TIPO_VIA %in% c(1:4) ~ 8,  # Vías principales
-    TIPO_VIA %in% c(5:7) ~ 5,  # Vías secundarias
-    TIPO_VIA %in% 8 ~ 2        # Caminos o vías terciarias
-  ))
+# Asignar pesos a las vías del IGAC según su tipo de vía (TIPO_VIA) si es 2022 o GP_RTP  si es 2018
+
+if (Año == 2022) {
+  vias_IGAC2 <- vias_IGAC0 %>%
+    mutate(peso = case_when(
+      TIPO_VIA %in% c(1:4) ~ 8,  # Vías principales
+      TIPO_VIA %in% c(5:7) ~ 5,  # Vías secundarias
+      TIPO_VIA %in% 8 ~ 2        # Caminos o vías terciarias
+    ))
+  
+
+} else if (Año == 2018) {
+  
+  vias_IGAC2 <- vias_IGAC0 %>%
+    mutate(peso = case_when(
+      GP_RTP %in% c(1:3) ~ 8,  # Vías principales
+      GP_RTP %in% c(4) ~ 5,  # Vías secundarias
+      GP_RTP %in% 8 ~ 2        # Caminos o vías terciarias
+    ))
+  
+  
+  
+}
+
 
 # Reproyectar las vías del IGAC al sistema de coordenadas de OSM para que coincidan espacialmente
 vias_IGAC_p2 <- st_transform(vias_IGAC2, crs = st_crs(osm0))

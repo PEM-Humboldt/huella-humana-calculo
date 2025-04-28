@@ -55,7 +55,7 @@ dir_Resultados <- file.path("Resultados")
 
 ## Año #### 
 # Escriba el año de interes
-Año <- 2022
+Año <- 2018
 
 # Escriba el año de los datos de población
 Año_pop <- 2020
