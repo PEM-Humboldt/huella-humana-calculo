@@ -242,18 +242,18 @@ gc()
 # cortar pop ##
 # preparar la extension para cortar y proyectarla
 
-ext_projected<-ext(r_base) %>%
+ext_projected <- ext(r_base) %>%
   project(from= crs(r_base) , to= crs(pop00))
 
 # cortar
-pop00c<- crop(pop00, ext_projected)
+pop00c <- crop(pop00, ext_projected)
 
 # proyectar a otra extensión 
 
-pop00cp<- project(pop00c, r_base, method= "bilinear")
+pop00cp <- project(pop00c, r_base, method= "bilinear")
 
 ## cálculo a km2 ####
 
-pop_km2<-pop00cp*100
+pop_km2 <- pop00cp*100
 
 writeRaster(pop_km2, file.path(dir_Intermedios, paste0("pop_km2_",año_pop,".tif")), overwrite=T)

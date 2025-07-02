@@ -28,6 +28,7 @@
 library (sf) 
 library(terra)
 library(dplyr)
+library(tidyr)
 
 #**********************************************************
 # Definir directorio(s) de trabajo -----------------------
@@ -220,7 +221,7 @@ bi1 <- c (
 
 
 ## Crear combinaciones únicas #####
-#--------------------------------------------------
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 # Combinación de clases de uso de suelo, ecosistema y transformación (0 = natural, 1 = transformado)
 combinaciones <- expand.grid(Leyenda_LU$Id, Ecos_Pot1$ECOSPOTENC, 0:1)
@@ -245,7 +246,7 @@ combinaciones <- combinaciones %>%
 
 
 ## Clasificación: Grado de transformación ####
-#--------------------------------------------------
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 combinaciones <- combinaciones %>% # se deben colocar las condiciones por bloques porque si encuetra la condicion por un lado ya no reescribe los resultados
   mutate(
@@ -284,7 +285,7 @@ combinaciones <- combinaciones %>% # se deben colocar las condiciones por bloque
 
 
 ## Asignar huella del uso de la tierra (HUELLA_LU) ####
-#--------------------------------------------------
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 # asignación de pesos LU Simplificado
 
@@ -403,7 +404,7 @@ combinaciones <- combinaciones %>%
 
 
 ## Calcular Índice preliminar de Huella Ecológica Humana (Bi_he + Huella_Lu) ####
-#--------------------------------------------------
+#- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 
 # Reordenar columnas para claridad
 combinaciones <- combinaciones[c(6, 1:5, 7:13)]
