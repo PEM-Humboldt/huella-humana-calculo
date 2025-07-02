@@ -37,6 +37,7 @@ dir_Resultados<- file.path ("Resultados")
 #**********************************************************
 # Cargar los datos necesarios ----------------------------
 #**********************************************************
+# Aqui debe Modificar el nombre de los insumos Para el año que quiera correr 
 
 # Capas Vector
 
@@ -54,7 +55,7 @@ r_base<-rast(file.path(dir_datos,"r_base.tif" ))
 # Parametros globales ----------------------------
 #**********************************************************
  
-Año <- 2018 # definir el año que se quiere calcular
+Año <- 2022 # definir el año que se quiere calcular
 año_pop <- 2020 # escribir el año de los datos de población a usar- 
 
 # clases de OSM Que se tendrán en cuenta para los cálculos de Huella humana.
@@ -63,22 +64,26 @@ año_pop <- 2020 # escribir el año de los datos de población a usar-
 osm_class <- c( "trunk",  "tertiary", "secondary", "primary_link", "secondary_link", "primary",   "trunk_link",  "tertiary_link")
 
 # Opción 2. Clasificación de opción continua y diferencial para tipos de vías
-# Opción 2 - 8/4
+# La fracción que verá en los nombres a continuación significa el rango de valores que va a tener este tipo de vías. Ejemplo 8/4 Quiero decir que este tipo de vías tendrán valores entre 4 y 8.
+
+# Opción 2 - 8/4. Vías vehiculares principales y secundarias
 osm_class8 <- c( "trunk",  "tertiary", "secondary", "primary_link", "secondary_link", "primary",   "trunk_link",  "tertiary_link", "living_street", "residential")
 
-# opción 2 - 5/4
+# opción 2 - 5/4. Vías terciarias y rurales
 osm_class5 <- c( "track",  "track_grade1", "track_grade2","track_grade3","track_grade4", "track_grade5", "service", "bridleway")
 
-# opción 2 - 4/4
+# opción 2 - 4/4. Infraestructura peatonal y no clasificada
 osm_class4 <- c( "pedestrian","footway","steps","unknown","unclassified")
 
-# opción 2 - 2/2
+# opción 2 - 2/2. Senderos naturales
 osm_class2 <- c("path")
 
 
 #**********************************************************
 # Preparar datos ----------------------------
 #**********************************************************
+
+##  Vías Opción 1 ----------------------------------------------
 
 ##  Vías Principales ----------------------------------------------
 
@@ -118,7 +123,7 @@ st_write(osm_igac, file.path(dir_Intermedios, paste0("osm_IGAc_", Año, ".shp"))
 
 
 
-##  Vías 2.Método ----------------------------------------------
+##  Vías Opción 2. ----------------------------------------------
 
 # Asignar un valor de "peso" a cada clase (fclass) de OSM según su categoría de importancia
 osm0 <- osm0 %>%
