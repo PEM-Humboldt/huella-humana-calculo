@@ -8,6 +8,7 @@
 ## - Vias: 2018: IGAc de Julian y descarga 2019 de osm por que tiene fecha enero 2019 
 ## - Vias: 2022: IGAc (https://www.colombiaenmapas.gov.co/?e=-82.43784778320864,-0.17644239911865092,-71.23179309571162,9.90326984502256,4686&b=igac&u=0&t=23&servicio=205) y descarga 2023 de osm por que tiene fecha enero 2023, Para el cálculo de años posteriores seguir esquema del 2022
 
+## Para mayor información sobre el cálculo de la huella humana consultar: https://docs.google.com/document/d/14dT_hxkIE3wAdL95E-zL7I29OZrjDU8_/edit y https://drive.google.com/drive/folders/1YpHz72HMl19SwaBXrIZIsW1G4dYbBMzg
  
 # Por hacer o  corregir: 
 
