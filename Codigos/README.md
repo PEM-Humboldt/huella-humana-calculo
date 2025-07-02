@@ -15,12 +15,10 @@ Además se preparan:
     - Variables continuas como continuas
     - Remoción de variables no esenciales para el cálculo.
     - Diferenciación de vías.
-    - | Grupo OSM       | Clases OSM incluidas                                                                                     | Nombre sugerido                                        |
-|-----------------|----------------------------------------------------------------------------------------------------------|--------------------------------------------------------|
-| `osm_class8`    | trunk, tertiary, secondary, primary_link, secondary_link, primary, trunk_link, tertiary_link, living_street, residential | Vías vehiculares principales y secundarias             |
-| `osm_class5`    | track, track_grade1, track_grade2, track_grade3, track_grade4, track_grade5, service, bridleway          | Caminos rurales y vías de servicio                     |
-| `osm_class4`    | pedestrian, footway, steps, unknown, unclassified                                                        | Infraestructura peatonal y no clasificada              |
-| `osm_class2`    | path                                                                                                     | Senderos naturales                                     |
+          - Vías vehiculares principales y secundarias
+          - Vías terciarias y rurales
+          - Infraestructura peatonal y no clasificada
+          - Senderos naturales     
 
       
 5. 04_Comparar entre versiones: Código incompleto para comparar entre versiones
