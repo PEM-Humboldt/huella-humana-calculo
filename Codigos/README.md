@@ -11,10 +11,17 @@ Además se preparan:
 4. 03_HuellaHumana_adaptada.R: En este código calcula la huella con el método de ecosistemas. Esta incluye los siguiientes cambios.
     - Variables continuas como continuas
     - Remoción de variables no escenciales para el cálculo.
-5. 03_HuellaHumana_adaptadaVias: En este código calcula la huella con el método de ecosistemas. Esta incluye los siguiientes cambios.
+5. 03_HuellaHumana_adaptadaVias: En este código calcula la huella con el método de ecosistemas. Esta incluye los siguientes cambios.
     - Variables continuas como continuas
-    - Remoción de variables no escenciales para el cálculo.
-    - Diferenciación de vías. Por completar explicación
+    - Remoción de variables no esenciales para el cálculo.
+    - Diferenciación de vías.
+    - | Grupo OSM       | Clases OSM incluidas                                                                                     | Nombre sugerido                                        |
+|-----------------|----------------------------------------------------------------------------------------------------------|--------------------------------------------------------|
+| `osm_class8`    | trunk, tertiary, secondary, primary_link, secondary_link, primary, trunk_link, tertiary_link, living_street, residential | Vías vehiculares principales y secundarias             |
+| `osm_class5`    | track, track_grade1, track_grade2, track_grade3, track_grade4, track_grade5, service, bridleway          | Caminos rurales y vías de servicio                     |
+| `osm_class4`    | pedestrian, footway, steps, unknown, unclassified                                                        | Infraestructura peatonal y no clasificada              |
+| `osm_class2`    | path                                                                                                     | Senderos naturales                                     |
+
       
 5. 04_Comparar entre versiones: Código incompleto para comparar entre versiones
 
