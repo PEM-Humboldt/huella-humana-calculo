@@ -321,4 +321,5 @@ plot(dr_he)
 plot(Lu_he)
 plot(GTF)
 
+IHEH1002 <- rast(paste0(dir_Resultados, "/IHEHc2_", 2022, ".tif"))
 

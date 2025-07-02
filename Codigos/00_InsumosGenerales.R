@@ -6,12 +6,17 @@
 # Descripción: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
 # Además se preparan:
 ## - Capas constantes con los parametros generales como: Ecosistemas potenciales y Tiempo de Intervención.
-## - Tabla de consulta para la definición de clases de biomasa y uso del suelo, y valores del IHEH1.
-#Esta tabla contiene la clasificación combinada de biomasa y uso del suelo, junto con los valores correspondientes del índice IHEH1, calculado como la suma de las huellas por biomasa y por uso del suelo. La tabla servirá como una tabla de consulta ("lookup table") en el cálculo posterior del índice de huella ecológica humana. En ese proceso, se compararán los valores observados de biomasa y uso del suelo del año analizado con esta tabla para asignar automáticamente el valor de IHEH1 correspondiente, a partir de la tabla generada aquí bajo el nombre "combinaciones".
+## - Tabla de consulta (de nombre "combinaciones") para la definición de clases (pesos) de biomasa, uso del suelo y IHEH1
+#Esta tabla contiene la clasificación combinada de biomasa y uso del suelo, junto con los valores correspondientes del índice IHEH1, calculado como la suma de las huellas por biomasa y por uso del suelo. La tabla servirá como una tabla de consulta ("lookup table") en el cálculo posterior del índice de huella espacial humana. En ese proceso, se compararán los valores observados de biomasa y uso del suelo del año analizado con esta tabla para asignar automáticamente el valor de IHEH1 correspondiente.
+
+#Este código se debe correr si cambia la proyección.En Caso tal se reescribirán los Raster base que son los moldes para la definición espacial de la huella humana y se reproyectarán también las capas de ecosistemas potenciales y tiempo de intervención. 
+# En principio la tabla "combinaciones" no se ve alterada por las proyección. Este paso sólo es importante si se quiere hacer un cambio en la forma en que se le asignan los pesos a la cobertura del suelo o la presion definida por biomasa
+
+# Para mayor información sobre el origen, la construcción de las capas y la asignación de los pesos consultar: https://docs.google.com/document/d/14dT_hxkIE3wAdL95E-zL7I29OZrjDU8_/edit
 
 # Por hacer o  corregir: 
 
-## - Es posible que vias cambien la forma en que los datos del IGAC den el tipo de revisar. Tener en cuenta y cambiar cuando sea necesario.
+## - Es posible que vias cambien la forma en que los datos del IGAC dan el tipo. Tener en cuenta y cambiar cuando sea necesario.
 
 
 #**********************************************************
@@ -60,7 +65,7 @@ crs_igual <- function(r, crs_ref) {
 #**********************************************************
  
 resolucion <-  100   # Resolución objetivo para el análisis
-scoord <- crs(r_base) # Sistema de coordenadas del raster base. Cambiar cuando se defina la proyección
+scoord <- crs("EPSG:9377") # Sistema de coordenadas del raster base. Cambiar cuando se defina la proyección
 
 coincidencia_crs <- crs_igual(r_base, scoord)
 
@@ -70,6 +75,7 @@ coincidencia_crs <- crs_igual(r_base, scoord)
 #**********************************************************
 
 ##  raster base --------------------------------------------------
+# En caso que se necesiten los productos en un sistema de referencia y diferente al preestablecido,esta sección modificará los raster base para ajustarlos a la nueva proyección
 
 # Definir rutas de los archivos
 archivo_r_base <- file.path(dir_datos, "r_base.tif")

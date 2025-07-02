@@ -7,11 +7,12 @@
 # Por motivos computacionales fue necesario hacer hacer las siguientes modificaciones:
 ## - Indice de fragmentación se calculó filtrando el raster con un filtro  circular de 1000 metros de diametro y usando la función suma.
 
+## Para mayor información sobre el cálculo de la huella humana consultar: https://docs.google.com/document/d/14dT_hxkIE3wAdL95E-zL7I29OZrjDU8_/edit y https://drive.google.com/drive/folders/1YpHz72HMl19SwaBXrIZIsW1G4dYbBMzg
 
 # Por hacer o  corregir: 
 
 ## - Ver como paralelizar LU.
-# falta el de TI 2022 genérico
+# falta el de TI 2022 genérico.  Pero de pronto no será necesario porque será obsoleto.
 
 
 
@@ -90,7 +91,7 @@ AñosTI <-  0
 
 
 ## TNT ####
-# definicion transformado no transformado
+# definicion transformado no transformado De acuerdo a los nombres de Mapbiomas
 transformado <-  c(
   'Acuicultura',
   'Infraestructura urbana',
@@ -204,9 +205,6 @@ levels(GTF) <- as.data.frame(combinaciones)
 ## lu+bi=IHEH 1 ####
 #**********************************************************
 
-# crear el raster de suma preliminar
-
-
 # Reclasificar GTF con base en la columna 14 (valor IHEH1=Bi+Lu) de la tabla de combinaciones
 m <- cbind(combinaciones[, 1], combinaciones[, 14])
 IHEH1 <- classify(GTF, m, other = NA)
@@ -273,7 +271,7 @@ plot(dr_he)
 ## Asentamientos ds_he  ####
 #**********************************************************
 
-# Crear raster binario de asentamientos
+# Crear raster binario de asentamientos. 24 Es el código de asentamientos.
 Asentamientos <- classify(LU, cbind(24, 1), others = NA)
 
 
@@ -372,6 +370,9 @@ plot(GTF)
 activeCat(GTF) <- 11 #lu
 plot(GTF)
 
+
+# Opcional ####
+#**********************************************************
   
 # Reclasificar GTF según tablaK0 para obtener LU y Bioma por separado
 m <- cbind(tablaK0[, 1], tablaK0[, 10])
