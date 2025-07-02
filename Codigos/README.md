@@ -44,3 +44,4 @@ R version 4.4.1 (2024-06-14 ucrt)
 - tibble_3.2.1    
 - ggplot2_3.5.1   
 - tidyverse_2.0.0
+- tidyr_1.3.1
