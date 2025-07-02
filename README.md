@@ -1,4 +1,4 @@
-.Cálculo Huella espacial humana
+Cálculo Huella espacial humana
 ================
 
 Este repositorio tiene los paso y datos para hacer el cálculo de la huella espacial humana a nivel nacional. 
