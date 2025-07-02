@@ -10,7 +10,7 @@ Además se preparan:
 3. 02_HuellaHumana_Diaz.R: En este código calcula la huella 2018 replicando los pasos de los modelos de ArcMap de Julian Díaz. Por motivos computacionales fue necesario hacer hacer algunas modificaciones.
 4. 03_HuellaHumana_adaptada.R: En este código calcula la huella con el método de ecosistemas. Esta incluye los siguiientes cambios.
     - Variables continuas como continuas
-    - Remoción de variables no escenciales para el cálculo.
+    - Remoción de variables no esenciales para el cálculo.
 5. 03_HuellaHumana_adaptadaVias: En este código se calcula la huella con el método de ecosistemas. Esta incluye los siguientes cambios:  
     - Variables continuas como continuas  
     - Remoción de variables no esenciales para el cálculo  
