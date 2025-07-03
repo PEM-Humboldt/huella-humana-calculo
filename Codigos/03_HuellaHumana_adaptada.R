@@ -7,9 +7,9 @@
 ##    - Distancia a vias según Venter et al 2016. Falta revisar función ??????????????????   
 ##    - Población según Venter et al 2016
 ##    - Densidad de áreas naturales, presion humana disminuye exponencialmente con los mayores valores del índice
-##    - uso de la tierra
+##    
 
-## - Variables no tomadas en cuanta en el cálculo
+## - Variables no tomadas en cuenta en el cálculo
 ##    - Distancia a asentamientos
 ##    - Biomasa
 ##    - Tiempo de intervención
@@ -72,7 +72,7 @@ EcoPotif1 <- file.path(dir_datos, "Eco_100Rc1.tif") %>% rast()
 
 
 # Vectores de infraestructura vial
-vias <- file.path(dir_Intermedios, "osm_IGAc_2018.shp") %>% st_read()
+vias <- file.path(dir_Intermedios, paste0("osm_IGAc_", Año, ".shp")) %>% st_read() 
 
 # Tablas de leyenda y combinaciones
 Leyenda_LU <- read.csv2(file.path(dir_datos, "Leyenda_LU.txt"))
@@ -90,7 +90,7 @@ AñosTI <-  0
 
 
 ## TNT ####
-# definicion transformado no transformado
+# definicion transformado no transformado De acuerdo a los nombres de Mapbiomas
 transformado <-  c(
   'Acuicultura',
   'Infraestructura urbana',
@@ -118,6 +118,13 @@ Ntransformado <- c(
   'Vegetación leñosa sobre arena'
 )
 
+
+# Necesita que se vuelvan a correr las proyecciones porque hubo un cambio antes? TRUE Si quiere volver a guardar los rasters a pesar que ya existan
+
+#rerun <-  TRUE
+rerun <-  FALSE
+
+
 #**********************************************************
 # Preparar datos ----------------------------
 #**********************************************************
@@ -133,7 +140,7 @@ Ntransformado <- c(
 raster_paths <- paste0(dir_Intermedios, "/LU_", Año,".tif")
 
 
-if (file.exists(raster_paths)) {
+if (file.exists(raster_paths)& rerun == FALSE) {
   LU <- rast (raster_paths)
 } else {
   # Si el raster no existe, rasterizar y guardar el resultado
@@ -259,12 +266,12 @@ writeRaster(
   overwrite=TRUE)
 
 
-
 ### Revisar resultado####
 
 plot(IHEH1002)
 #click(IHEH100)
-plot(IHEH1002, breaks = c(0, 15, 40, 60, 100),col=c("blue","yellow","red","red" ))
+plot(IHEH1002, breaks = c(0, 15, 40, 60, 100),col=c("blue","yellow","orange","red" ))
+plot(IHEH1002, breaks = c(0, 1,15,  60, 100),col=c("blue","yellow","orange","red" ))
 
 plot(Pd_he)
 plot(if_he)

@@ -70,7 +70,7 @@ scoord <- crs("EPSG:9377") # Sistema de coordenadas del raster base. Cambiar cua
 
 coincidencia_crs <- crs_igual(r_base, scoord)
 
-
+#coincidencia_crs <- FALSE
 #**********************************************************
 # Preparar datos ----------------------------
 #**********************************************************
@@ -146,7 +146,8 @@ if (!file.exists(archivo_tiempo_int)||
   
   # Cargar raster de tiempo de intervención, ajustar a resolución y guardar
   TI <- rast(file.path(dir_datos, "TiempoInt_20181.tif"))
-  TI <- resample(TI, r_base, method = "near")
+  #TI <- resample(TI, r_base, method = "near") # antiguo
+  TI <- project (TI, r_base, method = "near")
   writeRaster(TI, archivo_tiempo_int, datatype = "INT2U", overwrite = TRUE)
   
 } else {
@@ -155,7 +156,7 @@ if (!file.exists(archivo_tiempo_int)||
 }
 
 
-#**********************************************************
+ #**********************************************************
 # Preparar tabla de consulta 
 #**********************************************************
 

@@ -119,6 +119,12 @@ Ntransformado <- c(
   'Vegetación leñosa sobre arena'
 )
 
+
+# Necesita que se vuelvan a correr las proyecciones porque hubo un cambio antes? TRUE Si quiere volver a guardar los rasters a pesar que ya existan
+
+#rerun <-  TRUE
+rerun <-  FALSE
+
 #**********************************************************
 # Preparar datos ----------------------------
 #**********************************************************
@@ -135,7 +141,7 @@ Ntransformado <- c(
 raster_paths <- paste0(dir_Intermedios, "/LU_", Año,".tif")
 
 
-if (file.exists(raster_paths)) {
+if (file.exists(raster_paths) & rerun == FALSE) {
   LU <- rast (raster_paths)
 } else {
   # Si el raster no existe, rasterizar y guardar el resultado
@@ -144,7 +150,7 @@ if (file.exists(raster_paths)) {
     aggregate(fact = 10, fun = "modal")
   
   levels(LU) <- Leyenda_LU[, 2:3]
-  writeRaster(LU, raster_paths, datatype= "INT1U")
+  writeRaster(LU, raster_paths, datatype= "INT1U", overwrite=TRUE)
   
 }
 
@@ -164,7 +170,7 @@ names(TNT) <- "TNT"
 plot(TNT)
 
 # Guardar el resultado
-writeRaster(TNT, paste0(dir_Intermedios, "/TNT_", Año, ".tif"))
+writeRaster(TNT, paste0(dir_Intermedios, "/TNT_", Año, ".tif"), overwrite=TRUE)
 
 
 
@@ -357,6 +363,7 @@ writeRaster(IHEH100,
 plot(IHEH100)
 click(IHEH100)
 plot(IHEH100, breaks = c(0, 15, 40, 60, 100))
+plot(IHEH100, breaks = c(0, 1,15,  60, 100))
 
 plot(Ti_he)
 plot(Pd_he)

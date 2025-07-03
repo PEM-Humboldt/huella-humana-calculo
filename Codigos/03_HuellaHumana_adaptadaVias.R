@@ -20,9 +20,8 @@
 # Por hacer o corregir: 
 
 ## - Ver como paralelizar LU.
-# falta el de TI 2022 genérico
 # pesos en la vias de ciudades
-
+# revisar la reclasificacion
 
 
 
@@ -57,7 +56,7 @@ dir_Resultados <- file.path("Resultados")
 # Escriba el año de interes
 Año <- 2022
 
-# Escriba el año de los datos de población
+# Escriba el año de los datos de población que va a usar
 Año_pop <- 2020
 
 # Raster base de referencia
@@ -105,7 +104,7 @@ AñosTI <-  0
 
 
 ## TNT ####
-# definicion transformado no transformado
+# definicion transformado no transformado De acuerdo a los nombres de Mapbiomas
 transformado <-  c(
   'Acuicultura',
   'Infraestructura urbana',
@@ -133,6 +132,11 @@ Ntransformado <- c(
   'Vegetación leñosa sobre arena'
 )
 
+# Necesita que se vuelvan a correr las proyecciones porque hubo un cambio antes? TRUE Si quiere volver a guardar los rasters a pesar que ya existan
+
+#rerun <-  TRUE
+rerun <-  FALSE
+
 #**********************************************************
 # Preparar datos ----------------------------
 #**********************************************************
@@ -148,7 +152,7 @@ Ntransformado <- c(
 raster_paths <- paste0(dir_Intermedios, "/LU_", Año,".tif")
 
 
-if (file.exists(raster_paths)) {
+if (file.exists(raster_paths) & rerun == FALSE) {
   LU <- rast (raster_paths)
 } else {
   # Si el raster no existe, rasterizar y guardar el resultado
@@ -178,18 +182,6 @@ TNT <- classify(LU, m)
 names(TNT) <- "TNT"
 plot(TNT)
 
-# Desactivado porque no se va a usar 
-## Ti_he  ####
-# #**********************************************************
-# 
-# Ti_0
-# 
-# x0 <- 0  # Ajusta el desplazamiento si es necesario
-# k <- 0.02  # Ajusta la rapidez del crecimiento
-# 
-# Ti_he <-10 * (1 - exp(-k * (Ti_0 - x0))) # esta curva se estabiliza llegando a 300
-# 
-# Ti_he [Ti_he > 10] <- 10
 
 
 ## GTF_lu ####
@@ -307,7 +299,7 @@ writeRaster(
   overwrite=TRUE)
 
 
-
+IHEH1002 <- rast( paste0(dir_Resultados, "/IHEHc2_", Año, ".tif"))
 
 ### Revisar resultado####
 
@@ -323,3 +315,36 @@ plot(GTF)
 
 IHEH1002 <- rast(paste0(dir_Resultados, "/IHEHc2_", 2022, ".tif"))
 
+# Reclasificar a las categorías discretas
+# Definir los breaks y las etiquetas
+breaks <- c(0, 0, 4,10,22, 100)
+labels <- c("Natural", "Baja", "Media", "Alta", "Muy Alta")
+
+
+breaks/100*38
+
+# Reclasificar usando classify() + as.factor()
+# Primero, convertir a clases numéricas
+rc_matrix <- matrix(c(0, 0, 1,
+                      0, 15, 2,
+                      15, 60, 3,
+                      60,100, 4), 
+                    ncol = 3, byrow = TRUE)
+
+r_class <- classify(IHEH1002, rc_matrix)
+
+# Convertir a factor y asignar etiquetas
+levels(r_class) <- data.frame(ID = 1:4, clase = labels)
+
+# Resultado: raster categórico con etiquetas
+r_class <- project(r_class, "EPSG:4326")
+
+# Guardar resultado
+writeRaster(
+  r_class,
+  paste0(dir_Resultados, "/IHEHc2_cls", Año, ".tif"), 
+  overwrite=TRUE)
+
+
+r_class <- rast(paste0(dir_Resultados, "/IHEHc2_cls", Año, ".tif"))
+plot(r_class )
