@@ -161,7 +161,7 @@ if (file.exists(raster_paths) & rerun == FALSE) {
     aggregate(fact = 10, fun = "modal")
   
   levels(LU) <- Leyenda_LU[, 2:3]
-  writeRaster(LU, raster_paths, datatype= "INT1U")
+  writeRaster(LU, raster_paths, datatype= "INT1U", overwrite=TRUE)
   
 }
 
@@ -305,7 +305,8 @@ IHEH1002 <- rast( paste0(dir_Resultados, "/IHEHc2_", Año, ".tif"))
 
 plot(IHEH1002)
 #click(IHEH100)
-plot(IHEH1002, breaks = c(0, 15, 40, 60, 100),col=c("blue","yellow","red","red" ))
+plot(IHEH1002, breaks = c(0, 15, 40, 60, 100),col=c("blue","yellow","orange","red" ))
+plot(IHEH1002, breaks = c(0, 1,15,  30, 100),col=c("blue","yellow","orange","red" ))
 
 plot(Pd_he)
 plot(if_he)
