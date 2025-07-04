@@ -6,11 +6,3 @@ labels <- c("Natural", "Baja", "Media", "Alta", "Muy Alta")
 
 breaks/100*38
 
-library(sf)
-library(dplyr)
-ecos <- st_read("~/fplv/ecos_vereda.shp")
-
-a <- ecos %>% 
-  select(ecos_gener, cob)
-
-unique(a$ecos_gener)
