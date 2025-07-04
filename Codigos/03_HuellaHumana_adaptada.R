@@ -271,7 +271,8 @@ writeRaster(
 plot(IHEH1002)
 #click(IHEH100)
 plot(IHEH1002, breaks = c(0, 15, 40, 60, 100),col=c("blue","yellow","orange","red" ))
-plot(IHEH1002, breaks = c(0, 1,15,  30, 100),col=c("blue","yellow","orange","red" ))
+plot(IHEH1002, breaks = c(0,1, 15,60, 100),col=c("blue","yellow","orange","red" ))
+plot(IHEH1002, breaks = c(0, 1,15,  30, 100),col=c("blue","yellow","green","red" ))
 
 plot(Pd_he)
 plot(if_he)
