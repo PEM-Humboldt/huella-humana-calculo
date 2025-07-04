@@ -149,7 +149,7 @@ if (file.exists(raster_paths)& rerun == FALSE) {
     aggregate(fact = 10, fun = "modal")
   
   levels(LU) <- Leyenda_LU[, 2:3]
-  writeRaster(LU, raster_paths, datatype= "INT1U")
+  writeRaster(LU, raster_paths, datatype= "INT1U", overwrite=TRUE)
   
 }
 
