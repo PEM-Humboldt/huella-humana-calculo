@@ -1,0 +1,4 @@
+Descripción de los atributos: 
+-pss_cm_: Tienen los pesos asumiendo grupos generales como en Mapbiomas. Este es para comparación directa con mapbiomas
+-pss_dt_: Tienen los pesos Teniendo en cuenta la mayor resolución temática de Corinne. Ejemplo, Diferenciación entre cultivos transitorios y cultivos permanentes
+- mapb_ct: Tienen la clase correspondiente de Mapbiomas
