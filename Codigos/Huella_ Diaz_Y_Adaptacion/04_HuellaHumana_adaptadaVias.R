@@ -1,4 +1,4 @@
-# Título: IHEH cersion ecosistemas
+# Título: IHEH version ecosistemas
 #
 # Autor(es): Alejandra Narváez Vallejo
 #
@@ -232,7 +232,7 @@ names(vias_groups) <- c("v2", "v4", "v5", "v8")
 # Definir función de clasificación basada en distancia a vías
 # 'max' define el valor máximo de influencia directa
 clsDisVias <- function(x, max = 4) {
-  max * exp(-0.319 * (x / 1000 - 0.5))
+  max * exp(-0.3 * (x / 1000 - 0.5))
 }
 
 # Aplicar la función de clasificación a las vías de categorías 4, 5 y 8 (mayor impacto)
