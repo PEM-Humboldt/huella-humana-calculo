@@ -21,11 +21,30 @@ Una vez descargada y descomprimida la carpeta, reemplaze la carpeta “Datos” 
 El directorio del proyecto está organizado de la siguiente manera.
 
     Codigos
-    │-  00_InsumosGenerales.R
-    │-  01_Insumosxhuella.R
-    │-  02_HuellaHumana_Diaz.R
-    │-  03_HuellaHumana_adaptada.R
-    │-  04_Comparar entre versiones.R
+    │-Huella_Diaz_Y_Adaptacion
+    │    └-  00_InsumosGenerales.R
+    │    └- 01_Insumosxhuella.R
+    │    └- 02_HuellaHumana_Diaz.R
+    │    └- 03_HuellaHumana_adaptada.R
+    │    └- 04_HuellaHumana_adaptadaVias.R
+    │
+    │-Huella_IAVH2025_Mapbiomas
+    │    └- 00_InsumosGenerales.R
+    │    └- 01_Insumosxhuella.R
+    │    └- 02_Pesos_navegabilidad.R
+    │    └- 021_Pesos_ferreos.R
+    │    └- 03_HuellaHumana_adaptadaVias.R
+    │
+    │-Huella_IAVH2025_Corine
+    │    └- 00_InsumosGenerales.R
+    │    └- 01_Insumosxhuella.R
+    │    └- 021_Pesos_ferreos.R
+    │    └- 03_HuellaHumana_adaptadaVias.R
+    │-Miscelaneo
+    │    └- 000_Insumoscobertura_tablaLU.R
+    │    └- analisis_fuentesCoberturas.R
+    │    └- reclass_corine.R
+    │    └- VC_reclacificacionCori&Mapbiomas.R
     │    
     └-Datos
     │ │
@@ -49,8 +68,9 @@ Las fuentes de datos necesarios para la elaboración de la huella son:
 - [Datos de población](https://jeodpp.jrc.ec.europa.eu)
 
 ## Códigos
-En esta sección se guardan los códigos relacionados con  la construcción de la huella espacial humana: 
+En esta sección se guardan los códigos relacionados con  la construcción de la huella espacial humana y sus versiones: 
 
+### Huella_Diaz_Y_Adaptacion
 1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
 Además se preparan:
     - Capas constantes con los parametros generales como: Ecosistemas potenciales y Tiempo de Intervención.
