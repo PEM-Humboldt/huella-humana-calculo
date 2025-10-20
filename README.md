@@ -4,6 +4,7 @@ El Índice de Huella Espacial Humana (IHEH) permite representar espacialmente la
 Este repositorio tiene los paso y datos para hacer el cálculo de la huella espacial humana a nivel nacional. 
 - fALTA:
 - Regularidad
+- descripcion codigos, y correcion rutas
 - Recursos necesarios y tiempo de correr código
 - Referencias- Enlace a Huella Heon Network
 - release
@@ -21,11 +22,30 @@ Una vez descargada y descomprimida la carpeta, reemplaze la carpeta “Datos” 
 El directorio del proyecto está organizado de la siguiente manera.
 
     Codigos
-    │-  00_InsumosGenerales.R
-    │-  01_Insumosxhuella.R
-    │-  02_HuellaHumana_Diaz.R
-    │-  03_HuellaHumana_adaptada.R
-    │-  04_Comparar entre versiones.R
+    │-Huella_Diaz_Y_Adaptacion
+    │    └-  00_InsumosGenerales.R
+    │    └- 01_Insumosxhuella.R
+    │    └- 02_HuellaHumana_Diaz.R
+    │    └- 03_HuellaHumana_adaptada.R
+    │    └- 04_HuellaHumana_adaptadaVias.R
+    │
+    │-Huella_IAVH2025_Mapbiomas
+    │    └- 00_InsumosGenerales.R
+    │    └- 01_Insumosxhuella.R
+    │    └- 02_Pesos_navegabilidad.R
+    │    └- 021_Pesos_ferreos.R
+    │    └- 03_HuellaHumana_adaptadaVias.R
+    │
+    │-Huella_IAVH2025_Corine
+    │    └- 00_InsumosGenerales.R
+    │    └- 01_Insumosxhuella.R
+    │    └- 021_Pesos_ferreos.R
+    │    └- 03_HuellaHumana_adaptadaVias.R
+    │-Miscelaneo
+    │    └- 000_Insumoscobertura_tablaLU.R
+    │    └- analisis_fuentesCoberturas.R
+    │    └- reclass_corine.R
+    │    └- VC_reclacificacionCori&Mapbiomas.R
     │    
     └-Datos
     │ │
@@ -49,8 +69,9 @@ Las fuentes de datos necesarios para la elaboración de la huella son:
 - [Datos de población](https://jeodpp.jrc.ec.europa.eu)
 
 ## Códigos
-En esta sección se guardan los códigos relacionados con  la construcción de la huella espacial humana: 
+En esta sección se guardan los códigos relacionados con  la construcción de la huella espacial humana y sus versiones: 
 
+### Huella_Diaz_Y_Adaptacion
 1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
 Además se preparan:
     - Capas constantes con los parametros generales como: Ecosistemas potenciales y Tiempo de Intervención.
@@ -60,7 +81,7 @@ Además se preparan:
 4. 03_HuellaHumana_adaptada.R: En este código calcula la huella con el método de ecosistemas. Esta incluye los siguiientes cambios.
     - Variables continuas como continuas
     - Remoción de variables no esenciales para el cálculo.
-5. 03_HuellaHumana_adaptadaVias: En este código se calcula la huella con el método de ecosistemas. Esta incluye los siguientes cambios:  
+5. 04_HuellaHumana_adaptadaVias: En este código se calcula la huella con el método de ecosistemas. Esta incluye los siguientes cambios:  
     - Variables continuas como continuas  
     - Remoción de variables no esenciales para el cálculo  
     - Diferenciación de vías:  
@@ -69,11 +90,45 @@ Además se preparan:
         - Infraestructura peatonal y no clasificada  
         - Senderos naturales
 
-
-      
-5. 04_Comparar entre versiones: Código incompleto para comparar entre versiones
-
-
+### Huella_IAVH2025_Mapbiomas .... en construcción!!!!!!!!!!!
+1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
+Además se preparan:
+    - Capas constantes con los parametros generales como: Ecosistemas potenciales y Tiempo de Intervención.
+    - Tabla de consulta para la definición de las clases de biomasa y uso de tierra
+2. 01_Insumosxhuella.R: Se preparan los insumos necesarios para correr el IHEH y se almacenan en la carpeta de resultados intermedios, Res_Intermedios
+3. 02_Pesos_navegabilidad.R:
+4. 021_Pesos_ferreos.R: 
+5. 04_HuellaHumana_adaptadaVias: En este código se calcula la huella con el método de ecosistemas. Esta incluye los siguientes cambios:  
+    - Variables continuas como continuas  
+    - Remoción de variables no esenciales para el cálculo  
+    - Diferenciación de vías:  
+        - Vías vehiculares principales y secundarias  
+        - Vías terciarias y rurales  
+        - Infraestructura peatonal y no clasificada  
+        - Senderos naturales
+### Huella_IAVH2025_Corine.
+1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
+Además se preparan:
+    - Capas constantes con los parametros generales como: Ecosistemas potenciales y Tiempo de Intervención.
+    - Tabla de consulta para la definición de las clases de biomasa y uso de tierra
+2. 01_Insumosxhuella.R: Se preparan los insumos necesarios para correr el IHEH y se almacenan en la carpeta de resultados intermedios, Res_Intermedios
+4. 021_Pesos_ferreos.R: 
+5. 04_HuellaHumana_adaptadaVias: En este código se calcula la huella con el método de ecosistemas. Esta incluye los siguientes cambios:  
+    - Variables continuas como continuas  
+    - Remoción de variables no esenciales para el cálculo  
+    - Diferenciación de vías:  
+        - Vías vehiculares principales y secundarias  
+        - Vías terciarias y rurales  
+        - Infraestructura peatonal y no clasificada  
+        - Senderos naturales
+4. prueba_categorías.R:
+ 
+### Miscelaneo
+1. 000_Insumoscobertura_tablaLU
+2. analisis_fuentesCoberturas
+3. reclass_corine100
+4. VC_reclasificaionCori&Mapbiomas
+   
 ## Versiones de los paquetes usados
 
 En el momento de la elaboración de los códigos las version de R y de los paquetes necesarios para los códigos fue. 
