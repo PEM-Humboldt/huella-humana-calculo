@@ -41,7 +41,7 @@ library(raster)
 # Definir directorio(s) de trabajo -----------------------
 #**********************************************************
 
-setwd(file.path(this.path::this.path(), "..", ".."))
+setwd(file.path(this.path::this.path(), "..", "..",".."))
 
 dir_datos <- file.path("datos")
 dir_Intermedios<- file.path ("Res_Intermedios")
