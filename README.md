@@ -17,7 +17,7 @@ Idealmente el cálculo de la huella humana está planteado bienal.
 ## Organizar directorio de trabajo
 
 Los datos para correr los códigos están almacenados
-[aquí](https://drive.google.com/file/d/1YQjFb3u8uJ7UmWHlNncM_UXtJ_gJcOmz/view?usp=drive_link).
+[aquí](https://drive.google.com/file/d/1PUlXwC8_2_-43vScYRxiwmlgcgHVqB0F/view?usp=drive_link).
 Una vez descargada y descomprimida la carpeta, reemplaze la carpeta “Datos” en el directorio Datos del proyecto.
 El directorio del proyecto está organizado de la siguiente manera.
 
@@ -64,7 +64,7 @@ Las fuentes de datos necesarios para la elaboración de la huella son:
 - [Leyenda Mapbiomas](https://colombia.mapbiomas.org/wp-content/uploads/sites/3/2024/11/Codigo-de-la-Leyenda-coleccion-2-1.pdf)
 - [Cobertura de la Tierra Mapbiomas](https://colombia.mapbiomas.org/wp-content/uploads/sites/3/2024/11/Codigo-de-la-Leyenda-coleccion-2-1.pdf) del año requerido
 - [Cobertura de la tierra 100K (Corine)](https://experience.arcgis.com/experience/568ddab184334f6b81a04d2fe9aac262/page/Datos-Abiertos-Geogr%C3%A1ficos-/) del año requerido
-- Tiempo de intervención 2018 Buscarlos en la carpeta de datos [aquí](https://drive.google.com/file/d/1YQjFb3u8uJ7UmWHlNncM_UXtJ_gJcOmz/view?usp=drive_link)
+- Tiempo de intervención 2018 Buscarlos en la carpeta de datos [aquí](https://drive.google.com/file/d/1PUlXwC8_2_-43vScYRxiwmlgcgHVqB0F/view?usp=drive_link)
 - [Vías de open Street Maps](https://download.geofabrik.de/south-america/). Descargar el archivo correspondiente al primero de enero del año siguiente al año de interés.
 - [Red Vial del Igac](https://www.colombiaenmapas.gov.co/?e=-84.08030383789075,-1.38663143198846,-64.41477649414598,11.402208518426857,4686&b=igac&u=0&t=39&servicio=1468)
 - [Datos de población](https://jeodpp.jrc.ec.europa.eu)
