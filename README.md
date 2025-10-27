@@ -1,4 +1,4 @@
-.Cálculo Huella espacial humana
+Cálculo Huella espacial humana
 ================
 El Índice de Huella Espacial Humana (IHEH) permite representar espacialmente la intensidad del impacto acumulado de las actividades humanas sobre los ecosistemas terrestres. A medida que el valor del IHEH aumenta, se indica un mayor nivel de presión o transformación ejercida por el ser humano sobre estos ecosistemas. En este sentido, valores bajos reflejan una menor intervención, mientras que los valores altos señalan áreas con una fuerte influencia antrópica.
 Este repositorio tiene los paso y datos para hacer el cálculo de la huella espacial humana a nivel nacional. 
