@@ -6,10 +6,8 @@
 ## - Variables continuas como no continuas
 ##    - Distancia a vias según Venter et al 2016. Inclusión de vía secundarias terciarias y caminos. Inclusión de vías férreas
 ##    - Población según Venter et al 2016
-##    - Densidad de áreas naturales, presion humana disminuye exponencialmente con los mayores valores del índice
-##    - uso de la tierra
-
-## - Indice de fragmentación se calculó filtando el raster con un filtro  circular de 1000 metros de diametro y usando al función suma. Esta parte está identica a la versión Diáz de la Huella, pero diferente al modelo construido en ArcMap. 
+##    - Densidad de áreas naturales,los pesos relacionados con la presion humana disminuye exponencialmente con los mayores valores del índice
+##    - Uso de la tierra: Según Correa et al. (2020) y Etter et al. (2011), 
 
 
 # Por hacer o corregir: 

@@ -56,7 +56,7 @@ crs_igual <- function(r, crs_ref) {
 resolucion <-  100   # Resolución objetivo para el análisis
 scoord <- crs("EPSG:9377") # Sistema de coordenadas del raster base. Cambiar cuando se defina la proyección
 
-# Verificar si el sistema de coordenadas a usar coincide con el guardado
+# Verificar si el sistema de coordenadas a usar coincide con el guardado, se puede definir coincidencia_crs a FALSE en caso que a pesar de la existencia del raster base se quiera reescribir
 coincidencia_crs <- crs_igual(r_base, scoord)
 
 #coincidencia_crs <- FALSE
