@@ -34,7 +34,7 @@ library(tidyr)
 # Definir directorio(s) de trabajo -----------------------
 #**********************************************************
 # Se define el directorio de trabajo relativo a la ubicación del script
-setwd(file.path(this.path::this.path(), "..", ".."))
+setwd(file.path(this.path::this.path(), "..", "..",".."))
 
 # Directorios para datos, resultados intermedios y finales
 dir_datos <- file.path("Datos")
