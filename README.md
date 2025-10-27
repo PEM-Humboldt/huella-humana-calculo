@@ -6,7 +6,6 @@ Para el territorio nacional corriendo todos los pasos el tiempo de ejecución de
 Idealmente el cálculo de la huella humana está planteado bienal.
 
 - fALTA:
-- Revisión de carpeta de datos
 - Referencias- Enlace a Huella Heon Network
 - release
 - doi
