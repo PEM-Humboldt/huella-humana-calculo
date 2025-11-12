@@ -7,7 +7,6 @@ Idealmente el cálculo de la huella humana está planteado bienal.
 
 - fALTA:
 - Referencias- Enlace a Huella Heon Network
-- release
 - doi
 
 
