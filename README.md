@@ -65,13 +65,14 @@ Las fuentes de datos necesarios para la elaboración de la huella son:
 - [Datos de población](https://jeodpp.jrc.ec.europa.eu)
 
 ## Códigos
-En esta sección se guardan los códigos relacionados con  la construcción de la huella espacial humana. En la carpeta de códigos hay cuatro subcarpetas, 3 de ellas tienen 3 versiones diferentes de la huella: Huella_Diaz_Y_Adaptacion: Son códigos relacionados con La huella Que julián Díaz entregó En el worldflow de Ark MAP. Esta carpeta también tiene códigoos que la adaptan la huella del método de "Diaz" usando diferentes tipos de vías, variables continuas y remoción de variables. 
+En esta sección se guardan los códigos relacionados con  la construcción de la huella espacial humana. En la carpeta de códigos hay cuatro subcarpetas, 3 de ellas tienen 3 versiones diferentes de la huella: Huella_Diaz_Y_Adaptacion: Son códigos relacionados con La huella que julián Díaz entregó en el workflow de ArcmAP. Esta carpeta también tiene códigos que la adaptan la huella del método de "Diaz" usando diferentes tipos de vías, variables continuas y remoción de variables. 
 Huella_IAVH2025_Corine: Es la nueva propuesta del índice de huella humana que se cargan biotablero. La capa de coberturas es la de Corine. 
 Huella_IAVH2025_Mapbiomas: Va a manejar los mismos principios "Huella_IAVH2025_Corine", pero la capa de coberturas será mapbiomas.
 
-La última carpeta se llama misceláneo y tiene códigos útiles para explorar datos pero no está organizada aun.
-
+El flujo de trabajo general de las huellas es el siguiente:
 <img width="1023" height="1066" alt="huella flujo" src="https://github.com/user-attachments/assets/f9637160-f850-47ac-832f-689fcc21360b" />
+
+La última carpeta se llama misceláneo y tiene códigos útiles para explorar datos pero no está organizada aun.
 
 
 ### Huella_Diaz_Y_Adaptacion
