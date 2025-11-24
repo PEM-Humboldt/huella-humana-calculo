@@ -9,9 +9,6 @@ Idealmente el cálculo de la huella humana está planteado bienal.
 - Referencias- Enlace a Huella Heon Network
 - doi
 
-
-
-
 ## Organizar directorio de trabajo
 
 Los datos para correr los códigos están almacenados
@@ -74,6 +71,7 @@ Huella_IAVH2025_Mapbiomas: Va a manejar los mismos principios "Huella_IAVH2025_C
 
 La última carpeta se llama misceláneo y tiene códigos útiles para explorar datos pero no está organizada aun.
 
+<img width="1023" height="1066" alt="huella flujo" src="https://github.com/user-attachments/assets/f9637160-f850-47ac-832f-689fcc21360b" />
 
 
 ### Huella_Diaz_Y_Adaptacion
