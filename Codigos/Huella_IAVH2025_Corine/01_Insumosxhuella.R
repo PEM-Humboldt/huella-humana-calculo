@@ -46,23 +46,7 @@ dir_datos<- file.path("Datos")
 dir_Intermedios<- file.path ("Res_Intermedios")
 dir_Resultados<- file.path ("Resultados")
 
-#**********************************************************
-# Cargar los datos necesarios ----------------------------
-#**********************************************************
-# Aqui debe Modificar el nombre de los insumos Para el año que quiera correr 
 
-# Capas Vector
-
-#osm0<-st_read(file.path(dir_datos,"vias", "colombia-190101-free.shp","gis_osm_roads_free_1.shp"))#2018
-#osm0<-st_read(file.path(dir_datos,"vias", "colombia-210101-free.shp","210101.shp"))#2020
-osm0<-st_read(file.path(dir_datos,"vias", "colombia-230101-free.shp","gis_osm_roads_free_1.shp"))#2022
-
-#vias_IGAC0 <- st_read(file.path(dir_datos,"vias","ViasJulian2018","vias.shp"))# 2018
-vias_IGAC0 <- st_read(file.path(dir_datos,"vias","IGAC_viasD2024","Vias_IGAC.shp"))# 2022 y 2020
-
-# Capas Raster
-r_base<-rast(file.path(dir_datos,"r_base.tif" ))
-#r_base10<-rast(file.path(dir_datos,"r_base10.tif" ))
 
 
 
@@ -73,6 +57,7 @@ r_base<-rast(file.path(dir_datos,"r_base.tif" ))
 ## Definir Período al calcular y actualidad los datos a usar
 Año <- 2018 # definir el año que se quiere calcular
 año_pop <- 2020 # escribir el año de los datos de población a usar- 
+
 
 resolucion <-  100   # Resolución objetivo para el análisis
 scoord <- crs("EPSG:9377") # Sistema de coordenadas del raster base. Cambiar cuando se defina la proyección
@@ -94,6 +79,23 @@ osm_class4 <- c( "pedestrian","footway","steps","unknown","unclassified")
 # Pesos - 2/2. Senderos naturales
 osm_class2 <- c("path")
 
+#**********************************************************
+# Cargar los datos necesarios ----------------------------
+#**********************************************************
+# Aqui debe Modificar el nombre de los insumos Para el año que quiera correr 
+
+# Capas Vector
+
+#osm0<-st_read(file.path(dir_datos,"vias", "colombia-190101-free.shp","gis_osm_roads_free_1.shp"))#2018
+#osm0<-st_read(file.path(dir_datos,"vias", "colombia-210101-free.shp","210101.shp"))#2020
+osm0<-st_read(file.path(dir_datos,"vias", "colombia-230101-free.shp","gis_osm_roads_free_1.shp"))#2022
+
+#vias_IGAC0 <- st_read(file.path(dir_datos,"vias","ViasJulian2018","vias.shp"))# 2018
+vias_IGAC0 <- st_read(file.path(dir_datos,"vias","IGAC_viasD2024","Vias_IGAC.shp"))# 2022 y 2020
+
+# Capas Raster
+r_base<-rast(file.path(dir_datos,"r_base.tif" ))
+#r_base10<-rast(file.path(dir_datos,"r_base10.tif" ))
 
 #**********************************************************
 # Preparar datos ----------------------------
