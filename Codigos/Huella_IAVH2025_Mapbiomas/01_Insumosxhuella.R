@@ -24,6 +24,8 @@
 
 ## - Si es menor al 2018, aun se debe ver que hacer en vias
 ## - Mapiomas se puede descargar directamente en Código
+# Coincide en todo menos en lu_tnt con corine, crear el if exist en todas las secciones, desde el comienzo del proceso o ver como llamar source o separar
+
 
 #**********************************************************
 # librerías o dependencias --------------------------------

@@ -20,6 +20,9 @@
 # Por hacer o corregir: 
 
 # En principio es igual que Corinne Por eso no corregiré el código acá
+# es el mismo que Corine, llamar source, 
+# recordar que en la carpeta no hay ferreo debe ser integrado 
+
 
 
 
