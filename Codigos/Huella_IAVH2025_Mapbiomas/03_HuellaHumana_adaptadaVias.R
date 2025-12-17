@@ -19,9 +19,7 @@
 
 # Por hacer o corregir: 
 
-## - Ver como paralelizar LU.
-# pesos en la vias de ciudades
-# revisar la reclasificacion
+# En principio es igual que Corinne Por eso no corregiré el código acá
 
 
 

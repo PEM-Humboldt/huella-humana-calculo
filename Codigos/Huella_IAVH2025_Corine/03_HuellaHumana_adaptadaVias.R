@@ -211,7 +211,7 @@ plot(dr_he)
 plot(Lu_he)
 plot(IHEH1002)
 
-# Guardar resultado
+## Guardar resultado crs:9377####
 writeRaster(
   IHEH1002,
   paste0(dir_Resultados, "/IHEH_IAVH1", Año, ".tif"), 
@@ -268,5 +268,39 @@ writeRaster(
 Sys.time()
 
 
+## Guardar resultado crs:9377####
+Año <- 2018
 
+IHEH1002 <- rast(
+    paste0(dir_Resultados, "/IHEH_IAVH1", Año, ".tif"))
+
+# # creacion del raster base (Solo es necesario correrlo una vez)
+# IHEH1002_wgs <- project(IHEH1002,"EPSG:4326")
+# r_base_wgs <- IHEH1002_wgs
+# values( r_base_wgs) <- 0
+# writeRaster(
+#   r_base_wgs,
+#   paste0(dir_datos, "/rbaseWgs.tif"), 
+#   overwrite=TRUE)
+
+
+IHEH1002_wgs <- project(IHEH1002,r_base_wgs)
+
+r_class_wgs <- classify(IHEH1002_wgs, rc_matrix)
+
+plot(r_class_wgs)
+# Convertir a factor y asignar etiquetas
+levels(r_class_wgs) <- data.frame(ID = 1:5, clase = labels)
+
+plot(r_class_wgs)
+# Guardar resultado
+
+writeRaster(
+  IHEH1002_wgs,
+  paste0(dir_Resultados, "/IHEH_IAVH_-wgs", Año, ".tif"), 
+  overwrite=TRUE)
+writeRaster(
+  r_class_wgs,
+  paste0(dir_Resultados, "/IHEH_IAVH_class_wgs", Año, ".tif"), 
+  overwrite=TRUE)
 

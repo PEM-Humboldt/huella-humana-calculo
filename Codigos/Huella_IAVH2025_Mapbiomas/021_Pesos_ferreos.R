@@ -22,7 +22,10 @@
 # El resultado es un conjunto de rasters que representan la presión de las vías férreas,
 # que luego se integrarán con otros factores (población, carreteras, ríos, etc.)
 # para el cálculo total del IHEH.
-#
+
+
+# Igual que Corin y no se corregirá el Código acá
+
 #**********************************************************
 
 #**********************************************************
