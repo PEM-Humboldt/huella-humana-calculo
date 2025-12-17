@@ -23,7 +23,7 @@
 # Por hacer o  corregir: 
 
 ## - Si es menor al 2018, aun se debe ver que hacer en vias
-## - Mapioma se puede descargar directamente en Código
+## - Mapiomas se puede descargar directamente en Código
 
 #**********************************************************
 # librerías o dependencias --------------------------------
@@ -252,7 +252,7 @@ destfile <- sprintf("mapbiomas_colombia_collection3_%d.tif", Año)
 ruta_salida <- file.path(dir_datos, "Mapbiomas", destfile)
 
 # Crear carpeta si no existe
-dir.create(file.path(dir_datos, "Mapbiomas"), showWarnings = FALSE, recursive = TRUE)
+dir.create(file.path(dir_datos, "Mapbiomas"), showWarnings = TRUE, recursive = TRUE)
 
 # Descargar solo si el archivo no existe
 if (!file.exists(ruta_salida)) {
@@ -309,13 +309,13 @@ reclass_mat <- matrix(c(
   82, 0,# natural
   23, 0,# natural
   68, 0,# natural
-  35, 4,# agro
-  21, 3,# agro
-  74, 4,# agro
+  35, 4,# agro palma
+  21, 3,# agro y pasture
+  74, 4,# agro banano
   25, 1,# No vegetal, # desnudo quema o degrdado
   75, 4.5,# Parque solar
   9,  2,# plantacion forestal
-  31, 2,# acuicultura # peso 2 pero en prueba 3 para diferenciar
+  31, 2,# acuicultura 
   24, 5,# Infraestructura
   30, 5 # Minería
 ), ncol = 2, byrow = TRUE)
