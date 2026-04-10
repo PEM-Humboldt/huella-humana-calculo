@@ -157,7 +157,7 @@ El flujo de trabajo general de las huellas es el siguiente:
     └- vias_ferreas.R
     └- Descarga_y_mergePop.R
     └- osm_cat_vector.R
-    └- Navegabilidad.R
+    └- Navegabilidad.R (es un factor opcional, no esta integrado en el calculo final por ahora)
     └- creación LU0_y_TNT_corine.R
     └- creación LU0_y_TNT_mp.R
 
@@ -186,7 +186,7 @@ Además se preparan:
         - Vías terciarias y rurales  
         - Infraestructura peatonal y no clasificada  
         - Senderos naturales
-        - 
+          
 🔹 Miscelaneo (Descripción parcial)
     
 - prueba_categorías.R: Este código permite analizar cómo están distribuidos los valores de los diferentes factores de la huella en las categorías discretas de la misma.
