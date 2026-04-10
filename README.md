@@ -62,7 +62,7 @@ El directorio del proyecto está organizado de la siguiente manera.
     │        └- 00_InsumosGenerales.R
     │        └- 01_Insumosxhuella.R
     │        └- 021_Pesos_ferreos.R
-    │        └- 03_HuellaHumana_adaptadaVias.R
+    │        └- 03_HuellaHumana_adaptadaVias.R.
     │    
     └-Datos
     │ │
@@ -146,10 +146,10 @@ El flujo de trabajo general de las huellas es el siguiente:
 
 🔹 Scripts principales (nivel raíz de Codigos)
 
-00_InsumosGenerales.R: Creacion Definición de Raster Con las dimensiones resolución y sistema de referencia
-01_Insumosxhuella_automatizado.R: Para procesamiento de los datos Que van a Describir las presiones Antrópicas
-02_IHEH_calculo.R: Asignacion de pesos e integración De las presiones en el IHEH.
-03_DatosGeonetwork.R: Preparacion de datos en formato compatible con GeoNetwork.
+- 00_InsumosGenerales.R: Creación y definición del raster base (extensión, resolución y sistema de referencia espacial).
+- 01_Insumosxhuella_automatizado.R: Procesamiento de los datos que describen las presiones antrópicas.
+- 02_IHEH_calculo.R: Asignación de pesos e integración de las presiones para el cálculo del IHEH.
+- 03_DatosGeonetwork.R: Preparacion de datos en formato compatible con GeoNetwork.
 
 🔹 pipelines
  Las rutinas usadas en 01_Insumosxhuella_automatizado.R son: 
@@ -189,8 +189,10 @@ Además se preparan:
         - 
 🔹 Miscelaneo (Descripción parcial)
     
-    - prueba_categorías.R: Este código permite analizar cómo están distribuidos los valores de los diferentes factores de la huella en las categorías discretas de la misma
-    -Huella_IAVH2025_Mapbiomas
+    - prueba_categorías.R: Este código permite analizar cómo están distribuidos los valores de los diferentes factores de la huella en las categorías discretas de la misma.
+      
+    - Huella_IAVH2025_Mapbiomas
+      
 1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
 Además se preparan:
     - Capas constantes con los parametros generales como: Ecosistemas potenciales y Tiempo de Intervención.
