@@ -191,7 +191,7 @@ Además se preparan:
     
 - prueba_categorías.R: Este código permite analizar cómo están distribuidos los valores de los diferentes factores de la huella en las categorías discretas de la misma.
       
-    - Huella_IAVH2025_Mapbiomas
+- Huella_IAVH2025_Mapbiomas
       
 1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
 Además se preparan:
