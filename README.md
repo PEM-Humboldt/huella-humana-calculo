@@ -189,7 +189,7 @@ Además se preparan:
         - 
 🔹 Miscelaneo (Descripción parcial)
     
-    - prueba_categorías.R: Este código permite analizar cómo están distribuidos los valores de los diferentes factores de la huella en las categorías discretas de la misma.
+- prueba_categorías.R: Este código permite analizar cómo están distribuidos los valores de los diferentes factores de la huella en las categorías discretas de la misma.
       
     - Huella_IAVH2025_Mapbiomas
       
