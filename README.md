@@ -152,6 +152,7 @@ El flujo de trabajo general de las huellas es el siguiente:
 
 🔹 pipelines
  Las rutinas usadas en 01_Insumosxhuella_automatizado.R son: 
+ 
     └- vias_ferreas.R
     └- Descarga_y_mergePop.R
     └- osm_cat_vector.R
@@ -184,8 +185,11 @@ Además se preparan:
         - Vías terciarias y rurales  
         - Infraestructura peatonal y no clasificada  
         - Senderos naturales
-🔹 Miscelaneo
-##### Huella_IAVH2025_Mapbiomas
+        - 
+🔹 Miscelaneo (Descripción parcial)
+    
+    - prueba_categorías.R: Este código permite analizar cómo están distribuidos los valores de los diferentes factores de la huella en las categorías discretas de la misma
+    -Huella_IAVH2025_Mapbiomas
 1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
 Además se preparan:
     - Capas constantes con los parametros generales como: Ecosistemas potenciales y Tiempo de Intervención.
@@ -201,7 +205,7 @@ Además se preparan:
         - Vías terciarias y rurales  
         - Infraestructura peatonal y no clasificada  
         - Senderos naturales
-### Huella_IAVH2025_Corine.
+    - Huella_IAVH2025_Corine.
 1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
 Además se preparan:
     - Capas bases constantes con los parametros generales 
