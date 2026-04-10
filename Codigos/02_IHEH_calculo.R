@@ -14,6 +14,8 @@
 # ya que la fuente (GHS-POP R2023A - GHS population grid  multitemporal (1975–2030) (European Commission, 
 # Joint Research Centre - JRC) genera datos con periodicidad de 5 años, y debe seleccionarse el año disponible más cercano al año de interés. 
 
+# Detalles del cálculo: https://docs.google.com/document/d/1dvCtK18dAY-XiAYrFJlUD44stQDIA1E3/edit
+
 
 #**********************************************************
 # librerías o dependencias --------------------------------
