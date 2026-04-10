@@ -198,37 +198,38 @@ Además se preparan:
         - Capas constantes con los parametros generales como: Ecosistemas potenciales y Tiempo de Intervención.
         - Tabla de consulta para la definición de las clases de biomasa y uso de tierra
     2. 01_Insumosxhuella.R: Se preparan los insumos necesarios para correr el IHEH y se almacenan en la carpeta de resultados intermedios, Res_Intermedios
-3. 02_Pesos_navegabilidad.R: calcula las presiones antrópicas potenciales asociadas a la navegabilidad de ríos
-4. 021_Pesos_ferreos.R:  Calcula las presiones antrópicas potenciales asociadas a las vías férreas.
-5. 04_HuellaHumana_adaptadaVias: En este código se calcula la huella con el método de ecosistemas. Esta incluye los siguientes cambios:  
-    - Variables continuas como continuas  
-    - Remoción de variables no esenciales para el cálculo  
-    - Diferenciación de vías:  
-        - Vías vehiculares principales y secundarias  
-        - Vías terciarias y rurales  
-        - Infraestructura peatonal y no clasificada  
-        - Senderos naturales
-    - Huella_IAVH2025_Corine.
-1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
+    3. 02_Pesos_navegabilidad.R: calcula las presiones antrópicas potenciales asociadas a la navegabilidad de ríos
+    4. 021_Pesos_ferreos.R:  Calcula las presiones antrópicas potenciales asociadas a las vías férreas.
+    5. 04_HuellaHumana_adaptadaVias: En este código se calcula la huella con el método de ecosistemas. Esta incluye los siguientes cambios:  
+        - Variables continuas como continuas  
+        - Remoción de variables no esenciales para el cálculo  
+        - Diferenciación de vías:  
+            - Vías vehiculares principales y secundarias  
+            - Vías terciarias y rurales  
+            - Infraestructura peatonal y no clasificada  
+            - Senderos naturales
+              
+- Huella_IAVH2025_Corine.
+  
+    1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
 Además se preparan:
-    - Capas bases constantes con los parametros generales 
-2. 01_Insumosxhuella.R: Se preparan los insumos necesarios para correr el IHEH y se almacenan en la carpeta de resultados intermedios, Res_Intermedios.
-    - División de tipos de vías en formato vector
-    - Descarga de datos poblacionales creación de mosaico y cálculo de densidad
-    - Creación de raster de pesos de cobertura de la tierra
-    - Creación de raster transformado -no transformado
-4. 021_Pesos_ferreos.R:  Calcula las presiones antrópicas potenciales asociadas a las vías férreas.
-5. 04_HuellaHumana_adaptadaVias: En este código se calcula la huella con el método de ecosistemas. Esta incluye los siguientes cambios:  
-    - Variables continuas como continuas  
-    - Remoción de variables no esenciales para el cálculo  
-    - Inclusión de infraestructura férrea
-    - Diferenciación de vías:  
-        - Vías vehiculares principales y secundarias  
-        - Vías terciarias y rurales  
-        - Infraestructura peatonal y no clasificada  
-        - Senderos naturales
+        - Capas bases constantes con los parametros generales 
+    2. 01_Insumosxhuella.R: Se preparan los insumos necesarios para correr el IHEH y se almacenan en la carpeta de resultados intermedios, Res_Intermedios.
+        - División de tipos de vías en formato vector
+        - Descarga de datos poblacionales creación de mosaico y cálculo de densidad
+        - Creación de raster de pesos de cobertura de la tierra
+        - Creación de raster transformado -no transformado
+    4. 021_Pesos_ferreos.R:  Calcula las presiones antrópicas potenciales asociadas a las vías férreas.
+    5. 04_HuellaHumana_adaptadaVias: En este código se calcula la huella con el método de ecosistemas. Esta incluye los siguientes cambios:  
+        - Variables continuas como continuas  
+        - Remoción de variables no esenciales para el cálculo  
+        - Inclusión de infraestructura férrea
+        - Diferenciación de vías:  
+            - Vías vehiculares principales y secundarias  
+            - Vías terciarias y rurales  
+            - Infraestructura peatonal y no clasificada  
+            - Senderos naturales
            
-4. prueba_categorías.R: Este código permite analizar cómo están distribuidos los valores de los diferentes factores de la huella en las categorías discretas de la misma
 
 ## Versiones de los paquetes usados
 
