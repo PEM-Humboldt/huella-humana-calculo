@@ -90,26 +90,6 @@ Las fuentes de datos necesarios para la elaboración de la huella son:
 
 En esta sección se almacenan los scripts relacionados con la construcción de la Huella Espacial Humana (IHEH). La estructura está organizada en diferentes subcarpetas según su función dentro del flujo de trabajo.
 
-🔹 Huella_Diaz_Y_Adaptacion
-
-Contiene los códigos base de la metodología original de huella humana desarrollada por Julián Díaz, tal como fue implementada en el workflow de ArcMap.
-
-Adicionalmente, incluye versiones adaptadas del método, en las cuales se incorporan:
-
-Diferentes tipos de vías
-Variables continuas
-Ajustes metodológicos (inclusión/remoción de variables)
-
-🔹 pipelines
-
-Incluye las rutinas para el preprocesamiento y procesamiento de los insumos necesarios para el cálculo de la huella humana.
-
-Estos scripts organizan el flujo de trabajo de manera modular, facilitando la reutilización de procesos comunes como:
-
-Preparación de insumos base
-Cálculo de pesos (ej. red vial, red ferroviaria)
-Integración de variables espaciales
-
 🔹 Scripts principales (nivel raíz de Codigos)
 
 En la carpeta principal se encuentran cuatro scripts clave:
@@ -122,6 +102,26 @@ En la carpeta principal se encuentran cuatro scripts clave:
 Los tres primeros scripts (00 a 02) se utilizan para la construcción del IHEH, integrando diferentes rutinas provenientes de la carpeta pipelines.
 
 El script 03_DatosGeonetwork.R organiza y ajusta los resultados finales para su publicación en formato compatible con GeoNetwork.
+
+🔹 pipelines
+
+Incluye las rutinas para el preprocesamiento y procesamiento de los insumos necesarios para el cálculo de la huella humana.
+
+Estos scripts organizan el flujo de trabajo de manera modular, facilitando la reutilización de procesos comunes como:
+
+Preparación de insumos base
+Cálculo de pesos (ej. red vial, red ferroviaria)
+Integración de variables espaciales
+
+🔹 Huella_Diaz_Y_Adaptacion
+
+Contiene los códigos base de la metodología original de huella humana desarrollada por Julián Díaz, tal como fue implementada en el workflow de ArcMap.
+
+Adicionalmente, incluye versiones adaptadas del método, en las cuales se incorporan:
+
+Diferentes tipos de vías
+Variables continuas
+Ajustes metodológicos (inclusión/remoción de variables)
 
 🔹 Miscelaneo
 
@@ -139,11 +139,34 @@ Muchas rutinas que antes estaban duplicadas fueron reorganizadas en pipelines y 
 Las versiones antiguas se mantienen como referencia y control de calidad.
 
 
-
 El flujo de trabajo general de las huellas es el siguiente:
 <img width="1023" height="1066" alt="huella flujo" src="https://github.com/user-attachments/assets/f9637160-f850-47ac-832f-689fcc21360b" />
 
-### Huella_Diaz_Y_Adaptacion
+### Breve descripción de los códigos
+🔹 Scripts principales (nivel raíz de Codigos)
+
+00_InsumosGenerales.R: Creacion Definición de Raster Con las dimensiones resolución y sistema de referencia
+01_Insumosxhuella_automatizado.R: Para procesamiento de los datos Que van a Describir las presiones Antrópicas
+02_IHEH_calculo.R: Asignacion de pesos e integración De las presiones en el IHEH.
+03_DatosGeonetwork.R: Preparacion de datos en formato compatible con GeoNetwork.
+
+🔹 pipelines
+ Las rutinas usadas en 01_Insumosxhuella_automatizado.R son: 
+    └- vias_ferreas.R
+    └- Descarga_y_mergePop.R
+    └- osm_cat_vector.R
+    └- Navegabilidad.R
+    └- creación LU0_y_TNT_corine.R
+    └- creación LU0_y_TNT_mp.R
+
+Las rutinas usadas en 02_IHEH_calculo.R son: 
+        
+    └- dr_he.R
+    └- if_he.R
+    └- lu_he.R
+    └- pd_he.R
+
+🔹 Huella_Diaz_Y_Adaptacion
 1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
 Además se preparan:
     - Capas constantes con los parametros generales como: Ecosistemas potenciales y Tiempo de Intervención.
@@ -161,8 +184,8 @@ Además se preparan:
         - Vías terciarias y rurales  
         - Infraestructura peatonal y no clasificada  
         - Senderos naturales
-
-### Huella_IAVH2025_Mapbiomas
+🔹 Miscelaneo
+##### Huella_IAVH2025_Mapbiomas
 1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
 Además se preparan:
     - Capas constantes con los parametros generales como: Ecosistemas potenciales y Tiempo de Intervención.
@@ -199,13 +222,7 @@ Además se preparan:
         - Senderos naturales
            
 4. prueba_categorías.R: Este código permite analizar cómo están distribuidos los valores de los diferentes factores de la huella en las categorías discretas de la misma
- 
-### Miscelaneo: !!! Los siguientes códigos están por corregir
-1. 000_Insumoscobertura_tablaLU
-2. analisis_fuentesCoberturas
-3. reclass_corine100
-4. VC_reclasificaionCori&Mapbiomas
-   
+
 ## Versiones de los paquetes usados
 
 En el momento de la elaboración de los códigos las version de R y de los paquetes necesarios para los códigos fue. 
