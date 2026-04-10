@@ -68,7 +68,7 @@ scoord <- crs("EPSG:9377") # Sistema de coordenadas del raster base. Cambiar cua
 # La fracción que verá en los nombres a continuación significa el rango de valores que va a tener este tipo de vías. Ejemplo 8/4 Quiere decir que este tipo de vías tendrán valores entre 4 y 8.
 
 # Pesos - 8/4. Vías vehiculares principales y secundarias
-osm_class8 <- c( "trunk",  "tertiary", "secondary", "primary_link", "secondary_link", "primary",   "trunk_link",  "tertiary_link", "living_street", "residential",  "motorway_link", "motorway")
+osm_class8 <- c( "trunk",  "tertiary", "secondary", "primary_link", "secondary_link", "primary",   "trunk_link",  "tertiary_link", "living_street", "residential",  "motorway_link", "motorway","busway")
 
 # Pesos - 5/4. Vías terciarias y rurales
 osm_class5 <- c( "track",  "track_grade1", "track_grade2","track_grade3","track_grade4", "track_grade5", "service", "bridleway", "cycleway")

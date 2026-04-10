@@ -18,6 +18,7 @@
 # librerías o dependencias --------------------------------
 #**********************************************************
 
+
 # lectura de datos
 library (sf)
 library(terra)
@@ -40,42 +41,52 @@ dir_Resultados <- file.path("Resultados")
 # Cargar los datos necesarios ----------------------------
 #**********************************************************
 
+scoord     <- crs("EPSG:9377") # Sistema de coordenadas oficial para el análisis
+
 ## Año #### 
 # Escriba el año de interes
-Año <- 2022
+Año <- 2025
 
 # Escriba el año de los datos de población que va a usar
-Año_pop <- 2020
+Año_pop <- 2025
 
 # Raster base de referencia
-r_base <- rast(file.path(dir_datos, "r_base.tif"))          # Resolución 100 m
+r_base10 <- rast(file.path(dir_datos, "r_base10.tif"))          # Resolución 100 m
 
 # Uso del suelo (LU)
 
-LU <- rast(file.path(dir_Intermedios,paste0( "LU0_corine",Año,".tif")))
+LU <- rast(file.path(dir_Intermedios,paste0( "LU0_corineA10",Año,"enero.tif")))
 
 # TNT
-TNT <- rast(file.path(dir_Intermedios,paste0( "TNT0_corine",Año,".tif")))
+TNT <- rast(file.path(dir_Intermedios,paste0( "TNT0_corineA10",Año,"enero.tif")))
 
 # Población
-Pop0 <- rast(file.path(dir_Intermedios, paste0("pop_km2_", Año_pop, ".tif")))
+Pop0 <- rast(file.path(dir_Intermedios, paste0("pop_km2A_", Año_pop, ".tif")))
 
 
 # Vectores de infraestructura vial
 
-vias8 <- file.path(dir_Intermedios, paste0 ("osm_IGAc8_",Año,".shp")) %>%
+vias8 <- file.path(dir_Intermedios, paste0 ("osm_IGAc8A_",Año,"enero.shp")) %>%
   st_read()
-vias5 <- file.path(dir_Intermedios, paste0 ("osm_IGAc5_",Año,".shp")) %>%
+vias5 <- file.path(dir_Intermedios, paste0 ("osm_IGAc5A_",Año,"enero.shp")) %>%
   st_read()
-vias4 <- file.path(dir_Intermedios, paste0 ("osm_IGAc4_",Año,".shp")) %>%
+vias4 <- file.path(dir_Intermedios, paste0 ("osm_IGAc4A_",Año,"enero.shp")) %>%
   st_read()
-vias2 <- file.path(dir_Intermedios, paste0 ("osm_IGAc2_",Año,".shp")) %>%
+vias2 <- file.path(dir_Intermedios, paste0 ("osm_IGAc2A_",Año,"enero.shp")) %>%
   st_read()
 
 # vias ferreas
 
-V_ferreas4 <- rast(file.path(dir_Intermedios, paste0("pesos_trenes_", 4,"_",Año, ".tiff")))
-V_ferreas6 <- rast(file.path(dir_Intermedios, paste0("pesos_trenes_", 6,"_",Año, ".tiff")))
+V_ferreas4 <- rast(file.path(dir_Intermedios, paste0("pesos_trenesA_", 4,"_",Año, ".tiff")))
+V_ferreas6 <- rast(file.path(dir_Intermedios, paste0("pesos_trenesA_", 6,"_",Año, ".tiff")))
+
+
+# rios
+rios_pesos <- rast(file.path(dir_Intermedios, paste0("pesos_navegabilidadA_filtroSonly.tiff")))
+
+
+# region de interes
+region <- st_read("Datos/amazonas/NDFyB_V5-Amazonia_proHuella.shp") %>% st_transform(scoord)
 
 
 #**********************************************************
@@ -87,6 +98,8 @@ V_ferreas6 <- rast(file.path(dir_Intermedios, paste0("pesos_trenes_", 6,"_",Año
 #rerun <-  TRUE
 rerun <-  FALSE
 
+
+
 #**********************************************************
 # Preparar datos ----------------------------
 #**********************************************************
@@ -94,6 +107,9 @@ rerun <-  FALSE
 ## lu ####
 #**********************************************************
 # Reescalar la cobertura de la tierra De cero a 10 Ya que está de cero a 5
+
+plot(LU)
+LU <-  crop(LU, region)
 Lu_he <- LU * 2
 gc()
 plot(Lu_he)
@@ -115,13 +131,15 @@ plot(Pd_he)
 #**********************************************************
 # Asignar los pesos A las carreteras y vías férreas
 
+r_base10A <- crop(r_base10,Pop0)
 # Crear una lista con las capas de vías transformadas a la misma proyección de r_base, 
 # luego rasterizar cada una sobre la cuadrícula base y calcular la distancia euclidiana desde cada celda
 vias_groups <- lapply(list(vias2, vias4, vias5, vias8), function(x) {
-  p <- st_transform(x, crs(r_base)) %>%
-    rasterize(r_base) %>%
+  p <- st_transform(x, crs(r_base10A)) %>%
+    rasterize(r_base10A) %>%
     terra::distance()
 })
+
 
 # Asignar nombres representativos a cada categoría de vía
 names(vias_groups) <- c("v2", "v4", "v5", "v8")
@@ -142,6 +160,10 @@ Vias_4R <- lapply(vias_groups[3:4], clsDisVias)
 Vias_4R$v5[Vias_4R$v5 > 4] <- 5 
 Vias_4R$v8[Vias_4R$v8 > 4] <- 8 
 
+# ajustar valores mínimos
+Vias_4R$v5[Vias_4R$v5 < 0.034] <- 0 
+Vias_4R$v8[Vias_4R$v8 < 0.034] <- 0 
+
 # Aplicar la función de clasificación a la vía de categoría 2 (menor impacto)
 Vias_2R <- lapply(vias_groups[1:2], clsDisVias, max = 2)
 
@@ -149,17 +171,29 @@ Vias_2R <- lapply(vias_groups[1:2], clsDisVias, max = 2)
 Vias_2R$v2[Vias_2R$v2 > 2] <- 2
 Vias_2R$v4[Vias_2R$v4 > 2] <- 4
 
+
+# ajustar valores mínimos
+Vias_2R$v2[Vias_2R$v2 < 0.017] <- 0 
+Vias_2R$v4[Vias_2R$v4 < 0.017] <- 0 
+
 # Asignar ceros a los valores NA En las vías férreas
 
 V_ferreas4[is.na(V_ferreas4)] <- 0
 V_ferreas6[is.na(V_ferreas6)] <- 0
 
+V_ferreas4 <- crop(V_ferreas4,Pop0)
+V_ferreas6 <- crop(V_ferreas6,Pop0)
+
+# revisar Rios que la estructura este correcta
+
+rios_pesosA <- crop(rios_pesos,Pop0)
+
 
 
 # Combinar todas las capas y calcular el valor máximo por celda entre las capas de influencia
-dr_he <- app(c(Vias_2R$v2, Vias_2R$v4, Vias_4R$v5, Vias_4R$v8, V_ferreas4, V_ferreas6 ), max)
+dr_he <- app(c(Vias_2R$v2, Vias_2R$v4, Vias_4R$v5, Vias_4R$v8, V_ferreas4, V_ferreas6, rios_pesosA), max)
 # Se hace la corrección para que a partir de 15 km el valor sea cero
-dr_he[dr_he < 0.035] <- 0 
+#dr_he[dr_he < 0.035] <- 0 
 
 # Visdr_he0# Visualización de las capas intermedias y resultado final
 
@@ -175,10 +209,18 @@ hist(dr_he, main = "Histograma de influencia vial (dr_he)")
 dr_he  # Resultado final
 
 
+plot(dr_he)
+
+
 ## if_he  ####
 #**********************************************************
 # Se calcula Un indicativo de la fragmentación basado en densidad de píxeles Naturales En un área específica De 1 km de radio y se le asignan los pesos The huella Basado en decaimiento exponencial
 
+TNT <-  crop(TNT, region)
+
+LU24  <- rast(paste0(dir_Resultados, "/LUA", 2024, ".tif")) # Se usa una máscara con La cobertura del 24 para evitar diferencias con el 2025 Ya que este tiene una extensión diferente y causada Bordes De impacto bajo
+TNT <-  mask(TNT, LU24)
+plot(TNT)
 vecindad <- focalMat(TNT, type = "circle", d = 1000)  # Ventana de 1 km
 
 # Sumar área transformada en vecindad
@@ -190,7 +232,7 @@ densidad_0 <- focal(TNT,
 
 if_he <- 10 * exp(-0.05 * densidad_0)
 # Se hace la corrección para que Si la cobertura es Completamente natural este sirve valor 100 del if_he sea 0
-if_he[if_he < 0.07] <- 0
+if_he[if_he < 0.07] <- 0 # ajuste para que apartir de 99 y 100  de 0, o sino no habría huella natural 
 densidad_0
 
 plot(densidad_0)
@@ -200,13 +242,18 @@ plot(if_he)
 
 # Cálculo de Huella ####
 #**********************************************************
+#*
+
+Pd_he <- crop(Pd_he,Lu_he)
+dr_he <- crop(dr_he,Lu_he)
+
 IHEH <- Lu_he + Pd_he + if_he + dr_he
 IHEH1002 <- 100 / 38 * IHEH  # Normalización a escala 0-100
 
 ### Revisar resultado####
 
 plot(Pd_he)
-plot(if_he)
+plot(if_he, add=T)
 plot(dr_he)
 plot(Lu_he)
 plot(IHEH1002)
@@ -214,26 +261,33 @@ plot(IHEH1002)
 ## Guardar resultado crs:9377####
 writeRaster(
   IHEH1002,
-  paste0(dir_Resultados, "/IHEH_IAVH1", Año, ".tif"), 
+  paste0(dir_Resultados, "/IHEH_IAVHA_enero", Año, ".tif"), 
   overwrite=TRUE)
+
+
+writeRaster(
+  IHEH1002,
+  paste0(dir_Resultados, "/IHEH_IAVHA_enerohalo", Año, ".tif"), 
+  overwrite=TRUE)
+
 
 #Guardar capas intermedias
 
 writeRaster(
   Lu_he,
-  paste0(dir_Resultados, "/LU1", Año, ".tif"), 
+  paste0(dir_Resultados, "/LUA", Año, ".tif"), 
   overwrite=TRUE)
 writeRaster(
   Pd_he,
-  paste0(dir_Resultados, "/Pop", Año, ".tif"), 
+  paste0(dir_Resultados, "/PopA", Año, ".tif"), 
   overwrite=TRUE)
 writeRaster(
   if_he,
-  paste0(dir_Resultados, "/frag", Año, ".tif"), 
+  paste0(dir_Resultados, "/fragA2024", Año, ".tif"), 
   overwrite=TRUE)
 writeRaster(
   dr_he,
-  paste0(dir_Resultados, "/Vias", Año, ".tif"), 
+  paste0(dir_Resultados, "/ViasA", Año, ".tif"), 
   overwrite=TRUE)
 
 
@@ -262,7 +316,7 @@ plot(r_class)
 # Guardar resultado
 writeRaster(
   r_class,
-  paste0(dir_Resultados, "/IHEH_IAVH_class", Año, ".tif"), 
+  paste0(dir_Resultados, "/IHEH_IAVHA_class_enero_halo", Año, ".tif"), 
   overwrite=TRUE)
 
 Sys.time()

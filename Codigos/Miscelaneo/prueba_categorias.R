@@ -41,8 +41,8 @@ dir_Resultados <- file.path("Resultados")
 # Escriba el año de interes
 Año <- 2020
 
-IHEH1002 <- rast( paste0(dir_Resultados, "/IHEH_IAVH", Año, ".tif"))
-Lu_he <-rast( paste0(dir_Resultados, "/LU", Año, ".tif"))
+IHEH1002 <- rast( paste0(dir_Resultados, "/IHEH_IAVH1", Año, ".tif"))
+Lu_he <-rast( paste0(dir_Resultados, "/LU1", Año, ".tif"))
 Pd_he <- rast( paste0(dir_Resultados, "/Pop", Año, ".tif"))
 if_he <- rast( paste0(dir_Resultados, "/frag", Año, ".tif"))
 dr_he <- rast( paste0(dir_Resultados, "/Vias", Año, ".tif"))
@@ -124,7 +124,7 @@ load(file.path(dir_Resultados,"muestra_IHEH_all_2022.Rdata"))
 
 # Graficar las posibilidades en el histograma
 
-par(mfrow=c(2,5))
+par(mfrow=c(1,5))
 boxplot(hh_all[hh_all$IHEH ==0,c(-1, -6)], main= "0",ylim = c(0, 10))
 boxplot(hh_all[hh_all$IHEH >0 & hh_all$IHEH <15,c(-1, -6)], main= "1_15",ylim = c(0, 10))
 boxplot(hh_all[hh_all$IHEH > 15 & hh_all$IHEH <30,c(-1, -6)], main= "15_30",ylim = c(0, 10))
@@ -173,4 +173,56 @@ data.frame(IHEH_100=seq(0,100,5),
            IHEH_original=seq(0,100,5)/100*38
            )
 
+par(
+  mfrow = c(1, 5))
+  
+  
 
+par(mar = c(4, 3, 2, .5),  # izquierda = 4
+  mgp = c(2.0, 0.8, 0),   # ↓ acerca la etiqueta al eje
+  cex.lab = 1.4
+  )
+boxplot(
+  hh_all[hh_all$IHEH == 0, c(-1, -6)],
+  main = "0",
+  ylim = c(0, 10),
+  ylab = "Pesos de Impacto"
+ 
+)
+
+par(mar = c(4, 0.5, 2, 0.1))
+
+boxplot(
+  hh_all[hh_all$IHEH > 0 & hh_all$IHEH < 15, c(-1, -6)],
+  main = "1_15",
+  ylim = c(0, 10),
+  yaxt = "n"
+)
+
+boxplot(
+  hh_all[hh_all$IHEH > 15 & hh_all$IHEH < 30, c(-1, -6)],
+  main = "15_30",
+  ylim = c(0, 10),
+  yaxt = "n"
+)
+
+boxplot(
+  hh_all[hh_all$IHEH >= 30 & hh_all$IHEH < 50, c(-1, -6)],
+  main = "30_50",
+  ylim = c(0, 10),
+  yaxt = "n"
+)
+
+boxplot(
+  hh_all[hh_all$IHEH >= 50 & hh_all$IHEH <= 100, c(-1, -6)],
+  main = "50_100",
+  ylim = c(0, 10),
+  yaxt = "n"
+)
+
+x <-  0:35
+
+y <- x*100/35
+y
+df <- data.frame(x,y)
+df

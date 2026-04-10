@@ -22,6 +22,7 @@
 # En principio es igual que Corinne Por eso no corregiré el código acá
 # es el mismo que Corine, llamar source, 
 # recordar que en la carpeta no hay ferreo debe ser integrado 
+# cambio importante mantener if. 
 
 
 
@@ -55,10 +56,10 @@ dir_Resultados <- file.path("Resultados")
 
 ## Año #### 
 # Escriba el año de interes
-Año <- 2022
+Año <- 2024
 
 # Escriba el año de los datos de población que va a usar
-Año_pop <- 2020
+Año_pop <- 2025
 
 # Raster base de referencia
 r_base <- rast(file.path(dir_datos, "r_base.tif"))          # Resolución 100 m
@@ -66,6 +67,9 @@ r_base <- rast(file.path(dir_datos, "r_base.tif"))          # Resolución 100 m
 # Uso del suelo (LU)
 LU <- rast( file.path(dir_Intermedios, paste0("mapbiomas_pesos_",Año,".tif")))
 
+
+
+TNT <- rast( file.path(dir_Intermedios, paste0("mapbiomas_TNT_",Año,".tif")))
 # Población
 Pop0 <- rast(file.path(dir_Intermedios, paste0("pop_km2_", Año_pop, ".tif")))
 
@@ -237,6 +241,8 @@ densidad_0 <- focal(r_reclass,
                     na.rm = TRUE) * 100
 
 if_he <- 10 * exp(-0.05 * densidad_0)
+# Se hace la corrección para que Si la cobertura es Completamente natural este sirve valor 100 del if_he sea 0
+if_he[if_he < 0.07] <- 0
 
 densidad_0
 
@@ -252,60 +258,57 @@ IHEH1002 <- 100 / 38 * IHEH  # Normalización a escala 0-100
 
 plot(IHEH1002)
 
-# Guardar resultado
+## Guardar resultado crs:9377####
 writeRaster(
   IHEH1002,
-  paste0(dir_Resultados, "/IHEHc2_", Año, ".tif"), 
+  paste0(dir_Resultados, "/IHEH_IAVH_MB", Año, ".tif"), 
+  overwrite=TRUE)
+
+#Guardar capas intermedias
+
+writeRaster(
+  Lu_he,
+  paste0(dir_Resultados, "/LU_MB", Año, ".tif"), 
+  overwrite=TRUE)
+writeRaster(
+  Pd_he,
+  paste0(dir_Resultados, "/Pop", Año, ".tif"), 
+  overwrite=TRUE)
+writeRaster(
+  if_he,
+  paste0(dir_Resultados, "/frag_MB", Año, ".tif"), 
+  overwrite=TRUE)
+writeRaster(
+  dr_he,
+  paste0(dir_Resultados, "/ViasCor", Año, ".tif"), 
   overwrite=TRUE)
 
 
-IHEH1002 <- rast( paste0(dir_Resultados, "/IHEHc2_", Año, ".tif"))
-
-### Revisar resultado####
-
-plot(IHEH1002)
-#click(IHEH100)
-plot(IHEH1002, breaks = c(0, 15, 40, 60, 100),col=c("blue","yellow","orange","red" ))
-plot(IHEH1002, breaks = c(0, 1,15,  30, 60,100),col=c("blue","yellow","orange","orange4","red" ))
-
-plot(Pd_he)
-plot(if_he)
-plot(dr_he)
-plot(Lu_he)
-plot(GTF)
-
-IHEH1002 <- rast(paste0(dir_Resultados, "/IHEHc2_", 2022, ".tif"))
-
 # Reclasificar a las categorías discretas
+
 # Definir los breaks y las etiquetas
-breaks <- c(0, 0, 4,10,22, 100)
 labels <- c("Natural", "Baja", "Media", "Alta", "Muy Alta")
-
-
-breaks/100*38
 
 # Reclasificar usando classify() + as.factor()
 # Primero, convertir a clases numéricas
-rc_matrix <- matrix(c(0, 0, 1,
+rc_matrix <- matrix(c(-1, 0, 1,
                       0, 15, 2,
-                      15, 60, 3,
-                      60,100, 4), 
+                      15, 30, 3,
+                      30, 50, 4,
+                      50,100, 5), 
                     ncol = 3, byrow = TRUE)
 
 r_class <- classify(IHEH1002, rc_matrix)
 
 # Convertir a factor y asignar etiquetas
-levels(r_class) <- data.frame(ID = 1:4, clase = labels)
+levels(r_class) <- data.frame(ID = 1:5, clase = labels)
 
-# Resultado: raster categórico con etiquetas
-r_class <- project(r_class, "EPSG:4326")
-
+plot(r_class)
 # Guardar resultado
 writeRaster(
   r_class,
-  paste0(dir_Resultados, "/IHEHc2_cls", Año, ".tif"), 
+  paste0(dir_Resultados, "/IHEH_IAVH_class_MB", Año, ".tif"), 
   overwrite=TRUE)
 
+Sys.time()
 
-r_class <- rast(paste0(dir_Resultados, "/IHEHc2_cls", Año, ".tif"))
-plot(r_class )

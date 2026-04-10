@@ -22,10 +22,7 @@
 # El resultado es un conjunto de rasters que representan la presión de las vías férreas,
 # que luego se integrarán con otros factores (población, carreteras, ríos, etc.)
 # para el cálculo total del IHEH.
-
-
-# Igual que Corin y no se corregirá el Código acá
-
+#
 #**********************************************************
 
 #**********************************************************
@@ -47,9 +44,9 @@ dir_Resultados  <- file.path("Resultados")       # Carpeta de resultados finales
 #**********************************************************
 # Parámetros globales
 #**********************************************************
-resolucion <- 100              # Resolución espacial del análisis (en metros)
+resolucion <- 10              # Resolución espacial del análisis (en metros)
 scoord     <- crs("EPSG:9377") # Sistema de coordenadas oficial para Colombia
-Año        <- 2022             # Año de referencia para el cálculo
+Año        <- 2025         # Año de referencia para el cálculo
 
 #**********************************************************
 # Carga de datos
@@ -58,7 +55,7 @@ Año        <- 2022             # Año de referencia para el cálculo
 Vias <- st_read(file.path(dir_datos,"vias","ferreas","RedFerrea_actuali.shp"))
 
 # Raster base de referencia (grilla con resolución de 100 m)
-r_base <- rast(file.path(dir_datos, "r_base.tif"))
+r_base10 <- rast(file.path(dir_datos, "r_base10.tif"))
 
 #**********************************************************
 # Preprocesamiento de datos
@@ -77,7 +74,8 @@ Vias <- st_transform(Vias, scoord)
 #   ))
 
 
-
+# Crear una columna simplificada de funcionamiento
+# Tiene en cuenta las combinaciones De El año de construcción (Contrucci), Años de desactivación (Desactivac), y de activación después de desactivación (Activació)
 Vias <- Vias %>% 
   mutate(
     Construcci  = as.numeric(Construcci),
@@ -86,22 +84,33 @@ Vias <- Vias %>%
   ) %>% 
   mutate(
     Funcionamiento = case_when(
-      # 1. Si existe Activació y es >= año → Activo
+      # 1. Si existe Activació y es <= año → Activo
       !is.na(Activació) & Activació <= Año ~ "Activo",
       
-      # 2. Si NO hay Activació, NO hay Desactivac y Construcci >= año → Activo
+      # 2. Si NO hay Activació, NO hay Desactivac y Construcci <= año → Activo
       is.na(Activació) & is.na(Desactivac) & Construcci <= Año ~ "Activo",
       
       # 3. Si NO hay Activació pero sí Desactivac 
       #    y Desactivac < año → Inactivo
-      is.na(Activació) & !is.na(Desactivac) & Desactivac <= Año ~ "Inactivo"
-      # ,
+      is.na(Activació) & !is.na(Desactivac) & Desactivac <= Año ~ "Inactivo",
+      
+      # 4. Si hay Activació  y Desactivac y la Fecha Desactivación Menor Que el año evaluado Y la de activación Mayor que el año evaluado
+      #    y Desactivac < año → Inactivo
+      !is.na(Activació) & !is.na(Desactivac) & Desactivac <= Año & Activació >= Año  ~ "Inactivo",
+      
+      # 5. Si hay Desactivac Y la fecha de desactivación Es mayor que el año evaluado y la de construccion menor
+      
+      !is.na(Desactivac) & Desactivac > Año & Construcci <= Año  ~ "Activo",
+      
       # 
-      # # 4. Todo lo demás → Inactivo (en vez de NA)
-      # TRUE ~ "Inactivo"
+      # # 4. Todo lo demás → Inactivo (en vez de NA) #
+      .default = "Inactivo1"
     )
   )
 
+
+# Revisar la calidad. No Deben haber vacías En la columna funcionamiento
+ View(Vias)
 
 # Dividir la capa en una lista según el funcionamiento (Activo/Inactivo)
 Vias_ls <- split(Vias, Vias$Funcionamiento)
@@ -115,14 +124,14 @@ pesos_trenes <- c(6,4)  # Activas = 6, Inactivas = 4
 # Rasterizar cada grupo de vías, calcular distancias y asignar pesos
 vias_pesos <- mapply(function(x, y) {
   p <- x %>%
-    rasterize(r_base) %>%    # Rasterización sobre la grilla base
+    rasterize(r_base10A) %>%    # Rasterización sobre la grilla base
     terra::distance()        # Distancia euclidiana a la vía más cercana
   
   # Asignar peso solo hasta 500 m de la vía
   p_peso <- ifel(p <= 500, y, NA)
   
   # Guardar el resultado intermedio como raster GeoTIFF
-  writeRaster(p_peso, file.path(dir_Intermedios, paste0("pesos_trenes_", y, ".tiff")), overwrite = TRUE)
+  writeRaster(p_peso, file.path(dir_Intermedios, paste0("pesos_trenesA_", y,"_",Año, ".tiff")), overwrite = TRUE)
   
   return(p_peso)
 }, Vias_ls, pesos_trenes, SIMPLIFY = FALSE)
