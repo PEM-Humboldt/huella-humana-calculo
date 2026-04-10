@@ -79,7 +79,7 @@ Las fuentes de datos necesarios para la elaboración de la huella son:
 - Tiempo de intervención 2018 Buscarlos en la carpeta de datos [aquí](https://drive.google.com/file/d/1PUlXwC8_2_-43vScYRxiwmlgcgHVqB0F/view?usp=drive_link)
 - [Vías de open Street Maps](https://download.geofabrik.de/south-america/). Descargar el archivo correspondiente al primero de enero del año siguiente al año de interés.
 - [Red Vial del Igac](https://www.colombiaenmapas.gov.co/?e=-84.08030383789075,-1.38663143198846,-64.41477649414598,11.402208518426857,4686&b=igac&u=0&t=39&servicio=1468)
-- Datos de población: [GHS-POP R2023A - GHS population grid  multitemporal (1975–2030) (European Commission, Joint Research Centre - JRC (https://data.europa.eu/data/datasets/2ff68a52-5b5b-4a22-8f40-c41da8332cfe?locale=en)
+- Datos de población: [GHS-POP R2023A - GHS population grid  multitemporal (1975–2030) European Commission, Joint Research Centre - JRC] (https://data.europa.eu/data/datasets/2ff68a52-5b5b-4a22-8f40-c41da8332cfe?locale=en)
 
 ## Códigos
 
