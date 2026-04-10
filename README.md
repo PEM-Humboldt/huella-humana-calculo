@@ -193,11 +193,11 @@ Además se preparan:
       
 - Huella_IAVH2025_Mapbiomas
       
-1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
+    1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
 Además se preparan:
-    - Capas constantes con los parametros generales como: Ecosistemas potenciales y Tiempo de Intervención.
-    - Tabla de consulta para la definición de las clases de biomasa y uso de tierra
-2. 01_Insumosxhuella.R: Se preparan los insumos necesarios para correr el IHEH y se almacenan en la carpeta de resultados intermedios, Res_Intermedios
+        - Capas constantes con los parametros generales como: Ecosistemas potenciales y Tiempo de Intervención.
+        - Tabla de consulta para la definición de las clases de biomasa y uso de tierra
+    2. 01_Insumosxhuella.R: Se preparan los insumos necesarios para correr el IHEH y se almacenan en la carpeta de resultados intermedios, Res_Intermedios
 3. 02_Pesos_navegabilidad.R: calcula las presiones antrópicas potenciales asociadas a la navegabilidad de ríos
 4. 021_Pesos_ferreos.R:  Calcula las presiones antrópicas potenciales asociadas a las vías férreas.
 5. 04_HuellaHumana_adaptadaVias: En este código se calcula la huella con el método de ecosistemas. Esta incluye los siguientes cambios:  
