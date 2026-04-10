@@ -4,9 +4,9 @@ El Índice de Huella Espacial Humana (IHEH) permite representar espacialmente la
 Este repositorio tiene los paso y datos para hacer el cálculo de la huella espacial humana a nivel nacional. 
 Para el territorio nacional corriendo todos los pasos el tiempo de ejecución de los códigos puede ser de 3 a 8 horas, dependiendo de la rutina elegida.
 Idealmente el cálculo de la huella humana está planteado bienal.
+Las capas de huella se pueden encontrar en [Geonetwork](https://geonetwork.humboldt.org.co/geonetwork/srv/spa/catalog.search#/metadata/0277ec94-63b3-41db-9349-d53434fa1251)
 
 - fALTA:
-- Referencias- Enlace a Huella Heon Network
 - doi
 
 ## Organizar directorio de trabajo
@@ -24,23 +24,40 @@ El directorio del proyecto está organizado de la siguiente manera.
     │    └- 03_HuellaHumana_adaptada.R
     │    └- 04_HuellaHumana_adaptadaVias.R
     │
-    │-Huella_IAVH2025_Mapbiomas
+    │-pipelines
     │    └- 00_InsumosGenerales.R
     │    └- 01_Insumosxhuella.R
     │    └- 02_Pesos_navegabilidad.R
     │    └- 021_Pesos_ferreos.R
     │    └- 03_HuellaHumana_adaptadaVias.R
     │
-    │-Huella_IAVH2025_Corine
-    │    └- 00_InsumosGenerales.R
-    │    └- 01_Insumosxhuella.R
-    │    └- 021_Pesos_ferreos.R
-    │    └- 03_HuellaHumana_adaptadaVias.R
+    └- 00_InsumosGenerales.R
+    └- 01_Insumosxhuella_automatizado.R
+    └- 02_IHEH_calculo.R
+    └- 03_DatosGeonetwork.R
+    │
     │-Miscelaneo
     │    └- 000_Insumoscobertura_tablaLU.R
     │    └- analisis_fuentesCoberturas.R
     │    └- reclass_corine.R
     │    └- VC_reclacificacionCori&Mapbiomas.R
+    │    └- Huella_IAVH2025_Mapbiomas
+    │        └- 00_InsumosGenerales.R
+    │        └- 01_Insumosxhuella.R
+    │        └- 02_Pesos_navegabilidad.R
+    │        └- 021_Pesos_ferreos.R
+    │        └- 03_HuellaHumana_adaptadaVias.R
+    │    └- Huella_IAVH2025_CorineNDFB
+    │        └- 00_InsumosGenerales.R
+    │        └- 01_Insumosxhuella.R
+    │        └- 02_Pesos_navegabilidad.R
+    │        └- 021_Pesos_ferreos.R
+    │        └- 03_HuellaHumana_adaptadaVias.R
+    │    └--Huella_IAVH2025_Corine
+    │        └- 00_InsumosGenerales.R
+    │        └- 01_Insumosxhuella.R
+    │        └- 021_Pesos_ferreos.R
+    │        └- 03_HuellaHumana_adaptadaVias.R
     │    
     └-Datos
     │ │
@@ -62,12 +79,61 @@ Las fuentes de datos necesarios para la elaboración de la huella son:
 - Tiempo de intervención 2018 Buscarlos en la carpeta de datos [aquí](https://drive.google.com/file/d/1PUlXwC8_2_-43vScYRxiwmlgcgHVqB0F/view?usp=drive_link)
 - [Vías de open Street Maps](https://download.geofabrik.de/south-america/). Descargar el archivo correspondiente al primero de enero del año siguiente al año de interés.
 - [Red Vial del Igac](https://www.colombiaenmapas.gov.co/?e=-84.08030383789075,-1.38663143198846,-64.41477649414598,11.402208518426857,4686&b=igac&u=0&t=39&servicio=1468)
-- [Datos de población](https://jeodpp.jrc.ec.europa.eu)
+- Datos de población: [GHS-POP R2023A - GHS population grid  multitemporal (1975–2030) (European Commission, Joint Research Centre - JRC (https://data.europa.eu/data/datasets/2ff68a52-5b5b-4a22-8f40-c41da8332cfe?locale=en)
 
 ## Códigos
-En esta sección se guardan los códigos relacionados con  la construcción de la huella espacial humana. En la carpeta de códigos hay cuatro subcarpetas, 3 de ellas tienen 3 versiones diferentes de la huella: Huella_Diaz_Y_Adaptacion: Son códigos relacionados con La huella que julián Díaz entregó en el workflow de ArcmAP. Esta carpeta también tiene códigos que la adaptan la huella del método de "Diaz" usando diferentes tipos de vías, variables continuas y remoción de variables. 
-Huella_IAVH2025_Corine: Es la nueva propuesta del índice de huella humana que se cargan biotablero. La capa de coberturas es la de Corine. 
-Huella_IAVH2025_Mapbiomas: Va a manejar los mismos principios "Huella_IAVH2025_Corine", pero la capa de coberturas será mapbiomas.
+
+En esta sección se almacenan los scripts relacionados con la construcción de la Huella Espacial Humana (IHEH). La estructura está organizada en diferentes subcarpetas según su función dentro del flujo de trabajo.
+
+🔹 Huella_Diaz_Y_Adaptacion
+
+Contiene los códigos base de la metodología original de huella humana desarrollada por Julián Díaz, tal como fue implementada en el workflow de ArcMap.
+
+Adicionalmente, incluye versiones adaptadas del método, en las cuales se incorporan:
+
+Diferentes tipos de vías
+Variables continuas
+Ajustes metodológicos (inclusión/remoción de variables)
+
+🔹 pipelines
+
+Incluye las rutinas para el preprocesamiento y procesamiento de los insumos necesarios para el cálculo de la huella humana.
+
+Estos scripts organizan el flujo de trabajo de manera modular, facilitando la reutilización de procesos comunes como:
+
+Preparación de insumos base
+Cálculo de pesos (ej. red vial, red ferroviaria)
+Integración de variables espaciales
+
+🔹 Scripts principales (nivel raíz de Codigos)
+
+En la carpeta principal se encuentran cuatro scripts clave:
+
+00_InsumosGenerales.R
+01_Insumosxhuella_automatizado.R
+02_IHEH_calculo.R
+03_DatosGeonetwork.R
+
+Los tres primeros scripts (00 a 02) se utilizan para la construcción del IHEH, integrando diferentes rutinas provenientes de la carpeta pipelines.
+
+El script 03_DatosGeonetwork.R organiza y ajusta los resultados finales para su publicación en formato compatible con GeoNetwork.
+
+🔹 Miscelaneo
+
+Esta carpeta contiene:
+
+Scripts auxiliares para análisis específicos o exploratorios
+Rutinas cortas para procesamiento de datos
+Versiones completas de cálculo de huella humana usando diferentes fuentes de cobertura (por ejemplo, Corine Land Cover y MapBiomas)
+
+Las subcarpetas con rutinas completas se conservan como respaldo metodológico, ya que posteriormente los códigos fueron reestructurados en pipelines y scripts maestros para evitar la duplicación de procesos.
+
+🧩 Notas generales
+La estructura actual busca modularizar y estandarizar el flujo de trabajo.
+Muchas rutinas que antes estaban duplicadas fueron reorganizadas en pipelines y scripts principales.
+Las versiones antiguas se mantienen como referencia y control de calidad.
+
+
 
 El flujo de trabajo general de las huellas es el siguiente:
 <img width="1023" height="1066" alt="huella flujo" src="https://github.com/user-attachments/assets/f9637160-f850-47ac-832f-689fcc21360b" />
