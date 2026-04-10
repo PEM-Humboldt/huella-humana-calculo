@@ -25,11 +25,16 @@ El directorio del proyecto está organizado de la siguiente manera.
     │    └- 04_HuellaHumana_adaptadaVias.R
     │
     │-pipelines
-    │    └- 00_InsumosGenerales.R
-    │    └- 01_Insumosxhuella.R
-    │    └- 02_Pesos_navegabilidad.R
-    │    └- 021_Pesos_ferreos.R
-    │    └- 03_HuellaHumana_adaptadaVias.R
+    │    └- vias_ferreas.R
+    │    └- Descarga_y_mergePop.R
+    │    └- osm_cat_vector.R
+    │    └- Navegabilidad.R
+    │    └- creación LU0_y_TNT_corine.R
+    │    └- creación LU0_y_TNT_mp.R
+    │    └- dr_he.R
+    │    └- if_he.R
+    │    └- lu_he.R
+    │    └- pd_he.R
     │
     └- 00_InsumosGenerales.R
     └- 01_Insumosxhuella_automatizado.R
@@ -138,9 +143,6 @@ Las versiones antiguas se mantienen como referencia y control de calidad.
 El flujo de trabajo general de las huellas es el siguiente:
 <img width="1023" height="1066" alt="huella flujo" src="https://github.com/user-attachments/assets/f9637160-f850-47ac-832f-689fcc21360b" />
 
-La última carpeta se llama misceláneo y tiene códigos útiles para explorar datos pero no está organizada aun.
-
-
 ### Huella_Diaz_Y_Adaptacion
 1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
 Además se preparan:
@@ -160,7 +162,7 @@ Además se preparan:
         - Infraestructura peatonal y no clasificada  
         - Senderos naturales
 
-### Huella_IAVH2025_Mapbiomas .... en construcción!!!!!!!!!!!
+### Huella_IAVH2025_Mapbiomas
 1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
 Además se preparan:
     - Capas constantes con los parametros generales como: Ecosistemas potenciales y Tiempo de Intervención.
@@ -198,7 +200,7 @@ Además se preparan:
            
 4. prueba_categorías.R: Este código permite analizar cómo están distribuidos los valores de los diferentes factores de la huella en las categorías discretas de la misma
  
-### Miscelaneo: !!! Los siguientes códigos les están por corregir, pero lo que tienen es como homologaciones de la cobertura Corine a Mapiomas
+### Miscelaneo: !!! Los siguientes códigos están por corregir
 1. 000_Insumoscobertura_tablaLU
 2. analisis_fuentesCoberturas
 3. reclass_corine100
