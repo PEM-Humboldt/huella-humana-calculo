@@ -96,7 +96,7 @@ pesos_trenes <- c(6, 4)  # Activas = 6, Inactivas = 4
 # Cálculo de presiones
 #**********************************************************
 # Rasterizar cada grupo de vías, calcular distancias y asignar pesos
-vias_pesos <- mapply(function(x, y) {
+vias_pesos <- mapply(function(x, y,z) {
   p <- x %>%
     rasterize(r_base) %>%    # Rasterización sobre la grilla base
     terra::distance()        # Distancia euclidiana a la vía más cercana
@@ -105,13 +105,10 @@ vias_pesos <- mapply(function(x, y) {
   p_peso <- ifel(p <= 500, y, NA)
   
   # Guardar el resultado intermedio como raster GeoTIFF
-  writeRaster(p_peso, file.path(
-    dir_Intermedios,
-    paste0("pesos_trenes_", y, "_", Año, ".tiff")
-  ), overwrite = TRUE)
+  writeRaster(p_peso, z, overwrite = TRUE)
   
   return(p_peso)
-}, Vias_ls, pesos_trenes, SIMPLIFY = FALSE)
+}, Vias_ls, pesos_trenes,list_ferreo, SIMPLIFY = FALSE)
 
 cat("Generación de Capa de pesos de las vías férreas terminado.\n")
 

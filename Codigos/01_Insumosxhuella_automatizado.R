@@ -26,7 +26,7 @@
 
 ## - Si es menor al 2016, aun se debe ver que hacer en vias
 ## - intentar automatizar la descargar de vias osm y organizar el nombre
-
+## Navegabilidad funciona pero está desactivado por no hacer parte de la rutina estandar aún
 
 #**********************************************************
 # librerías o dependencias --------------------------------
@@ -56,8 +56,8 @@ dir_source <- file.path("Codigos","pipelines")
 #**********************************************************
 
 ## Definir Periódo al calcular y actualidad los datos a usar
-Año <- 2016 # definir el año que se quiere calcular
-año_pop <- 2015 # escribir el año de los datos de población a usar-
+Año <- 2018 # definir el año que se quiere calcular
+año_pop <- 2025 # escribir el año de los datos de población a usar-
 
 scoord <- crs("EPSG:9377") # Sistema de coordenadas del raster base. Cambiar cuando se defina la proyección
 
@@ -104,7 +104,7 @@ head(corine)
 # Definir la columna qeu
 Cod_ecos <- "codigo"
 
-# En caso de ser Mapbiomas 
+#### En caso de ser Mapbiomas ####
 # --------------------------- -
 # No defina ninguna ruta, la descarga se hará automaticamente en las siguiente sección "Preprocesamiento y asignacion de pesos"
 
@@ -115,15 +115,15 @@ osm0 <- st_read(
   file.path(
     dir_datos,
     "vias",
-    #"colombia-210101-free.shp",
-    "colombia-170101-free.shp",
+    "colombia-250101-free.shp",
+    #colombia-190101-free.shp",
     #"210101.shp"
     "gis_osm_roads_free_1.shp"
   )
 )
 
-vias_IGAC0 <- st_read(file.path(dir_datos,"vias","ViasJulian2018","vias.shp"))# 2018
-#vias_IGAC0 <- st_read(file.path(dir_datos, "vias", "IGAC_viasD2024", "Vias_IGAC.shp"))# 2022 y 2020
+#vias_IGAC0 <- st_read(file.path(dir_datos,"vias","ViasJulian2018","vias.shp"))# 2018
+vias_IGAC0 <- st_read(file.path(dir_datos, "vias", "IGAC_viasD2024", "Vias_IGAC.shp"))# 2022 y 2020, 2024
 
 # Capa de red férrea oficial (fuente: IGAC / ANI) 
 # ajustar el nombre de ser necesario 
@@ -199,8 +199,8 @@ archivo_LU0 <- file.path(dir_Intermedios, paste0("LU0_", base_cobertura, Año, "
 archivo_TNT0 <- file.path(dir_Intermedios, paste0("TNT0_", base_cobertura, Año, ".tif"))
 
 # Ejecutar proceso solo si NO existen los archivos
-if (!file.exists(archivo_LU0) &
-    !file.exists(archivo_TNT0)) {
+if (!(file.exists(archivo_LU0) &
+    file.exists(archivo_TNT0))) {
   cat("Procesando y creando archivos de LU y TNT...\n")
   if (base_cobertura == "MB") {
     source(file.path(dir_source, "creacion_LU0_y_TNT_mb.R"))
@@ -218,22 +218,22 @@ proceso.\n")
 
 plot(LU0)
 plot(TNT0)
-
-##  Navegabilidad --------------------------------------------------
-
-### Preprocesamiento y asignacion de pesos ####
-
-archivo_nav <- file.path(dir_Intermedios, paste0("pesos_navegabilidad_proj_nal",base_cobertura ,Año,".tiff"))
-
-# Condición para crear o no los archivos
-
-if (!file.exists(archivo_nav)) {
-  cat("Procesando y creando archivos navegabilidad...\n")
-    source(file.path(dir_source, "Navegabilidad.R"))
-  } else {
-  cat("Los archivos de navegabilidad ya existen. Se omite el
-proceso.\n")
-}
-
-plot(pesos_rnav)
+# 
+# ##  Navegabilidad --------------------------------------------------
+# 
+# ### Preprocesamiento y asignacion de pesos ####
+# 
+# archivo_nav <- file.path(dir_Intermedios, paste0("pesos_navegabilidad_proj_nal",base_cobertura ,Año,".tiff"))
+# 
+# # Condición para crear o no los archivos
+# 
+# if (!file.exists(archivo_nav)) {
+#   cat("Procesando y creando archivos navegabilidad...\n")
+#     source(file.path(dir_source, "Navegabilidad.R"))
+#   } else {
+#   cat("Los archivos de navegabilidad ya existen. Se omite el
+# proceso.\n")
+# }
+# 
+# plot(pesos_rnav)
 

@@ -50,7 +50,7 @@ Año_pop <- 2020
 # Capa base de cobertura (define insumos LU y TNT)
 # Opciones: "corine" o "MB"
 
-base_cobertura <- "corine" 
+base_cobertura <- "MB" 
 
 
 #**********************************************************
@@ -224,6 +224,8 @@ Sys.time()
 #   overwrite=TRUE)
 
 # Reproyectar a WGS
+
+r_base_wgs <- rast ( paste0(dir_datos, "/rbaseWgs.tif"))
 IHEH1002_wgs <- project(IHEH1002,r_base_wgs)
 
 # Reclasificar la huella en WGS
@@ -245,3 +247,4 @@ writeRaster(
   r_class_wgs,
   paste0(dir_Resultados, "/IHEH_IAVH_class_",base_cobertura,"_wgs", Año, ".tif"), 
   overwrite=TRUE)
+
