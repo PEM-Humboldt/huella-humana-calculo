@@ -56,7 +56,7 @@ dir_source <- file.path("Codigos","pipelines")
 #**********************************************************
 
 ## Definir Periódo al calcular y actualidad los datos a usar
-Año <- 2018 # definir el año que se quiere calcular
+Año <- 2024 # definir el año que se quiere calcular
 año_pop <- 2025 # escribir el año de los datos de población a usar-
 
 scoord <- crs("EPSG:9377") # Sistema de coordenadas del raster base. Cambiar cuando se defina la proyección
