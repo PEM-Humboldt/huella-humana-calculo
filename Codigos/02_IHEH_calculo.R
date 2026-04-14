@@ -14,6 +14,8 @@
 # ya que la fuente (GHS-POP R2023A - GHS population grid  multitemporal (1975–2030) (European Commission, 
 # Joint Research Centre - JRC) genera datos con periodicidad de 5 años, y debe seleccionarse el año disponible más cercano al año de interés. 
 
+# Nota: La capa de cobertura es la que define los limites exactos de la capa resultante de IHEH
+
 # Detalles del cálculo: https://docs.google.com/document/d/1dvCtK18dAY-XiAYrFJlUD44stQDIA1E3/edit
 
 
@@ -42,10 +44,10 @@ dir_source <- file.path("Codigos","pipelines")
 #**********************************************************
 ## Año #### 
 # Escriba el año de interes
-Año <- 2018
+Año <- 2016
 
 # Escriba el año de los datos de población que va a usar
-Año_pop <- 2020
+Año_pop <- 2015
 
 # Capa base de cobertura (define insumos LU y TNT)
 # Opciones: "corine" o "MB"
