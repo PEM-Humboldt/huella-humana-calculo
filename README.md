@@ -158,7 +158,7 @@ Esta carpeta contiene:
 - Scripts auxiliares para análisis específicos o exploratorios (ej. prueba_categorías.R: Este código permite analizar cómo están distribuidos los valores de los diferentes factores de la huella en las categorías discretas de la misma.)
 - Rutinas cortas para procesamiento de datos
 - Subcarpetas con rutinas completas de cálculo de huella usando diferentes fuentes de cobertura. Se conservan como respaldo metodológico, ya que los códigos fueron reestructurados en pipelines y scripts maestros para evitar la duplicación de procesos.
- `- Huella_IAVH2025_Mapbiomas
+ ``` Huella_IAVH2025_Mapbiomas
       
     1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
 Además se preparan:
@@ -175,6 +175,7 @@ Además se preparan:
             - Vías terciarias y rurales  
             - Infraestructura peatonal y no clasificada  
             - Senderos naturales
+```
               
 - Huella_IAVH2025_Corine.
   
