@@ -127,6 +127,9 @@ Las rutinas usadas en 02_IHEH_calculo.R son:
     └- lu_he.R
     └- pd_he.R
 
+El flujo de trabajo general de las huellas es el siguiente:
+<img width="1023" height="1066" alt="huella flujo" src="https://github.com/user-attachments/assets/f9637160-f850-47ac-832f-689fcc21360b" />
+
 🔹 Huella_Diaz_Y_Adaptacion
 
 Contiene los códigos base de la metodología original de huella humana desarrollada por Julián Díaz, tal como fue implementada en el workflow de ArcMap. 
@@ -206,8 +209,6 @@ Además se preparan:
            
 ```
 
-El flujo de trabajo general de las huellas es el siguiente:
-<img width="1023" height="1066" alt="huella flujo" src="https://github.com/user-attachments/assets/f9637160-f850-47ac-832f-689fcc21360b" />
 
 
 ## Versiones de los paquetes usados
