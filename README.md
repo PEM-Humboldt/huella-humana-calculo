@@ -94,10 +94,10 @@ En esta sección se almacenan los scripts relacionados con la construcción de l
 
 En la carpeta principal se encuentran cuatro scripts clave:
 
-00_InsumosGenerales.R
-01_Insumosxhuella_automatizado.R
-02_IHEH_calculo.R
-03_DatosGeonetwork.R
+- 00_InsumosGenerales.R
+- 01_Insumosxhuella_automatizado.R
+- 02_IHEH_calculo.R
+- 03_DatosGeonetwork.R
 
 Los tres primeros scripts (00 a 02) se utilizan para la construcción del IHEH, integrando diferentes rutinas provenientes de la carpeta pipelines.
 
@@ -106,12 +106,11 @@ El script 03_DatosGeonetwork.R organiza y ajusta los resultados finales para su 
 🔹 pipelines
 
 Incluye las rutinas para el preprocesamiento y procesamiento de los insumos necesarios para el cálculo de la huella humana.
-
 Estos scripts organizan el flujo de trabajo de manera modular, facilitando la reutilización de procesos comunes como:
 
-Preparación de insumos base
-Cálculo de pesos (ej. red vial, red ferroviaria)
-Integración de variables espaciales
+- Preparación de insumos base
+- Cálculo de pesos (ej. red vial, red ferroviaria)
+- Integración de variables espaciales
 
 🔹 Huella_Diaz_Y_Adaptacion
 
@@ -119,24 +118,23 @@ Contiene los códigos base de la metodología original de huella humana desarrol
 
 Adicionalmente, incluye versiones adaptadas del método, en las cuales se incorporan:
 
-Diferentes tipos de vías
-Variables continuas
-Ajustes metodológicos (inclusión/remoción de variables)
+- Diferentes tipos de vías
+- Variables continuas
+- Ajustes metodológicos (inclusión/remoción de variables)
 
 🔹 Miscelaneo
-
 Esta carpeta contiene:
 
-Scripts auxiliares para análisis específicos o exploratorios
-Rutinas cortas para procesamiento de datos
-Versiones completas de cálculo de huella humana usando diferentes fuentes de cobertura (por ejemplo, Corine Land Cover y MapBiomas)
+- Scripts auxiliares para análisis específicos o exploratorios
+- Rutinas cortas para procesamiento de datos
+- Versiones completas de cálculo de huella humana usando diferentes fuentes de cobertura (por ejemplo, Corine Land Cover y MapBiomas)
 
 Las subcarpetas con rutinas completas se conservan como respaldo metodológico, ya que posteriormente los códigos fueron reestructurados en pipelines y scripts maestros para evitar la duplicación de procesos.
 
 🧩 Notas generales
-La estructura actual busca modularizar y estandarizar el flujo de trabajo.
-Muchas rutinas que antes estaban duplicadas fueron reorganizadas en pipelines y scripts principales.
-Las versiones antiguas se mantienen como referencia y control de calidad.
+- La estructura actual busca modularizar y estandarizar el flujo de trabajo.
+- Muchas rutinas que antes estaban duplicadas fueron reorganizadas en pipelines y scripts principales.
+- Las versiones antiguas se mantienen como referencia y control de calidad en la carpeta "Miscelaneo"
 
 
 El flujo de trabajo general de las huellas es el siguiente:
