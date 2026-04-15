@@ -94,11 +94,12 @@ En esta sección se almacenan los scripts relacionados con la construcción de l
 
 En la carpeta principal se encuentran cuatro scripts clave:
 
+```
 - 00_InsumosGenerales.R: Creación y definición del raster base (extensión, resolución y sistema de referencia espacial).
 - 01_Insumosxhuella_automatizado.R: Procesamiento de los datos que describen las presiones antrópicas.
 - 02_IHEH_calculo.R: Asignación de pesos e integración de las presiones para el cálculo del IHEH.
 - 03_DatosGeonetwork.R: Preparacion de datos en formato compatible con GeoNetwork.
-  
+```  
 Los tres primeros scripts (00 a 02) integran diferentes rutinas provenientes de la carpeta pipelines.
 
 🔹 pipelines
@@ -130,15 +131,16 @@ Las rutinas usadas en 02_IHEH_calculo.R son:
 
 Contiene los códigos base de la metodología original de huella humana desarrollada por Julián Díaz, tal como fue implementada en el workflow de ArcMap. 
 
+```
 1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comunmente, ya que son los que definen los parametros generales de la misma; proyección, extensión.
 Además se preparan:
     - Capas constantes con los parametros generales como: Ecosistemas potenciales y Tiempo de Intervención.
     - Tabla de consulta para la definición de las clases de biomasa y uso de tierra
 2. 01_Insumosxhuella.R: Se preparan los insumos necesarios para correr el IHEH y se almacenan en la carpeta de resultados intermedios, Res_Intermedios
 3. 02_HuellaHumana_Diaz.R: En este código calcula la huella 2018 replicando los pasos de los modelos de ArcMap de Julian Díaz. Por motivos computacionales fue necesario hacer hacer algunas modificaciones.
-
+```
 Adicionalmente, la carpeta incluye versiones adaptadas del método, en las cuales se incorporan: Diferentes tipos de vías, Variables continuas, Ajustes metodológicos (inclusión/remoción de variables). Los códigos asociados con estas adaptaciones son: 
-
+```
 5. 03_HuellaHumana_adaptada.R: En este código calcula la huella con el método de ecosistemas. Esta incluye los siguiientes cambios.
     - Variables continuas como continuas
     - Remoción de variables no esenciales para el cálculo.
@@ -150,7 +152,7 @@ Adicionalmente, la carpeta incluye versiones adaptadas del método, en las cuale
         - Vías terciarias y rurales  
         - Infraestructura peatonal y no clasificada  
         - Senderos naturales
-
+```
 🔹 Miscelaneo (Descripción parcial)
     
 Esta carpeta contiene:
