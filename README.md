@@ -128,13 +128,7 @@ Esta carpeta contiene:
 - Scripts auxiliares para análisis específicos o exploratorios
 - Rutinas cortas para procesamiento de datos
 - Versiones completas de cálculo de huella humana usando diferentes fuentes de cobertura (por ejemplo, Corine Land Cover y MapBiomas)
-
-Las subcarpetas con rutinas completas se conservan como respaldo metodológico, ya que posteriormente los códigos fueron reestructurados en pipelines y scripts maestros para evitar la duplicación de procesos.
-
-🧩 Notas generales
-- La estructura actual busca modularizar y estandarizar el flujo de trabajo.
-- Muchas rutinas que antes estaban duplicadas fueron reorganizadas en pipelines y scripts principales.
-- Las versiones antiguas se mantienen como referencia y control de calidad en la carpeta "Miscelaneo"
+- Subcarpetas con rutinas completas de cálculo de huella. Se conservan como respaldo metodológico, ya que los códigos fueron reestructurados en pipelines y scripts maestros para evitar la duplicación de procesos.
 
 
 El flujo de trabajo general de las huellas es el siguiente:
