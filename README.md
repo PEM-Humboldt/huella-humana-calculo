@@ -128,7 +128,7 @@ Las rutinas usadas en 02_IHEH_calculo.R son:
     └- pd_he.R
 
 El flujo de trabajo general de las huellas es el siguiente:
-<img width="1023" height="1066" alt="huella flujo" src="https://github.com/user-attachments/assets/f9637160-f850-47ac-832f-689fcc21360b" />
+<img width="1023" height="1066" alt="flujo_huella" src="https://github.com/user-attachments/assets/f9637160-f850-47ac-832f-689fcc21360b" />
 
 🔹 Huella_Diaz_Y_Adaptacion
 
