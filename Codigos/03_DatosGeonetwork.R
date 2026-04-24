@@ -24,7 +24,6 @@ library(gpkg)
 # Definir directorio(s) de trabajo -----------------------
 #**********************************************************
 
-# - - - Sugerencia: aquí podrías aclarar que se trabaja con rutas relativas
 setwd(file.path(this.path::this.path(), "..",".."))
 
 dir_datos <- file.path("datos")
@@ -36,36 +35,41 @@ dir_Resultados <- file.path("Resultados")
 # Parámetros globales -----------------------
 #**********************************************************
 
-# - - - Sugerencia: indicar que estos son los años disponibles para procesamiento
-años <- c(2018, 2020, 2022)
+# Años a procesar para procesamiento
+años <- c(2016, 2018, 2020, 2022)
 
-# - - - Sugerencia: aclarar que los nombres deben coincidir exactamente con los archivos
+# Capa base de cobertura 
+# Opciones: "corine" o "MB"
+base_cobertura <- "MB" 
+
+# Nombres de capas auxiliares
 capas <- c(
-  IHEH = "IHEH_IAVH1Cor",
-  LU   = "LU1",
+  IHEH = paste0("IHEH_IAVH_",base_cobertura),
+  LU   = paste0("LU_",base_cobertura), 
   Pop  = "Pop",
-  frag = "frag",
+  frag = paste0("frag_",base_cobertura), 
   Vias = "ViasCor"
 )
+
 
 #**********************************************************
 # Procesamiento -----------------------
 #**********************************************************
 # La siguiente línea se usa Si se quiere probar La iteración. De lo contrario ignorarla
-año <- 2018
+año <- 2024
 
 for (año in años) {
   
   message(">>> Procesando año: ", año)
   
   # 1. Leer rasters del año
-  # - - - Sugerencia: aclarar que se construyen dinámicamente los nombres de archivo
+  
   r_list <- lapply(capas, function(pref) {
     rast(paste0(dir_Resultados, "/", pref, año, ".tif"))
   })
   
   # 2. Crear stack raster multibanda
-  # - - - Sugerencia: explicar que se agrupan todas las capas en un solo objeto
+  
   r_stack <- rast(r_list)
   
   # 3. Asignar nombres a las bandas
@@ -82,15 +86,20 @@ for (año in años) {
   # - - - Sugerencia: aclarar que cada año se guarda como archivo independiente
   writeRaster(
     r_stack,
-    filename = paste0(dir_Resultados, "/Geonetwork/IHEHc_", año, ".tif"),
+    filename = paste0(dir_Resultados, "/Geonetwork/IHEH",base_cobertura,"_", año, ".tif"),
     overwrite = TRUE
+  )
+  
+  zip::zip(
+    zipfile = paste0(dir_Resultados, "/Geonetwork/IHEH", base_cobertura, "_", año,".zip"),
+    files = paste0(dir_Resultados, "/Geonetwork/IHEH", base_cobertura, "_", año, ".tif")
   )
 }
 
 
 # Gráfico vista previa ####
 
-# fraficar los resultados de un año
+# Graficar los resultados de un año
 plot(
   r_stack[[1]],
   col = hcl.colors(100, "RdYlGn", rev = TRUE),
