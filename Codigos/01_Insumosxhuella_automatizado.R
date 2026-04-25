@@ -56,8 +56,8 @@ dir_source <- file.path("Codigos","pipelines")
 #**********************************************************
 
 ## Definir Periódo al calcular y actualidad los datos a usar
-Año <- 2016 # definir el año que se quiere calcular
-año_pop <- 2025 # escribir el año de los datos de población a usar-
+Año <- 2014 # definir el año que se quiere calcular
+año_pop <- 2015 # escribir el año de los datos de población a usar-
 
 scoord <- crs("EPSG:9377") # Sistema de coordenadas del raster base. Cambiar cuando se defina la proyección
 
@@ -115,14 +115,14 @@ osm0 <- st_read(
   file.path(
     dir_datos,
     "vias",
-    "colombia-170101-free.shp",
+    "colombia-150101-free.shp",
     #colombia-190101-free.shp",
     #"210101.shp"
     "gis_osm_roads_free_1.shp"
   )
 )
 
-vias_IGAC0 <- st_read(file.path(dir_datos,"vias","ViasJulian2018","vias.shp"))# 2018
+vias_IGAC0 <- st_read(file.path(dir_datos,"vias","ViasJulian2018","vias.shp"))# 2014, 2016, 2018
 #vias_IGAC0 <- st_read(file.path(dir_datos, "vias", "IGAC_viasD2024", "Vias_IGAC.shp"))# 2022 y 2020, 2024
 
 # Capa de red férrea oficial (fuente: IGAC / ANI) 
