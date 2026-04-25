@@ -70,7 +70,7 @@ Vias <- Vias %>%
 
 # Revisar la calidad. No Deben haber vacías En la columna funcionamiento
 View(Vias)
-cat("⚠ Revisar la calidad. No Deben haber vacías En la columna Funcionamiento.\n")
+cat("⚠ Revisar la calidad. No Deben haber celdas vacías en la columna 'Funcionamiento'. Si  alguna fila tiene en la columna 'Funcionamiento'el valor 'Inactivo 1' revisar si corresponde a una via inactiva de verdad. Si ambas condiciones son ciertas puede continuar  , .\n")
 
 repeat {
   resp <- tolower(readline("¿Deseas continuar? (s/n): "))
@@ -84,6 +84,11 @@ if (resp == "n") {
 }
 
 cat("Continuando con el proceso...\n")
+
+# correjir categoria Inactivo1 a Inactivo
+Vias <- Vias %>%
+  mutate(Funcionamiento = recode(Funcionamiento,
+                                 "Inactivo1" = "Inactivo"))
 
 
 # Dividir la capa en una lista según el funcionamiento (Activo/Inactivo)
