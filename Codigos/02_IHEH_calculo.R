@@ -44,7 +44,7 @@ dir_source <- file.path("Codigos","pipelines")
 #**********************************************************
 ## Año #### 
 # Escriba el año de interes
-Año <- 2016
+Año <- 2014
 
 # Escriba el año de los datos de población que va a usar
 Año_pop <- 2015
@@ -89,10 +89,8 @@ vias2 <- file.path(dir_Intermedios, paste0 ("osm_IGAc2_proj_nal_", Año,".shp"))
 
 # vias ferreas
 
-V_ferreas4 <- rast(file.path(dir_Intermedios, paste0("pesos_trenes_", 4,"_", Año, ".tiff")))
-V_ferreas6 <- rast(file.path(dir_Intermedios, paste0("pesos_trenes_", 6,"_", Año, ".tiff")))
-
-
+V_ferreas4 <- rast(file.path(dir_Intermedios, paste0("pesos_trenes_", 4,"_proj_nal_", Año, ".tiff")))
+V_ferreas6 <- rast(file.path(dir_Intermedios, paste0("pesos_trenes_", 6,"_proj_nal_", Año, ".tiff")))
 
 #**********************************************************
 # Preparar datos ----------------------------
