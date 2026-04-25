@@ -104,7 +104,7 @@ if (Año >=2020) {
     ))
   
   
-} else if (Año == 2016 | Año == 2018 ) {
+} else if (Año == 2014 |Año == 2016 | Año == 2018 ) {
   vias_IGAC2 <- vias_IGAC0 %>%
     mutate(peso = case_when(
       GP_RTP %in% c(1:3) ~ 8,
