@@ -56,7 +56,7 @@ capas <- c(
 # Procesamiento -----------------------
 #**********************************************************
 # La siguiente línea se usa Si se quiere probar La iteración. De lo contrario ignorarla
-año <- 2024
+año <- 2014
 
 for (año in años) {
   
