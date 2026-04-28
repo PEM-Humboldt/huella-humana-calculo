@@ -92,7 +92,7 @@ En esta sección se almacenan los scripts relacionados con la construcción de l
 
 🔹 Scripts principales (nivel raíz de Codigos)
 
-En la carpeta principal se encuentran cuatro scripts clave:
+En la carpeta principal se encuentran cuatro scripts clave, estos se corren en orden para el cálculo de la huella:
 
 ```
 - 00_InsumosGenerales.R: Creación y definición del raster base (extensión, resolución y sistema de referencia espacial).
