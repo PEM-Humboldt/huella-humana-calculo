@@ -44,6 +44,7 @@ URLMos <- list(url1, url2, url3, url4, url5, url6)
 # Definir el nombre del archivo descargado
 destfile <- "GHS_POP_2023A.zip"
 
+# Función para Descargar y descomprimir
 PopDescarga <- function(url){
   # Descargar el archivo zip
   download.file(url, file.path(dir_datos, "Pop", destfile), mode = "wb")

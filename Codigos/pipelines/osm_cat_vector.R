@@ -1,3 +1,26 @@
+#' Preparacion de infraestructura vial (OSM + IGAC)
+#'
+#' Descripción
+#' Define los parámetros de clasificación y realiza el procesamiento de la
+#' infraestructura vial a partir de datos de OpenStreetMap (OSM) y del IGAC.
+#' Se asignan pesos a las vías según su tipo, se homologan ambas fuentes y se
+#' agrupan por categorías de impacto para su posterior uso en el cálculo de
+#' accesibilidad (dr_he).
+#'
+#' Detalles
+#' - Se establecen categorías de vías OSM con pesos diferenciales (8, 5, 4, 2),
+#'   que representan distintos niveles de impacto antrópico.
+#' - Los valores tipo "8/4" indican el rango de influencia: impacto directo
+#'   máximo (8) y umbral de influencia indirecta (4).
+#' - Se asigna un atributo de peso a cada segmento vial según su clasificación.
+#' - Se genera una tabla de control de calidad para verificar la correcta asignación.
+#' - Se separan las geometrías por categoría de peso para análisis independiente.
+#' - Se asignan pesos a las vías del IGAC según el año y su atributo correspondiente.
+#' - Se reproyectan las capas para asegurar consistencia espacial.
+#' - Se integran las capas OSM e IGAC por categoría de peso.
+#' - Se exportan capas intermedias para su uso en el análisis de accesibilidad.
+
+
 # Parámetros de vias OSM ####
 #-------------------------------------------------- -
 # Aquí los parametros para la asignación de pesos de la distancia a vias. Los pesos tienen una escala continua y es diferencial para tipos de vías.

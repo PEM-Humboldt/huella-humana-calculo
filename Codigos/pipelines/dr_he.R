@@ -1,3 +1,25 @@
+#' Cálculo de presión por infraestructura de transporte (dr_he)
+#'
+#' Descripción:
+#' Genera la capa de presión por infraestructura de transporte (dr_he) a partir
+#' de vías y red férrea. El proceso incluye la rasterización de las capas sobre
+#' una grilla base, el cálculo de distancia euclidiana y la aplicación de una
+#' función de decaimiento exponencial para modelar la influencia de la accesibilidad.
+#' Los valores se asignan según la categoría de la vía, considerando efectos
+#' directos e indirectos, y posteriormente se integran tomando el valor máximo
+#' por celda.
+#'
+#' Detalles
+#' - Las vías se agrupan por categorías (v2, v4, v5, v8) según su nivel de impacto.
+#' - Se calcula la distancia euclidiana desde cada celda a la infraestructura.
+#' - Se aplica una función de decaimiento exponencial basada en distancia.
+#' - Se asignan valores máximos de influencia según el tipo de vía.
+#' - Se ajustan valores mínimos a cero para evitar ruido.
+#' - Las capas de vías férreas se incorporan asignando 0 a valores NA.
+#' - La capa final se obtiene tomando el valor máximo entre todas las fuentes de presión.
+
+
+
 ## vias- dr_he  ####
 #**********************************************************
 # Asignar los pesos a las carreteras y vías férreas

@@ -43,6 +43,15 @@ r_base <- rast(file.path(dir_datos, "r_base.tif"))
 # Funciones
 
 # Función para verificar si el CRS coincide
+
+#' @description Función que evalúa si el sistema de referencia de coordenadas (CRS)
+#' de un objeto espacial coincide con un CRS de referencia.
+#'
+#' @param r Objeto espacial (raster o vector) con información de CRS.
+#' @param crs_ref CRS de referencia para la comparación.
+#'
+#' @return Valor lógico: TRUE si los CRS coinciden, FALSE en caso contrario.
+
 crs_igual <- function(r, crs_ref) {
   tryCatch({
     crs(r) == crs_ref
