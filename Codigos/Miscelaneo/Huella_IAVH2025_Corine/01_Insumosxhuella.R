@@ -310,7 +310,7 @@ corine_col_p <- corine_col_p %>%
       TRUE ~ NA_real_
     )
   ) %>% 
-  mutate( # 1: Transformado, 0: No transformado
+  mutate( # 0: Transformado, 1: No transformado
   TNT = case_when(
     pesos_det %in% c(2:5) ~ 0,   # Transformado
     pesos_det %in% c(0) ~ 1,   # Natural
