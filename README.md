@@ -6,10 +6,8 @@ Para el territorio nacional corriendo todos los pasos el tiempo de ejecución de
 Idealmente el cálculo de la huella humana está planteado bienal.
 Las capas de huella se pueden encontrar en [Geonetwork](https://geonetwork.humboldt.org.co/geonetwork/srv/spa/catalog.search#/metadata/0277ec94-63b3-41db-9349-d53434fa1251)
 
-- fALTA:
-- doi
 
-## Organizar directorio de trabajo
+## Organización del directorio de trabajo
 
 Los datos para correr los códigos están almacenados
 [aquí](https://drive.google.com/file/d/1PUlXwC8_2_-43vScYRxiwmlgcgHVqB0F/view?usp=drive_link).
