@@ -30,7 +30,7 @@ library(raster)
 # Definir directorio(s) de trabajo -----------------------
 #**********************************************************
 
-setwd(file.path(this.path::this.path(), "..", "..",".."))
+setwd(file.path(this.path::this.path(),"..", "..", "..",".."))
 
 dir_datos <- file.path("datos")
 dir_Intermedios<- file.path ("Res_Intermedios")
@@ -66,13 +66,13 @@ Pop0 <- rast(file.path(dir_Intermedios, paste0("pop_km2A_", Año_pop, ".tif")))
 
 # Vectores de infraestructura vial
 
-vias8 <- file.path(dir_Intermedios, paste0 ("osm_IGAc8A_",Año,"enero.shp")) %>%
+vias8 <- file.path(dir_Intermedios, paste0 ("osm_IGAc8AS_",Año,"enero.shp")) %>%
   st_read()
-vias5 <- file.path(dir_Intermedios, paste0 ("osm_IGAc5A_",Año,"enero.shp")) %>%
+vias5 <- file.path(dir_Intermedios, paste0 ("osm_IGAc5AS_",Año,"enero.shp")) %>%
   st_read()
-vias4 <- file.path(dir_Intermedios, paste0 ("osm_IGAc4A_",Año,"enero.shp")) %>%
+vias4 <- file.path(dir_Intermedios, paste0 ("osm_IGAc4AS_",Año,"enero.shp")) %>%
   st_read()
-vias2 <- file.path(dir_Intermedios, paste0 ("osm_IGAc2A_",Año,"enero.shp")) %>%
+vias2 <- file.path(dir_Intermedios, paste0 ("osm_IGAc2AS_",Año,"enero.shp")) %>%
   st_read()
 
 # vias ferreas
@@ -196,7 +196,7 @@ dr_he <- app(c(Vias_2R$v2, Vias_2R$v4, Vias_4R$v5, Vias_4R$v8, V_ferreas4, V_fer
 #dr_he[dr_he < 0.035] <- 0 
 
 # Visdr_he0# Visualización de las capas intermedias y resultado final
-
+gc()
 plot(Vias_4R$v8, main = "Influencia vías categoría 8")
 plot(Vias_4R$v5, main = "Influencia vías categoría 5")
 plot(Vias_2R$v4, main = "Influencia vías categoría 4")
@@ -243,6 +243,18 @@ plot(if_he)
 # Cálculo de Huella ####
 #**********************************************************
 #*
+Lu_he <- rast(
+   paste0(dir_Resultados, "/LUA", Año, ".tif")
+ )
+Pd_he <- rast(
+   paste0(dir_Resultados, "/PopA", Año, ".tif")
+ )
+if_he <- rast(
+  paste0(dir_Resultados, "/fragA", Año, ".tif")
+  )
+
+#*
+#*
 
 Pd_he <- crop(Pd_he,Lu_he)
 dr_he <- crop(dr_he,Lu_he)
@@ -261,13 +273,13 @@ plot(IHEH1002)
 ## Guardar resultado crs:9377####
 writeRaster(
   IHEH1002,
-  paste0(dir_Resultados, "/IHEH_IAVHA_enero", Año, ".tif"), 
+  paste0(dir_Resultados, "/IHEH_IAVHA_S_enero", Año, ".tif"), 
   overwrite=TRUE)
 
 
 writeRaster(
   IHEH1002,
-  paste0(dir_Resultados, "/IHEH_IAVHA_enerohalo", Año, ".tif"), 
+  paste0(dir_Resultados, "/IHEH_IAVHAS_enerohalo", Año, ".tif"), 
   overwrite=TRUE)
 
 
@@ -287,7 +299,7 @@ writeRaster(
   overwrite=TRUE)
 writeRaster(
   dr_he,
-  paste0(dir_Resultados, "/ViasA", Año, ".tif"), 
+  paste0(dir_Resultados, "/ViasAS", Año, ".tif"), 
   overwrite=TRUE)
 
 
@@ -316,7 +328,7 @@ plot(r_class)
 # Guardar resultado
 writeRaster(
   r_class,
-  paste0(dir_Resultados, "/IHEH_IAVHA_class_enero_halo", Año, ".tif"), 
+  paste0(dir_Resultados, "/IHEH_IAVHA_S_class_enero_halo", Año, ".tif"), 
   overwrite=TRUE)
 
 Sys.time()
