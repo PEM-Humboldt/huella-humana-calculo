@@ -40,7 +40,7 @@ library(rlang)
 # Definir directorio(s) de trabajo -----------------------
 #**********************************************************
 
-setwd(file.path(this.path::this.path(),"..","..",".."))
+setwd(file.path(this.path::this.path(),"..","..","..",".."))
 
 dir_datos<- file.path("Datos")
 dir_Intermedios<- file.path ("Res_Intermedios")
@@ -55,7 +55,7 @@ dir_Resultados<- file.path ("Resultados")
 #**********************************************************
 
 ## Definir Período al calcular y actualidad los datos a usar
-Año <- 2025 # definir el año que se quiere calcular
+Año <- 2026 # definir el año que se quiere calcular
 año_pop <- 2025 # escribir el año de los datos de población a usar- 
 
 
@@ -86,13 +86,10 @@ osm_class2 <- c("path")
 
 # Capas Vector
 
-#osm0<-st_read(file.path(dir_datos,"vias", "colombia-190101-free.shp","gis_osm_roads_free_1.shp"))#2018
-#osm0<-st_read(file.path(dir_datos,"vias", "colombia-210101-free.shp","210101.shp"))#2020
-osm0<-st_read(file.path(dir_datos,"vias", "colombia-240101-free.shp","gis_osm_roads_free_1.shp"))#2024 comienzos
-osm0<-st_read(file.path(dir_datos,"vias", "colombia-250101-free.shp","gis_osm_roads_free_1.shp"))#2025 comienzos
+#osm0<-st_read(file.path(dir_datos,"vias", "colombia-240101-free.shp","gis_osm_roads_free_1.shp"))#2024 comienzos
+#osm0<-st_read(file.path(dir_datos,"vias", "colombia-250101-free.shp","gis_osm_roads_free_1.shp"))#2025 comienzos
+osm0<-st_read(file.path(dir_datos,"vias", "colombia-260101-free.shp","gis_osm_roads_free_1.shp"))#2026 comienzos
 
-#vias_IGAC0 <- st_read(file.path(dir_datos,"vias","ViasJulian2018","vias.shp"))# 2018
-vias_IGAC0 <- st_read(file.path(dir_datos,"vias","IGAC_viasD2024","Vias_IGAC.shp"))# 2022 y 2020
 
 # Capas Raster
 
@@ -102,7 +99,8 @@ r_base10<-rast(file.path(dir_datos,"r_base10.tif" ))
 
 
 # nucleos
-region <- st_read("Datos/amazonas/NDFyB_V5-Amazonia_proHuella.shp") %>% st_transform(scoord)
+region <- st_read("Datos/amazonas/NDFyB_V5-Amazonia_proHuella.shp") %>% st_transform(scoord) #nucleos viejos
+#region <- st_read("Datos/amazonas/Gobernanza_Forestal_-3293470095607577430/Núcleos_de_Desarrollo_Forestal_y_de_la_Biodiversidad.shp") %>% st_transform(scoord)
 
 #**********************************************************
 # Preparar datos ----------------------------
@@ -144,27 +142,16 @@ osm_groups <- lapply(osm_groups, function(x) { st_sf(data.frame(ID = 1, geom = x
 
 # Asignar pesos a las vías del IGAC según su tipo de vía (TIPO_VIA) si es 2022 o GP_RTP  si es 2018
 
-if (Año == 2024 | Año == 2025 ) {
+vias_IGAC0 <- st_read(file.path(dir_datos,"vias","ViasSinchiOct25","ViasSinchiOct25","Vías Terrestres NDFyB 25K Octubre 2025.shp"))# 2022 y 2020
   vias_IGAC2 <- vias_IGAC0 %>%
     mutate(peso = case_when(
-      TIPO_VIA %in% c(1:4) ~ 8,  # Vías principales
-      TIPO_VIA %in% c(5:7) ~ 5,  # Vías secundarias
-      TIPO_VIA %in% 8 ~ 2        # Caminos o vías terciarias
-    ))
+      v_tipo %in% c(1:3) ~ 8,  # Vías principales
+      v_tipo %in% c(4,5,6) ~ 5,  # Vías secundarias
+      v_tipo %in% c(7,8) ~ 2        # caminos senderos varios
   
+)
+)
 
-} else if (Año == 2018) {
-  
-  vias_IGAC2 <- vias_IGAC0 %>%
-    mutate(peso = case_when(
-      GP_RTP %in% c(1:3) ~ 8,  # Vías principales
-      GP_RTP %in% c(4) ~ 5,  # Vías secundarias
-      GP_RTP %in% 8 ~ 2        # Caminos o vías terciarias
-    ))
-  
-  
-  
-}
 
 
 # Reproyectar las vías del IGAC al sistema de coordenadas de OSM para que coincidan espacialmente
@@ -187,23 +174,16 @@ osm_igac4 <- rbind(IGAC_groups$`4`, osm_groups$`4`)  # En este caso solo OSM tie
 # revisar estructura de la capa
 str(osm_igac8)
 
-# Guardar la capa en resultados intermedios
-st_write(osm_igac8, file.path(dir_Intermedios, paste0("osm_IGAc8_", Año, "enero.shp")), append = FALSE)
-st_write(osm_igac5, file.path(dir_Intermedios, paste0("osm_IGAc5_", Año, "enero.shp")), append = FALSE)
-st_write(osm_igac4, file.path(dir_Intermedios, paste0("osm_IGAc4_", Año, "enero.shp")), append = FALSE)
-st_write(osm_igac2, file.path(dir_Intermedios, paste0("osm_IGAc2_", Año, "enero.shp")), append = FALSE)
-
-
 
 A <- lapply(list(osm_igac8,osm_igac5,osm_igac4,osm_igac2),  function(x){st_intersection(x,region_buf)})
  plot(A[[1]])
 
 
 # Guardar la capa en resultados intermedios Amazonas
-st_write(A[[1]], file.path(dir_Intermedios, paste0("osm_IGAc8A_", Año, "enero.shp")), append = FALSE)
-st_write(A[[2]], file.path(dir_Intermedios, paste0("osm_IGAc5A_", Año, "enero.shp")), append = FALSE)
-st_write(A[[3]], file.path(dir_Intermedios, paste0("osm_IGAc4A_", Año, "enero.shp")), append = FALSE)
-st_write(A[[4]], file.path(dir_Intermedios, paste0("osm_IGAc2A_", Año, "enero.shp")), append = FALSE)
+st_write(A[[1]], file.path(dir_Intermedios, paste0("osm_IGAc8AS_", Año, "enero.shp")), append = FALSE)
+st_write(A[[2]], file.path(dir_Intermedios, paste0("osm_IGAc5AS_", Año, "enero.shp")), append = FALSE)
+st_write(A[[3]], file.path(dir_Intermedios, paste0("osm_IGAc4AS_", Año, "enero.shp")), append = FALSE)
+st_write(A[[4]], file.path(dir_Intermedios, paste0("osm_IGAc2AS_", Año, "enero.shp")), append = FALSE)
 
 
 ##  Población  --------------------------------------------------
@@ -252,7 +232,7 @@ gc()
 # preparar la extension para cortar y proyectarla
 
 ext_projected <- ext(r_base) %>%
-  project(from= crs(r_base) , to= crs(pop00))
+  terra::project(from= crs(r_base) , to= crs(pop00))
 
 # cortar
 pop00c <- crop(pop00, ext_projected)
@@ -292,7 +272,13 @@ writeRaster(pop_km2A10, file.path(dir_Intermedios, paste0("pop_km2A_",año_pop,"
 
 
 corine <- st_read("Datos/Corine/amazonas/Coberturas_de_la_Tierra_2025_SI_Escala_1_25000-20260211T213757Z-1-001/Coberturas_de_la_Tierra_2025_SI__Escala_1_25000.shp")
+corine <- st_read("Datos/Corine/amazonas/COBERT~2/CAPA_D~1.SHP")
+d <- st_read("C:/Users/alejandra.narvaez/Downloads/Coberturas_de_la_Tierra_NDFyB_25K_Enero_2026.geojson")
+d <- st_read("C:/Users/alejandra.narvaez/Downloads/Coberturas_de_la_Tierra_NDFyB_25K_Octubre_2025.geojson")
+d <- st_read("C:/Users/alejandra.narvaez/Downloads/Coberturas_de_la_Tierra_NDFyB_25K_Ene2025/Coberturas_de_la_Tierra_NDFyB_25K_Ene2025.shp")
 
+d %>% st_drop_geometry()
+names(d)
 
 # proyectar a sistema de referencia  base
 corine_col_p <- st_transform(corine,scoord)
