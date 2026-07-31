@@ -4,9 +4,7 @@
 #
 # Descripción: En este código se preparan los insumos necesarios para correr el IHEH
 # Estos son :
-## - Vias: 2018: IGAc de Julian y descarga 2019 de osm por que tiene fecha enero 2019 
-## - Vias: 2020: IGAc (https://www.colombiaenmapas.gov.co/?e=-82.43784778320864,-0.17644239911865092,-71.23179309571162,9.90326984502256,4686&b=igac&u=0&t=23&servicio=205) y descarga 2021 de osm por que tiene fecha enero 2021, Para el cálculo de años posteriores seguir esquema del 2020
-## - Vias: 2022: IGAc (https://www.colombiaenmapas.gov.co/?e=-82.43784778320864,-0.17644239911865092,-71.23179309571162,9.90326984502256,4686&b=igac&u=0&t=23&servicio=205) y descarga 2023 de osm por que tiene fecha enero 2023, Para el cálculo de años posteriores seguir esquema del 2020
+## - Vias mezclando insumos del igac y osm. Ajuste los insumos de entrada según el año
 
 ## - Población: Descarga (URl en código),  corte a zona de estudio , reproyección, cálculo de densidad. No es necesario correrlo si se va a usar la poblacióin del IHEH anterior (la población se calcula cada 5 años. Ej 2015, 020, etc). 
 
@@ -300,7 +298,7 @@ Cod_ecos <- "codigo"
 archivo_LU0 <- file.path(dir_Intermedios,paste0( "LU0_corineA10",Año,"enero.tif"))
 archivo_TNT0 <- file.path(dir_Intermedios,paste0( "TNT0_corineA10",Año,"enero.tif"))
 
-r_base10A <- crop(r_base10,region_buf)
+r_base10A <- crop(r_base10,region_buf) cuidado revisa
 
 
 # Condición para crear o no los archivos

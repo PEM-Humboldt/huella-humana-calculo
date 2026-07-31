@@ -7,7 +7,7 @@
 # Este script calcula las presiones antrópicas potenciales asociadas a la 
 # navegabilidad de ríos, como parte de la construcción del Índice de Huella Ecológica Humana (IHEH).
 
-# NO BORRARRRRRRRRRRRRRRRRRRRRRRRRRRRRR TIENE PRCEDIMIENTO REGIONAL!!!
+# NO BORRARRRRRRRRRRRRRRRRRRRRRRRRRRRRR TIENE PRCEDIMIENTO nucleo!!!
 # 
 # El procedimiento se basa en:
 # 1. Considerar como navegables los ríos que:
@@ -108,12 +108,7 @@ patron_extra <- "Río"
 
 # Filtrar ríos dobles y sencillos por nombre
 
-# rios_nav_d <- rios_d[grepl(patron, rios_d$NOMBRE_GEO, ignore.case = TRUE) & 
-#                        grepl(patron_extra, rios_d$NOMBRE_GEO, ignore.case = TRUE), ] %>% 
-#   mutate(ID_rast = 3)
-
-
-#  se usa esta version si se quiere tomar todos los rios de drenaje doble
+#  se usa esta version si se quiere tomar todos los ríos de drenaje doble
  rios_nav_d <- rios_d%>% 
    mutate(ID_rast = 3)
 
