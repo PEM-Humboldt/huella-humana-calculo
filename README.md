@@ -209,7 +209,8 @@ Además se preparan:
 ```
 ```
 # Carpeta: Huella_IAVH2025_CorineNDFB.
-Con este código se puede calcular la huella espacial humana para los núcleos de desarrollo forestal sin necesidad de hacer ajustes de parámetros. Sólo la revisión de la disponibilidad de los datos de entrada. 
+Con este código se puede calcular la huella espacial humana para los núcleos de desarrollo forestal sin necesidad de hacer ajustes de parámetros.
+Sólo la revisión de la disponibilidad de los datos de entrada es necesaria. 
   
     1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comúnmente, ya que son los que definen los parámetros generales de la misma; proyección, extensión.
 Además se preparan:
