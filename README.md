@@ -212,15 +212,17 @@ Además se preparan:
 Con este código se puede calcular la huella espacial humana para los núcleos de desarrollo forestal sin necesidad de hacer ajustes de parámetros.
 Sólo la revisión de la disponibilidad de los datos de entrada es necesaria. 
   
-    1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comúnmente, ya que son los que definen los parámetros generales de la misma; proyección, extensión.
-Además se preparan:
+    1. 00_InsumosGenerales.R: En este código se preparan los insumos base para correr el IHEH. Dichos insumos no cambian comúnmente, ya que son
+    los que definen los parámetros generales de la misma; proyección, extensión.
+    Además se preparan:
         - Capas bases constantes con los parámetros generales 
     2. 01_Insumosxhuella.R: Se preparan los insumos necesarios para correr el IHEH y se almacenan en la carpeta de resultados intermedios, Res_Intermedios.
         - División de tipos de vías en formato vector
         - Descarga de datos poblacionales creación de mosaico y cálculo de densidad
         - Creación de raster de pesos de cobertura de la tierra
         - Creación de raster transformado -no transformado
-    4. 021_Pesos_ferreos.R:  Calcula las presiones antrópicas potenciales asociadas a las vías férreas.
+    3. 021_Pesos_ferreos.R: Calcula las presiones antrópicas potenciales asociadas a las vías férreas.
+    4. 02_Pesos_navegabilidad.R: Calcula las presiones antrópicas potenciales asociadas a ríos navegable. Específica para Amzonas. 
     5. 04_HuellaHumana_adaptadaVias: En este código se calcula la huella con el método de ecosistemas. Esta incluye los siguientes cambios:  
         - Variables continuas como continuas  
         - Remoción de variables no esenciales para el cálculo  
