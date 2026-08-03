@@ -222,7 +222,7 @@ Sólo la revisión de la disponibilidad de los datos de entrada es necesaria.
         - Creación de raster de pesos de cobertura de la tierra
         - Creación de raster transformado -no transformado
     3. 021_Pesos_ferreos.R: Calcula las presiones antrópicas potenciales asociadas a las vías férreas.
-    4. 02_Pesos_navegabilidad.R: Calcula las presiones antrópicas potenciales asociadas a ríos navegable. Específica para Amzonas. 
+    4. 02_Pesos_navegabilidad.R: Calcula las presiones antrópicas potenciales asociadas a ríos navegable. Específica para Amazonas. 
     5. 04_HuellaHumana_adaptadaVias: En este código se calcula la huella con el método de ecosistemas. Esta incluye los siguientes cambios:  
         - Variables continuas como continuas  
         - Remoción de variables no esenciales para el cálculo  
