@@ -56,8 +56,8 @@ dir_source <- file.path("Codigos","pipelines")
 #**********************************************************
 
 ## Definir Periódo al calcular y actualidad los datos a usar
-Año <- 2014 # definir el año que se quiere calcular
-año_pop <- 2015 # escribir el año de los datos de población a usar-
+Año <- 2024 # definir el año que se quiere calcular
+año_pop <- 2020 # escribir el año de los datos de población a usar-
 
 scoord <- crs("EPSG:9377") # Sistema de coordenadas del raster base. Cambiar cuando se defina la proyección
 
@@ -65,7 +65,7 @@ scoord <- crs("EPSG:9377") # Sistema de coordenadas del raster base. Cambiar cua
 # Capa base de cobertura (define insumos LU y TNT)
 # Opciones: "corine" o "MB"
 
-base_cobertura <- "MB"  
+base_cobertura <- "corine"  
 
 
 #**********************************************************
@@ -115,15 +115,16 @@ osm0 <- st_read(
   file.path(
     dir_datos,
     "vias",
-    "colombia-150101-free.shp",
-    #colombia-190101-free.shp",
+    "colombia-250101-free.shp",
+    #"colombia-230101-free.shp",
+    #"colombia-210101-free.shp",
+    #"colombia-190101-free.shp",
     #"210101.shp"
     "gis_osm_roads_free_1.shp"
   )
 )
 
-vias_IGAC0 <- st_read(file.path(dir_datos,"vias","ViasJulian2018","vias.shp"))# 2014, 2016, 2018
-#vias_IGAC0 <- st_read(file.path(dir_datos, "vias", "IGAC_viasD2024", "Vias_IGAC.shp"))# 2022 y 2020, 2024
+vias_IGAC0 <- st_read(file.path(dir_datos, "vias", "IGAC_viasD2024", "Vias_IGAC.shp"))# 2022 y 2020, 2024
 
 # Capa de red férrea oficial (fuente: IGAC / ANI) 
 # ajustar el nombre de ser necesario 
@@ -135,10 +136,10 @@ Vias <- st_read(file.path(dir_datos, "vias", "ferreas", "RedFerrea_actuali.shp")
 ##  Vías ----------------------------------------------
 
 # Se crean variables con las rutas
-OI_file8 <- file.path(dir_Intermedios, paste0("osm_IGAc8_proj_nal_", Año, ".shp"))
-OI_file5 <- file.path(dir_Intermedios, paste0("osm_IGAc5_proj_nal_", Año, ".shp"))
-OI_file4 <- file.path(dir_Intermedios, paste0("osm_IGAc4_proj_nal_", Año, ".shp"))
-OI_file2 <- file.path(dir_Intermedios, paste0("osm_IGAc2_proj_nal_", Año, ".shp"))
+OI_file8 <- file.path(dir_Intermedios, paste0("osm_IGAc8_proj_nal_ac", Año, ".shp"))
+OI_file5 <- file.path(dir_Intermedios, paste0("osm_IGAc5_proj_nal_ac", Año, ".shp"))
+OI_file4 <- file.path(dir_Intermedios, paste0("osm_IGAc4_proj_nal_ac", Año, ".shp"))
+OI_file2 <- file.path(dir_Intermedios, paste0("osm_IGAc2_proj_nal_ac", Año, ".shp"))
 
 
 # Ejecutar proceso solo si NO existen los archivos
