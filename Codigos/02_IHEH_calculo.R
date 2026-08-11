@@ -44,15 +44,15 @@ dir_source <- file.path("Codigos","pipelines")
 #**********************************************************
 ## Año #### 
 # Escriba el año de interes
-Año <- 2014
+Año <- 2018
 
 # Escriba el año de los datos de población que va a usar
-Año_pop <- 2015
+Año_pop <- 2020
 
 # Capa base de cobertura (define insumos LU y TNT)
 # Opciones: "corine" o "MB"
 
-base_cobertura <- "MB" 
+base_cobertura <- "corine" 
 
 
 #**********************************************************
@@ -78,19 +78,29 @@ Pop0 <- rast(file.path(dir_Intermedios, paste0("pop_km2_", Año_pop, ".tif")))
 
 # Vectores de infraestructura vial
 
-vias8 <- file.path(dir_Intermedios, paste0 ("osm_IGAc8_proj_nal_", Año,".shp")) %>%
+vias8 <- file.path(dir_Intermedios, paste0 ("osm_IGAc8_proj_nal_ac", Año,".shp")) %>%
   st_read()
-vias5 <- file.path(dir_Intermedios, paste0 ("osm_IGAc5_proj_nal_", Año,".shp")) %>%
+vias5 <- file.path(dir_Intermedios, paste0 ("osm_IGAc5_proj_nal_ac", Año,".shp")) %>%
   st_read()
-vias4 <- file.path(dir_Intermedios, paste0 ("osm_IGAc4_proj_nal_", Año,".shp")) %>%
+vias4 <- file.path(dir_Intermedios, paste0 ("osm_IGAc4_proj_nal_ac", Año,".shp")) %>%
   st_read()
-vias2 <- file.path(dir_Intermedios, paste0 ("osm_IGAc2_proj_nal_", Año,".shp")) %>%
+vias2 <- file.path(dir_Intermedios, paste0 ("osm_IGAc2_proj_nal_ac", Año,".shp")) %>%
   st_read()
 
 # vias ferreas
 
 V_ferreas4 <- rast(file.path(dir_Intermedios, paste0("pesos_trenes_", 4,"_proj_nal_", Año, ".tiff")))
 V_ferreas6 <- rast(file.path(dir_Intermedios, paste0("pesos_trenes_", 6,"_proj_nal_", Año, ".tiff")))
+
+
+#**********************************************************
+# Rutas para guardar las capas intermedias ----------------
+#**********************************************************
+
+Lu_he_file <- paste0(dir_Resultados, "/LU_", base_cobertura, Año, ".tif")
+Pd_he_file <- paste0(dir_Resultados, "/Pop", Año, ".tif")
+if_he_file <- paste0(dir_Resultados, "/frag_", base_cobertura, Año, ".tif")
+dr_he_file <- paste0(dir_Resultados, "/Viasac", Año, ".tif")
 
 #**********************************************************
 # Preparar datos ----------------------------
@@ -100,7 +110,18 @@ V_ferreas6 <- rast(file.path(dir_Intermedios, paste0("pesos_trenes_", 6,"_proj_n
 #**********************************************************
 
 # Reescalar la cobertura de la tierra de 0 a 10 (original 0–5)
-source(file.path(dir_source,"lu_he.R"))
+
+if (!all(file.exists(Lu_he_file))) {
+  cat("Procesando y creando archivos lu_he...\n")
+  
+  source(file.path(dir_source,"lu_he.R"))
+  
+} else {
+  Lu_he <- rast(Lu_he_file)
+  
+  cat("Los archivos de Lu_he ya existen. Se cargan las capas.\n")
+}
+
 
 plot(Lu_he)
 
@@ -110,7 +131,19 @@ plot(Lu_he)
 
 # Definición de los pesos basados en densidad poblacional (Venter 2016)
 
-source(file.path(dir_source,"pd_he.R"))
+
+if (!all(file.exists(Pd_he_file))) {
+  cat("Procesando y creando archivos Pd_he...\n")
+  
+  source(file.path(dir_source,"pd_he.R"))
+  
+} else {
+  Pd_he <- rast(Pd_he_file)
+  
+  cat("Los archivos de Pd_he ya existen. Se cargan las capas.\n")
+}
+
+
 plot(Pd_he)
 
 
@@ -119,6 +152,9 @@ plot(Pd_he)
 # Asignar los pesos a carreteras y vías férreas
 
 source(file.path(dir_source,"dr_he.R"))
+
+
+
 
 plot(Vias_4R$v8, main = "Influencia vías categoría 8")
 plot(Vias_4R$v5, main = "Influencia vías categoría 5")
@@ -137,14 +173,23 @@ dr_he  # Resultado final
 # Se calcula un indicador de fragmentación basado en densidad de píxeles naturales
 # en un radio de 1 km, con pesos de huella por decaimiento exponencial 
 
-source(file.path(dir_source,"if_he.R"))
+if (!all(file.exists(if_he_file))) {
+  cat("Procesando y creando archivos if_he...\n")
+  
+  source(file.path(dir_source,"if_he.R"))
+  
+} else {
+  if_he <- rast(if_he_file)
+  
+  cat("Los archivos de if_he ya existen. Se cargan las capas.\n")
+}
+
 
 plot(if_he)
 
 
 # Cálculo de Huella ####
 #**********************************************************
-
 ## huella continua ####
 # Integración aditiva de las cuatro variables explicatorias
 
@@ -157,27 +202,16 @@ plot(IHEH1002)
 ### Guardar resultado crs:9377####
 writeRaster(
   IHEH1002,
-  paste0(dir_Resultados, "/IHEH_IAVH_",base_cobertura, Año, ".tif"), 
+  paste0(dir_Resultados, "/IHEH_IAVHac_",base_cobertura, Año, ".tif"), 
   overwrite=TRUE)
 
 # Guardar capas intermedias
 
-writeRaster(
-  Lu_he,
-  paste0(dir_Resultados, "/LU_",base_cobertura, Año, ".tif"), 
-  overwrite=TRUE)
-writeRaster(
-  Pd_he,
-  paste0(dir_Resultados, "/Pop", Año, ".tif"), 
-  overwrite=TRUE)
-writeRaster(
-  if_he,
-  paste0(dir_Resultados, "/frag_",base_cobertura, Año, ".tif"), 
-  overwrite=TRUE) 
-writeRaster(
-  dr_he,
-  paste0(dir_Resultados, "/ViasCor", Año, ".tif"), 
-  overwrite=TRUE)
+writeRaster(Lu_he, Lu_he_file, overwrite = TRUE)
+writeRaster(Pd_he, Pd_he_file, overwrite = TRUE)
+writeRaster(if_he, if_he_file, overwrite = TRUE)
+writeRaster(dr_he, dr_he_file, overwrite = TRUE)
+
 
 ## Reclasificar a las categorías discretas ####
 
@@ -212,7 +246,7 @@ Sys.time()
 
 ## Proyectar datos WGS4326 ####
 
-# IHEH1002 <- rast(paste0(dir_Resultados, "/IHEH_IAVH",base_cobertura, Año, ".tif")) # Activar de ser necesario
+#IHEH1002 <- rast(paste0(dir_Resultados, "/IHEH_IAVH",base_cobertura, Año, ".tif")) # Activar de ser necesario
 
 # # Creación del raster base (Solo es necesario correrlo una vez)
 # IHEH1002_wgs <- project(IHEH1002,"EPSG:4326")
@@ -241,10 +275,10 @@ plot(r_class_wgs)
 
 writeRaster(
   IHEH1002_wgs,
-  paste0(dir_Resultados, "/IHEH_IAVH_",base_cobertura,"_wgs", Año, ".tif"), 
+  paste0(dir_Resultados, "/IHEH_IAVHac_",base_cobertura,"_wgs", Año, ".tif"), 
   overwrite=TRUE)
 writeRaster(
   r_class_wgs,
-  paste0(dir_Resultados, "/IHEH_IAVH_class_",base_cobertura,"_wgs", Año, ".tif"), 
+  paste0(dir_Resultados, "/IHEH_IAVH_classac_",base_cobertura,"_wgs", Año, ".tif"), 
   overwrite=TRUE)
 
