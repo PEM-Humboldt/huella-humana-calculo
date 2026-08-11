@@ -52,12 +52,12 @@ osm_class5 <- c(
   "track_grade4",
   "track_grade5",
   "service",
-  "bridleway",
-  "cycleway"
+  "cycleway",
+  "unclassified"
 )
 
 # Pesos - 4/2. Infraestructura peatonal y no clasificada
-osm_class4 <- c("pedestrian", "footway", "steps", "unknown", "unclassified")
+osm_class4 <- c("pedestrian", "footway", "steps", "unknown", "bridleway")
 
 # Pesos - 2/2. Senderos naturales
 osm_class2 <- c("path")
@@ -116,18 +116,18 @@ osm_groups <- lapply(osm_groups, function(x) {
 
 # Asignar pesos a las vías del IGAC según su tipo de vía (TIPO_VIA) si es 2022 o GP_RTP  si es 2018
 
-if (Año >=2020) {
+if (Año >=2002) {
   vias_IGAC2 <- vias_IGAC0 %>%
     mutate(peso = case_when(
-      TIPO_VIA %in% c(1:4) ~ 8,
+      TIPO_VIA %in% c(1:3) ~ 8,
       # Vías principales
-      TIPO_VIA %in% c(5:7) ~ 5,
+      TIPO_VIA %in% c(4:6) ~ 5,
       # Vías secundarias
-      TIPO_VIA %in% 8 ~ 2        # Caminos o vías terciarias
+      TIPO_VIA %in% c(7:8) ~ 2        # Caminos o vías terciarias
     ))
   
   
-} else if (Año == 2014 |Año == 2016 | Año == 2018 ) {
+} else if (Año == 2000 |Año == 2001 ) {
   vias_IGAC2 <- vias_IGAC0 %>%
     mutate(peso = case_when(
       GP_RTP %in% c(1:3) ~ 8,
