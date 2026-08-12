@@ -52,7 +52,7 @@ Año_pop <- 2025
 # Capa base de cobertura (define insumos LU y TNT)
 # Opciones: "corine" o "MB"
 
-base_cobertura <- "corine" 
+base_cobertura <- "MB" 
 
 
 #**********************************************************
@@ -161,7 +161,7 @@ if (!all(file.exists(dr_he_file))) {
   writeRaster(dr_he, dr_he_file, overwrite = FALSE)
   
 } else {
-  Pd_he <- rast(dr_he_file)
+  dr_he <- rast(dr_he_file)
   cat("Los archivos de dr_he ya existen. Se cargan las capas.\n")
 
 }
@@ -236,7 +236,7 @@ r_class <- classify(IHEH1002, rc_matrix)
 
 # Convertir a factor y asignar etiquetas
 levels(r_class) <- data.frame(ID = 1:5, clase = labels)
-
+gc()
 plot(r_class)
 
 ### Guardar reclass crs:9377####
