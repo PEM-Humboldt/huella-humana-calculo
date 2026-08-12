@@ -36,11 +36,11 @@ dir_Resultados <- file.path("Resultados")
 #**********************************************************
 
 # Años a procesar para procesamiento
-años <- c(2018, 2020, 2022, 2024)
+años <- c(2016,2018,2020,2022, 2024)
 
 # Capa base de cobertura 
 # Opciones: "corine" o "MB"
-base_cobertura <- "corine" 
+base_cobertura <- "MB" 
 
 # Nombres de capas auxiliares
 capas <- c(
