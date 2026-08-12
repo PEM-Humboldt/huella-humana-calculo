@@ -36,19 +36,19 @@ dir_Resultados <- file.path("Resultados")
 #**********************************************************
 
 # Años a procesar para procesamiento
-años <- c(2016, 2018, 2020, 2022)
+años <- c(2018, 2020, 2022, 2024)
 
 # Capa base de cobertura 
 # Opciones: "corine" o "MB"
-base_cobertura <- "MB" 
+base_cobertura <- "corine" 
 
 # Nombres de capas auxiliares
 capas <- c(
-  IHEH = paste0("IHEH_IAVH_",base_cobertura),
+  IHEH = paste0("IHEH_IAVHac_",base_cobertura),
   LU   = paste0("LU_",base_cobertura), 
   Pop  = "Pop",
   frag = paste0("frag_",base_cobertura), 
-  Vias = "ViasCor"
+  Vias = "Viasac"
 )
 
 
@@ -86,13 +86,13 @@ for (año in años) {
   # - - - Sugerencia: aclarar que cada año se guarda como archivo independiente
   writeRaster(
     r_stack,
-    filename = paste0(dir_Resultados, "/Geonetwork/IHEH",base_cobertura,"_", año, ".tif"),
+    filename = paste0(dir_Resultados, "/Geonetwork/IHEHac",base_cobertura,"_", año, ".tif"),
     overwrite = TRUE
   )
   
   zip::zip(
-    zipfile = paste0(dir_Resultados, "/Geonetwork/IHEH", base_cobertura, "_", año,".zip"),
-    files = paste0(dir_Resultados, "/Geonetwork/IHEH", base_cobertura, "_", año, ".tif")
+    zipfile = paste0(dir_Resultados, "/Geonetwork/IHEHac", base_cobertura, "_", año,".zip"),
+    files = paste0(dir_Resultados, "/Geonetwork/IHEHac", base_cobertura, "_", año, ".tif")
   )
 }
 
