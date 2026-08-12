@@ -44,10 +44,10 @@ dir_source <- file.path("Codigos","pipelines")
 #**********************************************************
 ## Año #### 
 # Escriba el año de interes
-Año <- 2018
+Año <- 2024
 
 # Escriba el año de los datos de población que va a usar
-Año_pop <- 2020
+Año_pop <- 2025
 
 # Capa base de cobertura (define insumos LU y TNT)
 # Opciones: "corine" o "MB"
@@ -115,6 +115,7 @@ if (!all(file.exists(Lu_he_file))) {
   cat("Procesando y creando archivos lu_he...\n")
   
   source(file.path(dir_source,"lu_he.R"))
+  writeRaster(Lu_he, Lu_he_file, overwrite = FALSE)
   
 } else {
   Lu_he <- rast(Lu_he_file)
@@ -136,6 +137,7 @@ if (!all(file.exists(Pd_he_file))) {
   cat("Procesando y creando archivos Pd_he...\n")
   
   source(file.path(dir_source,"pd_he.R"))
+  writeRaster(Pd_he, Pd_he_file, overwrite = FALSE)
   
 } else {
   Pd_he <- rast(Pd_he_file)
@@ -151,10 +153,18 @@ plot(Pd_he)
 #**********************************************************
 # Asignar los pesos a carreteras y vías férreas
 
-source(file.path(dir_source,"dr_he.R"))
 
+if (!all(file.exists(dr_he_file))) {
+  cat("Procesando y creando archivos dr_he...\n")
+  
+  source(file.path(dir_source,"dr_he.R"))
+  writeRaster(dr_he, dr_he_file, overwrite = FALSE)
+  
+} else {
+  Pd_he <- rast(dr_he_file)
+  cat("Los archivos de dr_he ya existen. Se cargan las capas.\n")
 
-
+}
 
 plot(Vias_4R$v8, main = "Influencia vías categoría 8")
 plot(Vias_4R$v5, main = "Influencia vías categoría 5")
@@ -177,6 +187,7 @@ if (!all(file.exists(if_he_file))) {
   cat("Procesando y creando archivos if_he...\n")
   
   source(file.path(dir_source,"if_he.R"))
+  writeRaster(if_he, if_he_file, overwrite = FALSE)
   
 } else {
   if_he <- rast(if_he_file)
@@ -205,12 +216,6 @@ writeRaster(
   paste0(dir_Resultados, "/IHEH_IAVHac_",base_cobertura, Año, ".tif"), 
   overwrite=TRUE)
 
-# Guardar capas intermedias
-
-writeRaster(Lu_he, Lu_he_file, overwrite = TRUE)
-writeRaster(Pd_he, Pd_he_file, overwrite = TRUE)
-writeRaster(if_he, if_he_file, overwrite = TRUE)
-writeRaster(dr_he, dr_he_file, overwrite = TRUE)
 
 
 ## Reclasificar a las categorías discretas ####
@@ -238,7 +243,7 @@ plot(r_class)
 
 writeRaster(
   r_class,
-  paste0(dir_Resultados, "/IHEH_IAVH_class_",base_cobertura, Año, ".tif"), 
+  paste0(dir_Resultados, "/IHEH_IAVH_classac_",base_cobertura, Año, ".tif"), 
   overwrite=TRUE)
 
 Sys.time()
