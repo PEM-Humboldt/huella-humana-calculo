@@ -69,10 +69,10 @@ scoord <- crs("EPSG:9377") # Sistema de coordenadas del raster base. Cambiar cua
 osm_class8 <- c( "trunk",  "tertiary", "secondary", "primary_link", "secondary_link", "primary",   "trunk_link",  "tertiary_link", "living_street", "residential",  "motorway_link", "motorway", "busway")
 
 # Pesos - 5/4. Vías terciarias y rurales
-osm_class5 <- c( "track",  "track_grade1", "track_grade2","track_grade3","track_grade4", "track_grade5", "service", "bridleway", "cycleway")
+osm_class5 <- c( "track",  "track_grade1", "track_grade2","track_grade3","track_grade4", "track_grade5", "service", "unclassified" , "cycleway")
 
 # Pesos - 4/2. Infraestructura peatonal y no clasificada
-osm_class4 <- c( "pedestrian","footway","steps","unknown","unclassified")
+osm_class4 <- c( "pedestrian","footway","steps","unknown","bridleway")
 
 # Pesos - 2/2. Senderos naturales
 osm_class2 <- c("path")
