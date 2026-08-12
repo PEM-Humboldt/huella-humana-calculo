@@ -38,6 +38,7 @@ El directorio del proyecto está organizado de la siguiente manera.
     └- 01_Insumosxhuella_automatizado.R
     └- 02_IHEH_calculo.R
     └- 03_DatosGeonetwork.R
+    └- 04_Persistencia.R
     │
     │-Miscelaneo
     │    └- 000_Insumoscobertura_tablaLU.R
@@ -97,6 +98,7 @@ En la carpeta principal se encuentran cuatro scripts clave, estos se corren en o
 - 01_Insumosxhuella_automatizado.R: Procesamiento de los datos que describen las presiones antrópicas.
 - 02_IHEH_calculo.R: Asignación de pesos e integración de las presiones para el cálculo del IHEH.
 - 03_DatosGeonetwork.R: Preparación de datos en formato compatible con GeoNetwork.
+- 04_Persistencia.R: Cálculo de persistencia par biotablero
 ```  
 Los tres primeros scripts (00 a 02) integran diferentes rutinas provenientes de la carpeta pipelines.
 
