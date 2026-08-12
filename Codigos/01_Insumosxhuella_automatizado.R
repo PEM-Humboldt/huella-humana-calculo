@@ -57,7 +57,7 @@ dir_source <- file.path("Codigos","pipelines")
 
 ## Definir Periódo al calcular y actualidad los datos a usar
 Año <- 2024 # definir el año que se quiere calcular
-año_pop <- 2020 # escribir el año de los datos de población a usar-
+año_pop <- 2025 # escribir el año de los datos de población a usar-
 
 scoord <- crs("EPSG:9377") # Sistema de coordenadas del raster base. Cambiar cuando se defina la proyección
 
@@ -88,14 +88,16 @@ r_base <- rast(file.path(dir_datos, "r_base.tif"))
 gdb_path <- file.path(
   dir_datos,
   #"Corine/Cobertura_de_la_Tierra_100K_Periodo_2018/COBERTURAS CORINE 2018/ECOSISTEMAS_062021.gdb"# 2018
-  "/Corine/Cobertura_de_la_tierra_100K_Periodo_2020_limite_administrativo (1)/Cobertura_de_la_tierra_100K_Periodo_2020_limite_administrativo/ECOSISTEMAS_14072024.gdb"
+  #"/Corine/Cobertura_de_la_tierra_100K_Periodo_2020_limite_administrativo (1)/Cobertura_de_la_tierra_100K_Periodo_2020_limite_administrativo/ECOSISTEMAS_14072024.gdb"
+  "Corine/Cobertura_Tierra_100K_Periodo_2024_limite_adm/Cobertura_Tierra_100K_Periodo_2024_limite_adm/ECOSISTEMAS_COBERTURAS_DE_LA_TIERRA_2024_24042026.gpkg"
 )
 
 # Revisar qué capas hay dentro de la GDB
 st_layers(gdb_path)
 
 # Elegir La capa ambiental
-corine <- st_read(gdb_path, layer = "e_cobertura_tierra_2020_amb")
+corine <- st_read(gdb_path, layer = "e_cobertura_tierra_2024_Amb") #"e_cobertura_tierra_2020_amb"
+
 
 # revisar nombres de los campos y definir columna para la clasificacion a pesos de huella, dicha columna dece ser la que tenga los códigos de las clases de cobertura. Estos son codigos númericos como estos:  323, 3132, 311121, 311121. Como puede darse cuenta estos pueden varian en longitud.
 
@@ -124,7 +126,7 @@ osm0 <- st_read(
   )
 )
 
-vias_IGAC0 <- st_read(file.path(dir_datos, "vias", "IGAC_viasD2024", "Vias_IGAC.shp"))# 2022 y 2020, 2024
+#vias_IGAC0 <- st_read(file.path(dir_datos, "vias", "IGAC_viasD2024", "Vias_IGAC.shp"))# 2022 y 2020, 2024
 
 # Capa de red férrea oficial (fuente: IGAC / ANI) 
 # ajustar el nombre de ser necesario 
