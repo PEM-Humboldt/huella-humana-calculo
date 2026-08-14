@@ -45,15 +45,12 @@ dir_Intermedios<- file.path ("Res_Intermedios")
 dir_Resultados<- file.path ("Resultados")
 
 
-
-
-
 #**********************************************************
 # Parametros globales ----------------------------
 #**********************************************************
 
 ## Definir Período al calcular y actualidad los datos a usar
-Año <- 2026 # definir el año que se quiere calcular
+Año <- 2024 # definir el año que se quiere calcular
 año_pop <- 2025 # escribir el año de los datos de población a usar- 
 
 
@@ -84,9 +81,9 @@ osm_class2 <- c("path")
 
 # Capas Vector
 
-#osm0<-st_read(file.path(dir_datos,"vias", "colombia-240101-free.shp","gis_osm_roads_free_1.shp"))#2024 comienzos
+osm0<-st_read(file.path(dir_datos,"vias", "colombia-240101-free.shp","gis_osm_roads_free_1.shp"))#2024 comienzos
 #osm0<-st_read(file.path(dir_datos,"vias", "colombia-250101-free.shp","gis_osm_roads_free_1.shp"))#2025 comienzos
-osm0<-st_read(file.path(dir_datos,"vias", "colombia-260101-free.shp","gis_osm_roads_free_1.shp"))#2026 comienzos
+#osm0<-st_read(file.path(dir_datos,"vias", "colombia-260101-free.shp","gis_osm_roads_free_1.shp"))#2026 comienzos
 
 
 # Capas Raster
@@ -143,8 +140,8 @@ osm_groups <- lapply(osm_groups, function(x) { st_sf(data.frame(ID = 1, geom = x
 vias_IGAC0 <- st_read(file.path(dir_datos,"vias","ViasSinchiOct25","ViasSinchiOct25","Vías Terrestres NDFyB 25K Octubre 2025.shp"))# 2022 y 2020
   vias_IGAC2 <- vias_IGAC0 %>%
     mutate(peso = case_when(
-      v_tipo %in% c(1:3) ~ 8,  # Vías principales
-      v_tipo %in% c(4,5,6) ~ 5,  # Vías secundarias
+      v_tipo %in% c(1:3) ~ 8,  # red estructurante
+      v_tipo %in% c(4,5,6) ~ 5,  # rural servicio
       v_tipo %in% c(7,8) ~ 2        # caminos senderos varios
   
 )
