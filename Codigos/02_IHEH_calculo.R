@@ -44,10 +44,10 @@ dir_source <- file.path("Codigos","pipelines")
 #**********************************************************
 ## Año #### 
 # Escriba el año de interes
-Año <- 2024
+Año <- 2014
 
 # Escriba el año de los datos de población que va a usar
-Año_pop <- 2025
+Año_pop <- 2015
 
 # Capa base de cobertura (define insumos LU y TNT)
 # Opciones: "corine" o "MB"
@@ -214,7 +214,7 @@ plot(IHEH1002)
 writeRaster(
   IHEH1002,
   paste0(dir_Resultados, "/IHEH_IAVHac_",base_cobertura, Año, ".tif"), 
-  overwrite=TRUE)
+  overwrite=FALSE)
 
 
 
@@ -236,7 +236,7 @@ r_class <- classify(IHEH1002, rc_matrix)
 
 # Convertir a factor y asignar etiquetas
 levels(r_class) <- data.frame(ID = 1:5, clase = labels)
-gc()
+
 plot(r_class)
 
 ### Guardar reclass crs:9377####
@@ -247,7 +247,7 @@ writeRaster(
   overwrite=TRUE)
 
 Sys.time()
-
+gc()
 
 ## Proyectar datos WGS4326 ####
 
