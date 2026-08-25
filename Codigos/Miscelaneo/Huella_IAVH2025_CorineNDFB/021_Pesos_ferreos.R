@@ -35,7 +35,7 @@ library(dplyr)    # Manipulación de datos tabulares
 #**********************************************************
 # Directorios de trabajo
 #**********************************************************
-setwd(file.path(this.path::this.path(),"..","..","..")) # Ruta relativa al script
+setwd(file.path(this.path::this.path(),"..","..","..","..")) # Ruta relativa al script
 
 dir_datos       <- file.path("Datos")            # Carpeta de insumos originales
 dir_Intermedios <- file.path("Res_Intermedios")  # Carpeta de resultados intermedios
@@ -46,7 +46,7 @@ dir_Resultados  <- file.path("Resultados")       # Carpeta de resultados finales
 #**********************************************************
 resolucion <- 10              # Resolución espacial del análisis (en metros)
 scoord     <- crs("EPSG:9377") # Sistema de coordenadas oficial para Colombia
-Año        <- 2025         # Año de referencia para el cálculo
+Año        <- 2026         # Año de referencia para el cálculo
 
 #**********************************************************
 # Carga de datos

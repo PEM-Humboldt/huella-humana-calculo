@@ -38,7 +38,7 @@ library(dplyr)    # Manipulación de datos tabulares
 #**********************************************************
 # Directorios de trabajo
 #**********************************************************
-setwd(file.path(this.path::this.path(),"..","..","..")) # Ruta relativa al script
+setwd(file.path(this.path::this.path(),"..","..","..","..")) # Ruta relativa al script
 
 dir_datos       <- file.path("Datos")            # Carpeta de insumos originales
 dir_Intermedios <- file.path("Res_Intermedios")  # Carpeta de resultados intermedios
@@ -49,7 +49,7 @@ dir_Resultados  <- file.path("Resultados")       # Carpeta de resultados finales
 #**********************************************************
 resolucion <- 10             # Resolución espacial del análisis (en metros)
 scoord     <- crs("EPSG:9377") # Sistema de coordenadas oficial para el análisis
-Año        <- 2024            # Año de referencia para el cálculo
+Año        <- 2026            # Año de referencia para el cálculo
 
 #**********************************************************
 # Carga de datos
@@ -63,7 +63,7 @@ r_base10 <- rast(file.path(dir_datos,"r_base10.tif"))
 
 # Cobertura de uso del suelo
 
-corine <- st_read("Datos/Corine/amazonas/Coberturas_de_la_Tierra_2024_SI_Escala_1_25000-20260211T213750Z-1-001/Coberturas_de_la_Tierra_2024_SI_Escala_1_25000/Coberturas_de_la_Tierra_2024_SI_Escala_1_25000.shp")
+corine <- st_read("Datos/Corine/amazonas/corineSinchi_2026_I/NDFyB_2026_I.shp")
 
 # region de interes
 
@@ -167,6 +167,6 @@ plot(pesos_rnav)
 
 
 #writeRaster(pesos_rnav, file.path(dir_Intermedios, paste0("testpesos_navegabilidadA_filtro.tiff")))
-writeRaster(pesos_rnav, file.path(dir_Intermedios, paste0("pesos_navegabilidadA_filtroSonly.tiff")))
+writeRaster(pesos_rnav, file.path(dir_Intermedios, paste0("pesos_navegabilidadA_filtroSonly_", Año,".tiff")))
 
 

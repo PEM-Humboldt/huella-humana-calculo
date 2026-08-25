@@ -50,7 +50,7 @@ dir_Resultados<- file.path ("Resultados")
 #**********************************************************
 
 ## Definir Período al calcular y actualidad los datos a usar
-Año <- 2024 # definir el año que se quiere calcular
+Año <- 2026 # definir el año que se quiere calcular
 año_pop <- 2025 # escribir el año de los datos de población a usar- 
 
 
@@ -81,9 +81,9 @@ osm_class2 <- c("path")
 
 # Capas Vector
 
-osm0<-st_read(file.path(dir_datos,"vias", "colombia-240101-free.shp","gis_osm_roads_free_1.shp"))#2024 comienzos
+#osm0<-st_read(file.path(dir_datos,"vias", "colombia-240101-free.shp","gis_osm_roads_free_1.shp"))#2024 comienzos
 #osm0<-st_read(file.path(dir_datos,"vias", "colombia-250101-free.shp","gis_osm_roads_free_1.shp"))#2025 comienzos
-#osm0<-st_read(file.path(dir_datos,"vias", "colombia-260101-free.shp","gis_osm_roads_free_1.shp"))#2026 comienzos
+osm0<-st_read(file.path(dir_datos,"vias", "colombia-260101-free.shp","gis_osm_roads_free_1.shp"))#2026 comienzos
 
 
 # Capas Raster
@@ -264,16 +264,16 @@ writeRaster(pop_km2A10, file.path(dir_Intermedios, paste0("pop_km2A_",año_pop,"
 
 
 #corine <- st_read("Datos/Corine/amazonas/Coberturas_de_la_Tierra_2024_SI_Escala_1_25000-20260211T213750Z-1-001/Coberturas_de_la_Tierra_2024_SI_Escala_1_25000/Coberturas_de_la_Tierra_2024_SI_Escala_1_25000.shp")
+corine <- st_read("Datos/Corine/amazonas/corineSinchi_2026_I/NDFyB_2026_I.shp")
 
-
-corine <- st_read("Datos/Corine/amazonas/Coberturas_de_la_Tierra_2025_SI_Escala_1_25000-20260211T213757Z-1-001/Coberturas_de_la_Tierra_2025_SI__Escala_1_25000.shp")
-corine <- st_read("Datos/Corine/amazonas/COBERT~2/CAPA_D~1.SHP")
-d <- st_read("C:/Users/alejandra.narvaez/Downloads/Coberturas_de_la_Tierra_NDFyB_25K_Enero_2026.geojson")
-d <- st_read("C:/Users/alejandra.narvaez/Downloads/Coberturas_de_la_Tierra_NDFyB_25K_Octubre_2025.geojson")
-d <- st_read("C:/Users/alejandra.narvaez/Downloads/Coberturas_de_la_Tierra_NDFyB_25K_Ene2025/Coberturas_de_la_Tierra_NDFyB_25K_Ene2025.shp")
-
-d %>% st_drop_geometry()
-names(d)
+# corine <- st_read("Datos/Corine/amazonas/Coberturas_de_la_Tierra_2025_SI_Escala_1_25000-20260211T213757Z-1-001/Coberturas_de_la_Tierra_2025_SI__Escala_1_25000.shp")
+# corine <- st_read("Datos/Corine/amazonas/COBERT~2/CAPA_D~1.SHP")
+# d <- st_read("C:/Users/alejandra.narvaez/Downloads/Coberturas_de_la_Tierra_NDFyB_25K_Enero_2026.geojson")
+# d <- st_read("C:/Users/alejandra.narvaez/Downloads/Coberturas_de_la_Tierra_NDFyB_25K_Octubre_2025.geojson")
+# d <- st_read("C:/Users/alejandra.narvaez/Downloads/Coberturas_de_la_Tierra_NDFyB_25K_Ene2025/Coberturas_de_la_Tierra_NDFyB_25K_Ene2025.shp")
+# 
+# d %>% st_drop_geometry()
+# names(d)
 
 # proyectar a sistema de referencia  base
 corine_col_p <- st_transform(corine,scoord)
@@ -295,7 +295,7 @@ Cod_ecos <- "codigo"
 archivo_LU0 <- file.path(dir_Intermedios,paste0( "LU0_corineA10",Año,"enero.tif"))
 archivo_TNT0 <- file.path(dir_Intermedios,paste0( "TNT0_corineA10",Año,"enero.tif"))
 
-r_base10A <- crop(r_base10,region_buf) cuidado revisa
+r_base10A <- crop(r_base10,region_buf) #cuidado revisa
 
 
 # Condición para crear o no los archivos

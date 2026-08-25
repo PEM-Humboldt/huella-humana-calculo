@@ -253,6 +253,13 @@ if_he <- rast(
   paste0(dir_Resultados, "/fragA", Año, ".tif")
   )
 
+# if_he <- rast(
+#   paste0(dir_Resultados, "/fragAregion2024", Año, ".tif") #### mucho cuidado super necesasrio para el 2025
+# )
+
+dr_he <- rast(
+  paste0(dir_Resultados, "/ViasAS", Año, ".tif"))
+
 #*
 #*
 
@@ -273,14 +280,14 @@ plot(IHEH1002)
 ## Guardar resultado crs:9377####
 writeRaster(
   IHEH1002,
-  paste0(dir_Resultados, "/IHEH_IAVHA_S_enero", Año, ".tif"), 
+  paste0(dir_Resultados, "/IHEH_IAVHA_S_enerosh", Año, ".tif"), 
   overwrite=TRUE)
 
 
-writeRaster(
-  IHEH1002,
-  paste0(dir_Resultados, "/IHEH_IAVHAS_enerohalo", Año, ".tif"), 
-  overwrite=TRUE)
+# writeRaster(
+#   IHEH1002,
+#   paste0(dir_Resultados, "/IHEH_IAVHAS_enerohalo", Año, ".tif"), 
+#   overwrite=TRUE)
 
 
 #Guardar capas intermedias
@@ -328,13 +335,13 @@ plot(r_class)
 # Guardar resultado
 writeRaster(
   r_class,
-  paste0(dir_Resultados, "/IHEH_IAVHA_S_class_enero_halo", Año, ".tif"), 
+  paste0(dir_Resultados, "/IHEH_IAVHA_S_class_enero2sh", Año, ".tif"), 
   overwrite=TRUE)
 
 Sys.time()
 
 
-## Guardar resultado crs:9377####
+## Guardar resultado crs:4326####
 Año <- 2018
 
 IHEH1002 <- rast(
